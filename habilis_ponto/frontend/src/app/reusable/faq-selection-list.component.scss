@@ -1,0 +1,26 @@
+@import "../../scss/newcolors";
+
+
+.selection-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 2px solid $white-base;
+}
+
+.selection-item:focus {
+  border: 2px solid var(--primary-color);
+}
+
+.selection-item:hover {
+  background-color: $black-lighten-4;
+}
+
+.selected-border {
+  border: 2px solid var(--primary-color) !important;
+}

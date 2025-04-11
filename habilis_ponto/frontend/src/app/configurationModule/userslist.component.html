@@ -1,0 +1,556 @@
+<div class="full-width h100 flex-column overflow-hidden">
+    <div class="default-buttons-area">
+        <div class="h5" i18n>
+            Usuários
+        </div>
+        <div class="mrg32L mrg-right-auto">
+            <div class="total-card flex-row card">
+                <div class="status-sign bg-blue-lighten-2 fg-info" matTooltip="Administradores" i18n-matTooltip>
+                    <fa-icon [icon]="['far', 'user-cog']"></fa-icon>
+                </div>
+                <div class="mrg4L">
+                    {{ users | countAgentsPerType:0 }}
+                </div>
+                <div class="status-sign bg-blue-lighten-2 fg-info mrg16L" matTooltip="Supervisores" i18n-matTooltip>
+                    <fa-icon [icon]="['far', 'user-tie']"></fa-icon>
+                </div>
+                <div class="mrg4L">
+                    {{ users | countAgentsPerType:1 }}
+                </div>
+                <div class="status-sign bg-green-lighten-2 fg-success mrg16L" matTooltip="Agentes" i18n-matTooltip>
+                    <fa-icon [icon]="['far', 'user-headset']"></fa-icon>
+                </div>
+                <div class="mrg4L">
+                    {{ users | countAgentsPerType:2 }}
+                </div>
+                <div class="status-sign bg-green-lighten-2 fg-success mrg16L" matTooltip="Usuários de ponto" i18n-matTooltip>
+                    <fa-icon [icon]="['far', 'user-headset']"></fa-icon>
+                </div>
+                <div class="mrg4L">
+                    {{ users | countAgentsPerType:5 }}
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="addUser()" matRipple>
+            <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+        </button>
+    </div>
+    <div class="mrg15T flex-elastic full-width overflow-hidden card">
+        <div class="full-width h100" #gridContainer>
+            <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'agentDetailTemplate'}"
+                          [dataSource]="users" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)"
+                          [hoverStateEnabled]="true">
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-paging [enabled]="true"></dxo-paging>
+                <!--        <dxo-scrolling [rowRenderingMode]="'virtual'" [renderAsync]="false" [useNative]="true"></dxo-scrolling>-->
+                <div *dxTemplate="let item of 'photoTemplate'">
+                    <div class="full-width">
+                        <user-profile-pic [id]="item.data.id" [picVersion]="item.data.userpicversion"
+                                          [auth]="item.data.userpicauth"
+                                          [initials]="item.data.fullname.toString().substr(0, 2)"></user-profile-pic>
+                    </div>
+                </div>
+                <div *dxTemplate="let id of 'functionsTemplate'">
+                    <div class="grid-function-btn-area">
+                        <button class="grid-function-btn" *ngIf="[1,2,3,4].includes(id.data.type)"
+                                (click)="openTimeTable(id.value)"
+                                matTooltip="Editar tabela de horários" matRipple i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'calendar-alt']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn mrg5L" (click)="changePass(id.data)" matTooltip="Trocar senha"
+                                matRipple i18n-matTooltip *ngIf="service.user.masteruser || !id.data.masteruser">
+                            <fa-icon [icon]="['far', 'key']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn mrg5L" (click)="logoutAndInvalidate(id.data)"
+                                matTooltip="Deslogar e invalidar todas as sessões"
+                                matRipple i18n-matTooltip *ngIf="service.user.masteruser || !id.data.masteruser">
+                            <fa-icon [icon]="['far', 'user-slash']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn mrg5L" (click)="removeItem(id.data)" matRipple
+                                matTooltip="Excluir usuário" i18n-matTooltip *ngIf="id.data.username !== 'admin'">
+                            <fa-icon [icon]="['far', 'times']"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+                <div *dxTemplate="let t of 'typeTemplate'">
+                    {{ t.value === 0 ? texts.administrador : t.value === 1 ? texts.supervisor : t.value === 3 ? texts.bot : t.value === 4 ? texts.mobile : t.value === 5? texts.usuarioPonto : texts.agente }}
+                </div>
+                <div *dxTemplate="let item of 'agentDetailTemplate'" class="pad10A">
+
+                    <div class="pad10A full-width flex-row">
+                        <div class="flex-row full-width">
+                            <div style="width: 185px;">
+                                <div class="flex-align-center full-width div-square position-relative">
+                                    <input type="file" accept="image/*" (mouseover)="item.data.copy.editPhoto = true"
+                                           (mouseout)="item.data.copy.editPhoto = false"
+                                           (change)="photoChange(item.data, $event)" class="photo-input"/>
+                                    <img class="user-photo-frame" *ngIf="!item.data.copy.imgError"
+                                         [src]="base + '/static/getUserProfilePic?id=' + item.data.copy.id + '&auth=' + item.data.copy.userpicauth + '&u=' + (item.data.copy.userpicversion || 0)"
+                                         (error)="imgError(item.data.copy)"/>
+                                    <div class="photo-error-fallback" *ngIf="item.data.copy.imgError">
+                                        <span class="font-bold">{{ item.data.copy.fullname.toString().substr(0, 2) }}</span>
+                                    </div>
+                                    <div class="photo-change-mask"
+                                         [class.photo-change-mask-visible]="item.data.copy.editPhoto">
+                        <span class="font-bold" *ngIf="!item.data.copy.photoLoading"><fa-icon
+                                [icon]="['fas', 'edit']"></fa-icon> <span i18n>Editar</span></span>
+                                        <span *ngIf="item.data.copy.photoLoading"><fa-icon
+                                                [icon]="['fas', 'spinner']" [spin]="true"></fa-icon></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-column mrg25L flex-elastic">
+                                <mat-form-field>
+                                    <mat-label i18n>Nome</mat-label>
+                                    <input matInput type="text" [(ngModel)]="item.data.copy.fullname" name="fullName"
+                                           maxlength="128" i18n-placeholder
+                                           placeholder="Nome" required #fullnameInput="ngModel" class="full-width"/>
+                                </mat-form-field>
+                                <!-- <mat-form-field *ngIf="[2, 4].includes(item.data.copy.type)" class="flex-elastic">
+                                    <mat-label i18n>Número máximo de atendimentos</mat-label>
+                                    <input matInput type="number" [(ngModel)]="item.data.copy.maxchats"
+                                           name="maxChatsPerAgent" i18n-placeholder i18n-matTooltip
+                                           max="500" min="0" step="1" placeholder="Número máximo de atendimentos"
+                                           matTooltip="Número máximo de atendimentos simultâneos atribuídos a esse agente. Se 0, não haverá limite. Atendimentos atribuídos por preferência do contato, atendimentos travados e transferências não obedecem a esse limite."/>
+                                </mat-form-field> -->
+                                <div class="full-width flex-row">
+                                    <mat-form-field class="flex-elastic">
+                                        <mat-label i18n>ID Externo</mat-label>
+                                        <input matInput type="text" [(ngModel)]="item.data.copy.extid" name="extid"
+                                               i18n-placeholder
+                                               maxlength="128" placeholder="ID Externo" #extidInput="ngModel"
+                                               class="full-width"/>
+                                    </mat-form-field>
+                                    <mat-form-field class="mrg10L flex-elastic">
+                                        <mat-label i18n>Dado Externo</mat-label>
+                                        <input matInput type="text" [(ngModel)]="item.data.copy.extdata" name="extdata"
+                                               i18n-placeholder
+                                               maxlength="128" placeholder="Dado Externo" #extdataInput="ngModel"
+                                               class="full-width"/>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <mat-form-field class="flex-elastic" *ngIf="[2,3,4].includes(item.data.copy.type)"
+                                                i18n-matTooltip
+                                                matTooltip="Mensagens trocadas pelo atendimento enquanto atribuído a esse agente serão marcadas como visíveis apenas para esse grupo de visualização caso selecionado, isso significa que somente supervisores, administradores e outros agentes nesse mesmo grupo de visualização verão as mensagens enviadas e recebidas durante a atribuição a esse agente.">
+                                    <mat-label i18n>Grupo de visualização</mat-label>
+                                    <mat-select [(ngModel)]="item.data.copy.fk_visualgroup">
+                                        <mat-option [value]="0" i18n>Sem grupo</mat-option>
+                                        <mat-option [value]="t.id" *ngFor="let t of this.visualgroups">{{ t.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <mat-form-field class="full-width"
+                                                *ngIf="service.notificationQueueId && item.data.copy.type !== 3">
+                                    <mat-label i18n="Número de telefone com código de área">Número para notificações
+                                    </mat-label>
+                                    <div matPrefix class="pad5A line-1" *ngIf="item.data.copy.checking">
+                                        <fa-icon [icon]="['far', 'spinner-third']" [spin]="true"></fa-icon>
+                                    </div>
+                                    <ngx-mat-intl-tel-input [(phoneNumber)]="item.data.copy.wanumber2"
+                                                            [preferredCountries]="[this.defaultCountry.toLowerCase()]"
+                                                            [enableSearch]="true" name="phone{{item.data.id}}"
+                                                            (valid)="item.data.copy.validNumber = $event"
+                                                            (countryChanged)="countryChanged($event, item.data.copy)"
+                                                            (change)="checkUserNumber(item.data.copy)"
+                                                            [enablePlaceholder]="true"></ngx-mat-intl-tel-input>
+                                </mat-form-field>
+                                <mat-error *ngIf="item.data.copy.wanumber2 && !item.data.copy.validNumber" i18n>Número
+                                    inválido.
+                                </mat-error>
+                                <div *ngIf="item.data.copy.notExists" class="full-width">
+                                    <fa-icon [icon]="['fas', 'times-circle']" class="fg-danger"></fa-icon>&nbsp;<span>O número informado não está disponível ou é inválido.</span>
+                                </div>
+                                <div *ngIf="item.data.copy.waid" class="full-width">
+                                    <fa-icon [icon]="['fas', 'check-circle']"
+                                             class="fg-success"></fa-icon>&nbsp;<span>Configurado para {{ item.data.copy.wanumber }}</span>
+                                </div>
+                                <mat-form-field class="mrg8T"
+                                                *ngIf="((item.data.type === 0 || item.data.type === 1) || ([2,4].includes(item.data.type) && item.data.copy.enablesoftphone)) && !service.disableTelephony">
+                                    <mat-label i18n>Ramal</mat-label>
+                                    <input matInput step="1" [(ngModel)]="item.data.copy.sipuser" name="sipuser"
+                                           placeholder="Ramal" required #sipuserInput="ngModel" class="full-width"
+                                           i18n-placeholder/>
+                                </mat-form-field>
+                                <mat-form-field
+                                        *ngIf="[0,1,2,4].includes(item.data.type) && item.data.copy.enablesoftphone && !service.disableTelephony">
+                                    <mat-label i18n>Senha Ramal</mat-label>
+                                    <input matInput type="password" step="1" [(ngModel)]="item.data.copy.sippass"
+                                           name="sippass"
+                                           placeholder="Senha Ramal" required #sippassInput="ngModel" class="full-width"
+                                           i18n-placeholder/>
+                                </mat-form-field>
+                                <mat-form-field class="flex-elastic" *ngIf="item.data.copy.clockinenabled"
+                                i18n-matTooltip
+                                matTooltip="O tipo de registro de ponto será utilizado para entrada e saída, por dentro do sistema e ou através do elemento de automação de URA. por senha será os ultimos 4 digitos do telefone cadastrado .">
+                    <mat-label i18n>Modo de registro de ponto</mat-label>
+                    <mat-select [(ngModel)]="item.data.copy.clockinmethod">
+                        <mat-option [value]="2" i18n>Foto</mat-option>
+                        <mat-option [value]="1" i18n>Geolocalização</mat-option>
+                        <mat-option [value]="0" i18n>Senha</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                                <mat-form-field class="mrg5T full-width"
+                                                (paste)="pasteEvent($event, item.data.copy.tags)"
+                                                matTooltip="O agente irá receber atendimentos sem filtros ou com um dos filtros abaixo"
+                                                *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled"
+                                                i18n-matTooltip>
+                                    <mat-label i18n>Filtros</mat-label>
+                                    <mat-chip-grid #chipList aria-label="Tags">
+                                        <mat-chip-row *ngFor="let tag of item.data.copy.tags"
+                                                      [removable]="true"
+                                                      (removed)="removeTag(tag, item.data.copy.tags)">
+                                            {{ tag }}&nbsp;&nbsp;
+                                            <fa-icon class="pointer" [icon]="['fal', 'copy']" (click)="copyTag(tag)"
+                                                     matTooltip="Copiar tag" i18n-matTooltip></fa-icon>&nbsp;
+                                            <fa-icon [icon]="['fal', 'times']" matChipRemove></fa-icon>
+                                        </mat-chip-row>
+                                        <input placeholder="Tags" [matChipInputFor]="chipList"
+                                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                               [matChipInputAddOnBlur]="true"
+                                               (matChipInputTokenEnd)="addTag($event, item.data.copy.tags)">
+                                    </mat-chip-grid>
+                                </mat-form-field>
+                                <button class="btn btn-darker-hover" matRipple
+                                        (click)="copyAllTags(item.data.copy.tags)"
+                                        *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <fa-icon [icon]="['far', 'copy']"></fa-icon>&nbsp;&nbsp;<span i18n>Copiar todos os filtros</span>
+                                </button>
+
+                            
+                            </div>
+                            <div class="flex-column mrg25L" style="min-width: 330px;" *ngIf="item.data.copy.type !== 3">
+                                <div class="font-medium" i18n>Permissões e opções</div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg15T"
+                                     *ngIf="![0, 1].includes(item.data.copy.type) && false">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.showscoreondashboard"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Mostrar notas no dashboard</span>
+                                </div>
+                                <!-- <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && service.chatCenterEnabled">
+                                    <app-animated-toogle [(value)]="item.data.copy.chatenabled"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Funções de chat</span>
+                                </div> -->
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="service.taskManagerEnabled && item.data.copy.type !== 5">
+                                     <!-- altera para usuários de ponto não terem essa funcionalidade ? -->
+                                    <app-animated-toogle *ngIf="" [(value)]="item.data.copy.tasksenabled"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Gestão de tarefas</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="service.taskManagerEnabled && item.data.copy.tasksenabled">
+                                    <app-animated-toogle [(value)]="item.data.copy.tasksmonitor"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Habilitar monitoramento de atividades</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="item.data.copy.type === 2 && !service.disableTelephony">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canaccessabandoned"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Acessar abandonadas</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="item.data.copy.type === 1 && !service.disableTelephony">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.candropqueuecall"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Desconectar ligações na fila</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="item.data.copy.type === 1">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.caneditgallery"></app-animated-toogle>
+                                    <span class="mrg10L"
+                                          i18n>Cadastrar e editar galeria e respostas pré definidas</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="item.data.copy.type === 1">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.cancreatecampaigns"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Cadastrar e liberar campanhas</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="item.data.copy.type === 1">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.caneditcatalog"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Cadastrar e editar produtos no catálogo</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="item.data.copy.type === 1">
+                                    <app-animated-toogle [(value)]="item.data.copy.caneditnews"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Cadastrar e editar novidades</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="item.data.copy.type === 1">
+                                    <app-animated-toogle [(value)]="item.data.copy.caneditfaq"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Cadastrar e editar faqs</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     matTooltip="Se habilitado, o número máximo de atendimentos será considerado quando o agente tentar ativamente puxar atendimentos da fila. Se desabilitado, o limite não será considerado e o agente poderá puxar quantos atendimentos desejar."
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.limitpulledchats"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Limitar atendimentos puxados</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     matTooltip="Se habilitado, atendimentos na fila travados para esse agente serão entregues mesmo que excedam os limites de atendimento da fila e do agente."
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.ignorelimitsforblockedchats"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Ignorar limites para atendimentos travados para esse agente</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle [(value)]="item.data.copy.autologin"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Logar automaticamente às filas</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4 || item.data.copy.type === 1) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle [(value)]="item.data.copy.canexportchat"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Exportar atendimentos</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle [(value)]="item.data.copy.canreopenchat"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Reabrir chats</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canreopenotherschat"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Reabrir chats de terceiros</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canreadhistorymessages"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Ler mensagens no histórico de atendimentos</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled &&
+                     service.chatCenterEnabled && service.enableAI">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canseechatssummary"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Ler resumo por IA no histórico de atendimentos</span>
+                                </div>
+                                <div class="mrg4T full-width fg-warning font-medium s10 bg-orange-lighten-2 pad6A mrg8B" i18n
+                                     *ngIf="item.data.copy.canseechatssummary" style="text-wrap: auto; border-radius: 4px;">
+                                    Atenção, dados sensíveis de outros grupos de visualização podem estar presentes no
+                                    resumo do atendimento. Permitir ao agente visualizar o resumo de atendimentos fará com que
+                                    ele tenha acesso a esses dados, ainda que seu grupo de visualização não permita.
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) &&
+                     item.data.copy.chatenabled && service.chatCenterEnabled && service.enableAI">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canrequestaisummary"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Solicitar resumo parcial, sugestão e modificações em mensagem durante o atendimento para a IA</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canopennewchat"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Abrir novos chats</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     i18n-matTooltip
+                                     *ngIf="(((item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled) || item.data.copy.type === 1) && service.chatCenterEnabled"
+                                     matTooltip="Permite ao usuário acessar todos os contatos, independente dos grupos de acesso.">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.allcontactsgroups"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Acesso a todos os contatos</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     i18n-matTooltip
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled && service.chatCenterEnabled"
+                                     matTooltip="Permite ao agente editar os agentes preferenciais de contatos cadastrados.">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canchangepreferredagents"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Editar agentes preferenciais de contatos</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     i18n-matTooltip
+                                     *ngIf="[0,1,2,4].includes(item.data.copy.type) && service.user?.masteruser"
+                                     matTooltip="Permite ao usuário acessar todos os contatos, independente dos grupos de acesso.">
+                                    <app-animated-toogle [(value)]="item.data.copy.remotelogin"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Permitir login remoto em clientes</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     i18n-matTooltip
+                                     *ngIf="[2,4].includes(item.data.copy.type)"
+                                     matTooltip="Se habilitado, o usuário sempre será considerado como conectado, mesmo que nenhuma conexão ativa esteja presente. Indicado quando utilizando o sistema a partir de sistemas móveis que podem entrar em modo de economia de energia cortando a conexão.">
+                                    <app-animated-toogle [(value)]="item.data.copy.keeponline"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Usuário sempre online</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     i18n-matTooltip
+                                     *ngIf="service.user?.masteruser && service.enableManagerPanel"
+                                     matTooltip="Permite ao usuário acessar ao painel de instâncias.">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.partnerpanelaccess"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Permitir acesso ao painel de instâncias</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     i18n-matTooltip
+                                     *ngIf="service.user?.masteruser && service.enableManagerPanel"
+                                     matTooltip="Permitir acesso ao faturamento, no painel de instâncias">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.partnerpanelbillingaccess"></app-animated-toogle>
+                                    <span class="mrg10L"
+                                          i18n>Permitir acesso ao faturamento, no painel de instâncias</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="false">
+                                    <app-animated-toogle [(value)]="item.data.copy.locklogout"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Não permitir logoff das filas</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     i18n-matTooltip
+                                     matTooltip="Se habilitado, esse usuário poderá criar tarefas para qualquer outro usuário do sistema."
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4 || item.data.copy.type === 1) && item.data.copy.tasksenabled">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.cancreatetasksforeveryone"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Permitir criar tarefas para outros</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled &&
+                         !service.disableInternalChat">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canuseinternalchat"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Acessar chat interno</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled &&
+                         !service.disableInternalChat && item.data.copy.canuseinternalchat">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.canaccesschatgroups"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Acessar grupos de WA</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     *ngIf="!service.disableTelephony">
+                                    <app-animated-toogle
+                                            [(value)]="item.data.copy.enablesoftphone"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Habilitar softphone</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                                     matTooltip="Se habilitado, as chamadas recebidas pelo agente enquanto logado em uma ou mais filas serão atendidas automaticamente em 3 segundos."
+                                     i18n-matTooltip
+                                     *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 4) && !service.disableTelephony && item.data.copy.enablesoftphone">
+                                    <app-animated-toogle [(value)]="item.data.copy.autoanswer"></app-animated-toogle>
+                                    <span class="mrg10L" i18n>Atendimento de chamadas automático quando logado</span>
+                                </div>
+                                <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T"
+                            *ngIf="true">
+                           <app-animated-toogle [(value)]="item.data.copy.clockinenabled"></app-animated-toogle>
+                           <span class="mrg10L" i18n>Habilitar registro de ponto </span>
+                       </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="flex-row mrg10T" *ngIf="item.data.copy.type === 3">
+                        <div>
+                            BotId: {{ item.data.copy.id }}
+                        </div>
+                        <div class="mrg15L flex-grow-1">
+                            <mat-form-field class="full-width">
+                                <mat-label i18n>Nome</mat-label>
+                                <input matInput type="text" [(ngModel)]="item.data.copy.fullname" name="fullName"
+                                       maxlength="128" i18n-placeholder
+                                       placeholder="Nome" required #fullnameInput="ngModel" class="full-width"/>
+                            </mat-form-field>
+                        </div>
+                        <div class="mrg15L">
+                            <mat-form-field style="width: 350px;">
+                                <mat-label i18n>Tags</mat-label>
+                                <mat-chip-grid #chipList aria-label="Tags">
+                                    <mat-chip-row *ngFor="let tag of item.data.copy.tags"
+                                                  [removable]="true" (removed)="removeTag(tag, item.data.copy.tags)">
+                                        {{ tag }}
+                                        <fa-icon [icon]="['fal', 'times']" matChipRemove></fa-icon>
+                                    </mat-chip-row>
+                                    <input placeholder="Tags" [matChipInputFor]="chipList"
+                                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                           [matChipInputAddOnBlur]="true"
+                                           (matChipInputTokenEnd)="addTag($event, item.data.copy.tags)">
+                                </mat-chip-grid>
+                            </mat-form-field>
+                        </div>
+                        <div class="mrg15L flex-grow-1">
+                            <mat-form-field class="full-width">
+                                <mat-label i18n>Senha de acesso</mat-label>
+                                <input matInput type="text" [(ngModel)]="item.data.copy.botkey" name="botkey"
+                                       maxlength="128"
+                                       placeholder="Senha de acesso" required #botkeyInput="ngModel" class="full-width"
+                                       i18n-placeholder/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="flex-column mrg10T" *ngIf="item.data.copy.type !== 0 && (((item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled
+                     && service.chatCenterEnabled) || (item.data.copy.type === 1 && service.chatCenterEnabled) || item.data.copy.type === 3)">
+                        <div class="full-width font-medium mrg5T" i18n>
+                            Filas
+                        </div>
+                        <div class="full-width mrg5T"
+                             *ngIf="(item.data.copy.type === 2 || item.data.copy.type === 3 || item.data.copy.type === 4) && item.data.copy.chatenabled
+                     && service.chatCenterEnabled">
+                            <app-tag-box label="Filas" i18n-label [items]="service.allQueues"
+                                         [allowReordering]="false" [(value)]="item.data.copy.queues"
+                                         [placeholder]="'Selecionar filas ...'"></app-tag-box>
+                        </div>
+                        <div class="full-width mrg5T" *ngIf="item.data.copy.type === 1 && service.chatCenterEnabled">
+                            <app-tag-box label="Filas" i18n-label [items]="service.allQueues"
+                                         [allowReordering]="false" [(value)]="item.data.copy.supQueues"
+                                         [placeholder]="'Selecionar filas ...'"></app-tag-box>
+                        </div>
+                    </div>
+
+                    <div class="flex-column mrg10T" *ngIf="item.data.copy.type === 1">
+                        <div class="full-width font-medium mrg5T" i18n>
+                            Filtro de agentes
+                        </div>
+                        <div class="full-width mrg5T small" i18n style="white-space: initial;">
+                            Nesse campo você pode filtrar os agentes aos quais esse supervisor tem acesso. Para que o
+                            supervisor
+                            tenha acesso aos dados de um agente, o agente deve fazer parte de uma das filas às quais o
+                            supervisor
+                            está vinculado e estar presente nesse campo. Se deixado em branco, o
+                            supervisor terá acesso a todos os agentes das filas às quais está vinculado.
+                        </div>
+                        <div class="full-width mrg10T">
+                            <app-tag-box label="Filtro de agentes" i18n-label [items]="service.allAgents | allAgents"
+                                         [allowReordering]="false" [(value)]="item.data.copy.agentsfilter"
+                                         [placeholder]="'Filtro de agentes'" displayExpr="fullName"></app-tag-box>
+                        </div>
+                    </div>
+
+                    <div class="flex-column mrg10T" *ngIf="item.data.copy.type === 1 || ((item.data.copy.type === 2 || item.data.copy.type === 4) && item.data.copy.chatenabled
+                     && service.chatCenterEnabled)">
+                        <div class="full-width font-medium mrg5T" i18n>
+                            Grupos de acesso
+                        </div>
+                        <div class="full-width mrg5T small white-space-initial" i18n>
+                            Nesse campo você especifica a quais grupos de acesso esse usuário faz parte. Grupos de
+                            acesso permite
+                            controlar a quais funis e contatos um usuário tem acesso. Contatos e funis vinculados a
+                            grupos
+                            não selecionados aqui não serão visíveis a esse usuário.
+                        </div>
+                        <div class="full-width mrg10T">
+                            <app-tag-box label="Grupos de acesso" i18n-label [items]="contactsgroups"
+                                         [allowReordering]="false" [(value)]="item.data.copy.contactsgroups"
+                                         [placeholder]="'Selecione os grupos'"></app-tag-box>
+                        </div>
+                    </div>
+
+                    <div class="mrg20T flex-center full-width">
+                        <button class="btn btn-success" (click)="saveConfig(item.data)"
+                                matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                        </button>
+                    </div>
+
+                </div>
+            </dx-data-grid>
+        </div>
+    </div>
+
+</div>

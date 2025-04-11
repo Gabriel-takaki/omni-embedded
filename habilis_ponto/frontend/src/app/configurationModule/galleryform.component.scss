@@ -1,0 +1,45 @@
+@import "scss/newcolors";
+@import "scss/newtypography";
+@import "scss/newhelpers";
+
+.selectFileArea {
+  @extend .flex-center;
+  @extend .flex-row;
+  width: 100%;
+}
+
+.selectFileElement {
+  @extend .s32;
+  @extend .flex-center;
+  @extend .flex-column;
+  width: 66%;
+  cursor: pointer;
+  background-color: $black-lighten-5;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.selectFileElement:hover {
+  background-color: $black-lighten-4;
+}
+
+.mediaArea {
+  max-height: 300px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mediaElementMaxSize {
+  max-width: 350px;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.mediaElement {
+  max-width: 350px;
+  max-height: 300px;
+}

@@ -1,0 +1,39 @@
+<div class="dialog-x-large" (keydown)="keyupEvent($event)">
+  <img id="imageViewer" *ngIf="gallery.length <= 1 && fileId && !fileAuth && !fileCdn && fileMime.includes('image')"
+       style="visibility: hidden; max-width: 80vw; max-height: 80vh; border-radius: 3px;"
+       [src]="baseUrl + '/api/downloadMedia?id=' + fileId + '&download=true'"/>
+  <img id="imageViewer" *ngIf="gallery.length <= 1 && fileId && fileAuth && !fileCdn && fileMime.includes('image')"
+       style="visibility: hidden; max-width: 80vw; max-height: 80vh; border-radius: 3px;"
+       [src]="baseUrl + '/static/downloadMedia?id=' + fileId + '&download=true&auth=' + fileAuth"/>
+  <img id="imageViewer" *ngIf="gallery.length <= 1 && fileCdn && fileMime.includes('image')"
+       style="visibility: hidden; max-width: 80vw; max-height: 80vh; border-radius: 3px;" [src]="fileCdn"/>
+
+  <ul id="images" *ngIf="gallery.length > 1"
+      style="visibility: hidden; max-width: 80vw; max-height: 80vh; border-radius: 3px;">
+    <li *ngFor="let img of gallery">
+      <img *ngIf="img.fileId && !img.fileAuth && !img.fileCdn"
+           style="visibility: hidden; max-width: 80vw; max-height: 80vh; border-radius: 3px;"
+           [src]="baseUrl + '/api/downloadMedia?id=' + img.fileId + '&download=true'"/>
+      <img *ngIf="img.fileId && img.fileAuth && !img.fileCdn"
+           style="visibility: hidden; max-width: 80vw; max-height: 80vh; border-radius: 3px;"
+           [src]="baseUrl + '/static/downloadMedia?id=' + img.fileId + '&download=true&auth=' + img.fileAuth"/>
+      <img *ngIf="img.fileCdn"
+           style="visibility: hidden; max-width: 80vw; max-height: 80vh; border-radius: 3px;" [src]="img.fileCdn"/>
+    </li>
+  </ul>
+
+  <div class="dialog-content" *ngIf="['application/pdf'].includes(fileMime) || fileMime.includes('video')">
+
+    <embed *ngIf="['application/pdf'].includes(fileMime)" type="application/pdf" width="100%" height="100%"
+            [src]="pdfUrl"/>
+
+    <video *ngIf="fileMime.includes('video')" controls class="full-size"
+           [src]="baseUrl + '/static/downloadMedia?id=' + fileId + '&auth=' + fileAuth"></video>
+  </div>
+
+  <div class="dialog-buttons" *ngIf="['application/pdf'].includes(fileMime) || fileMime.includes('video')">
+    <button class="btn btn-transparent" matRipple type="button" (click)="dialogRef.close()" i18n>
+      Fechar
+    </button>
+  </div>
+</div>

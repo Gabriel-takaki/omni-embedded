@@ -1,0 +1,10 @@
+<div class="flex-align-center full-width h100 shortcut-base flex-row" *ngIf="show">
+    <div class="shortcut-mask" [@backState]="'enabled'" [class.mini-mask]="mini"
+         [class.flex-column]="vertical">
+        <div *ngFor="let k of shortcut; let i = index" class="text-uppercase shortcut-key" [class.mini]="mini"
+             [class.shortcut-key]="k !== '+'" [class.mrg5L]="i > 0 && !mini"
+             [class.mrg2L]="i > 0 && mini" [class.black]="k === '+'">
+            {{ k }}
+        </div>
+    </div>
+</div>

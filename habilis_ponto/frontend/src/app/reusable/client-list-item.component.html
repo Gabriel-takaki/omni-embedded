@@ -1,0 +1,61 @@
+<div (click)="selectChat()" matRipple [@chatVisibleState]="'open'" class="client-item-base"
+     [class.client-item-base-selected]="selected && resultType === 0"
+     [id]="'c' + chat.queueId + '-' + chat.id + '-' + resultType">
+    <app-shortcut-display [shortcut]="['Ctrl', '+', 'Alt', '+', index + 1]" [show]="showShortcut"
+                          *ngIf="index < 9"></app-shortcut-display>
+
+    <div class="full-size" [cdkContextMenuTriggerFor]="outer">
+        <app-client-list-item-face [index]="index" [selected]="selected" [typing]="typing"
+                                   [chat]="chat" [msgsCount]="msgsCount" [now]="now"
+                                   [resultType]="resultType" [msgTime]="msgTime" [msgId]="msgId"
+                                   [msgText]="msgText"></app-client-list-item-face>
+    </div>
+</div>
+<ng-template #outer>
+    <div class="menu-base" cdkMenu>
+        <div class="full-width s12 font-medium mrg8B overflow-hidden no-break-with-ellipses pad8A">
+            {{ chat && chat?.queueType !== 13 ? chat?.clientName || chat?.clientEmail || chat?.clientNumber || chat?.clientProfileName : chat?.queueType === 13 ? chat?.clientName || chat?.clientProfileName || texts.anonimo : texts.noChatSelected }}
+        </div>
+        <div class="menu-btn" cdkMenuItem matRipple (click)="openTransferDialog()">
+            <div class="full-width flex-row align-items-center">
+                <div class="mrg4L" style="width: 32px">
+                    <fa-icon [icon]="['far', 'exchange']"></fa-icon>
+                </div>
+                <div class="mrg4L" i18n>
+                    Transferir
+                </div>
+            </div>
+        </div>
+        <div class="menu-btn" cdkMenuItem matRipple (click)="setAsNotReaded()" i18n-matTooltip
+             matTooltip="Essa função irá marcar a última mensagem recebida nesse atendimento como não lida. Caso nenhuma mensagem tenha sido recebida nesse atendimento, essa função não terá nenhum efeito.">
+            <div class="full-width flex-row align-items-center">
+                <div class="mrg4L" style="width: 32px">
+                    <fa-icon [icon]="['far', 'envelope']"></fa-icon>
+                </div>
+                <div class="mrg4L" i18n>
+                    Marcar como não lida
+                </div>
+            </div>
+        </div>
+        <div class="menu-btn" cdkMenuItem matRipple (click)="sendToWaitingRoom()">
+            <div class="full-width flex-row align-items-center">
+                <div class="mrg4L" style="width: 32px">
+                    <fa-icon [icon]="['far', 'snooze']"></fa-icon>
+                </div>
+                <div class="mrg4L" i18n>
+                    Enviar para sala de espera
+                </div>
+            </div>
+        </div>
+        <div class="menu-btn" cdkMenuItem matRipple (click)="closeChat()">
+            <div class="full-width flex-row align-items-center">
+                <div class="mrg4L" style="width: 32px">
+                    <fa-icon class="fg-danger" [icon]="['far', 'comment-alt-times']"></fa-icon>
+                </div>
+                <div class="mrg4L" i18n>
+                    Encerrar
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

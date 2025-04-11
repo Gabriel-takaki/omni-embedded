@@ -1,0 +1,36 @@
+<div class="message-search-base" [@visibilityState]="mouseOver || inputFocus || loading ? 'visible' : 'transparent'"
+     (mouseover)="mouseOver = true" (mouseleave)="mouseOver = false" (clickOutside)="hide()">
+  <div class="full-width mrg4T s10 font-light">
+    Você pode buscar por mensagens trocadas com esse cliente, mesmo em atendimentos anteriores, nos últimos 60 dias.
+  </div>
+  <mat-form-field class="full-width flex-rigid mrg8T">
+    <mat-label i18n>Pesquisar</mat-label>
+    <input matInput placeholder="Pesquisar" [(ngModel)]="chat.searchText" (focus)="inputFocus = true"
+           (blur)="inputFocus = false" #searchField id="searchField" (keyup.escape)="hide()"
+           (keyup.enter)="search()">
+    <button class="btn btn-square-slim mrg8R" matSuffix aria-label="Clear" *ngIf="chat?.searchText && !loading"
+            (click)="chat.searchText = ''">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </button>
+  </mat-form-field>
+  <div class="flex-elastic flex-column scroll-y">
+    <div class="full-size flex-row flex-center s12 font-regular" i18n *ngIf="!chat?.searchResult?.length && !loading">
+      Nenhuma mensagem encontrada
+    </div>
+    <div class="full-size flex-row flex-center s18 font-semi-bold" *ngIf="loading">
+      <fa-icon [icon]="['far', 'spinner']" [spin]="true"></fa-icon>
+    </div>
+    <div class="full-size" *ngIf="chat?.searchResult?.length && !loading">
+
+      <ng-container  *ngFor="let m of chat.searchResult">
+
+        <div class="message-result" matRipple *ngIf="status.messageRef[chat.id]?.[m.mid]" (click)="goToMessage(m)">
+          <ca-message [highlight]="chat.searchText" [idPrefix]="'search-result-'" [chat]="chat"
+                      [m]="status.messageRef[chat.id]?.[m.mid]"></ca-message>
+        </div>
+
+      </ng-container>
+
+    </div>
+  </div>
+</div>

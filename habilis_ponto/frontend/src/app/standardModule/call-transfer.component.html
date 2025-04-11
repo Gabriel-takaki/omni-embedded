@@ -1,0 +1,54 @@
+<div class="dialog-small" [class.dialog-large]="status.isMobile">
+  <div class="dialog-content">
+    <div class="h5" i18n>Transferir atendimento</div>
+    <div class="s12 font-light mrg5T" i18n>Selecione o agente para quem deseja transferir</div>
+    <div class="full-width mrg5T">
+      <mat-form-field class="full-width">
+        <mat-label i18n>Buscar</mat-label>
+        <input matInput type="text" placeholder="Buscar" [(ngModel)]="filter" i18n-placeholder="Busca de texto"
+               id="searchField" #searchField (keyup)="handleKeyUp($event)" (ngModelChange)="applyFilter()"/>
+      </mat-form-field>
+    </div>
+    <div class="scroll1 pad5R flex-column scroll-y" style="height: 185px;" #scrollDiv id="scrollDiv">
+
+      <div class="full-width font-base" *ngIf="!filteredItems.length" i18n>
+        Nenhum resultado encontrado
+      </div>
+
+      <div (click)="transfer(a.id)" *ngFor="let a of filteredItems; let i = index;"
+           class="agent-item" [class.mrg5T]="i > 0" [class.selected]="selectedItem === i">
+
+        <div class="flex-rigid mrg10R" style="width: 36px;" *ngIf="a.id">
+          <user-profile-pic [id]="a.id" [picVersion]="a?.userPicVersion"
+                            [auth]="a?.userPicAuth" [fontSize]="12"
+                            [initials]="a?.fullName?.slice(0, 2).toUpperCase() || a?.fullName?.slice(0, 2).toUpperCase()"></user-profile-pic>
+        </div>
+
+        <div class="flex-elastic overflow-hidden">
+          <div class="flex-row" style="align-items: center;">
+            <div class="font-medium">
+              {{(a.fullName || status.allUsersMap[a.id]?.fullName) | limitTextSize:30}}
+            </div>
+          </div>
+          <div class="flex-row s12 scroll1 align-items-center pad3T pad3B" style="overflow-x: auto;">
+            <div class="flex-rigid" *ngIf="a.id > 0">
+              <fa-icon [icon]="['far', 'comments']"></fa-icon>&nbsp;&nbsp;{{a.chats}}
+            </div>
+            <div class="flex-rigid mrg8L" *ngIf="!status.disableTelephony && a.id > 0">
+              <fa-icon [icon]="['far', 'phone']"></fa-icon>&nbsp;&nbsp;{{a.calls}}
+            </div>
+            <div *ngFor="let t of a.tags; let x = index;" class="small tag-badge" [class.mrg5L]="x > 0 || a.id > 0"
+                 [class.mrg10L]="x === 0 && a.id > 0" [class.dark]="!(a.id > 0)">{{t}}</div>
+          </div>
+        </div>
+        <div class="flex-rigid s24 mrg15L mrg10R" *ngIf="a.paused">
+          <div class="icon-box">
+            <fa-icon [icon]="['fas', 'pause']"></fa-icon>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

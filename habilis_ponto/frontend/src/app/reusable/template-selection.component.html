@@ -1,0 +1,28 @@
+<mat-form-field class="full-width">
+    <mat-label>{{ caption }}</mat-label>
+    <mat-select [ngModel]="value" (ngModelChange)="valueChange.emit($event)" tabindex="1" [disabled]="!editable">
+        <mat-option>
+            <ngx-mat-select-search [(ngModel)]="search" [closeSvgIcon]="'a'"
+                                   placeholderLabel="Buscar..." i18n-placeholderLabel
+                                   noEntriesFoundLabel="'Nenhuma correspondência encontrada'"
+                                   i18n-noEntriesFoundLabel="Correspondência à busca efetuada"></ngx-mat-select-search>
+        </mat-option>
+        <mat-option [value]="0" i18n>Nenhum</mat-option>
+        <ng-container *ngFor="let template of (status.allTemplates | searchItens:true:search:['name'])">
+            <mat-option *ngIf="template.type === 0 ||
+            (template.status?.toLowerCase() === 'approved' && (!queueId || queueId === template.queueid))"
+                        [value]="template.id">
+                <div class="full-width flex-row overflow-hidden">
+                    <div class="flex-elastic no-break-with-ellipses">
+                        {{ template.name }} [{{ template.templatename }}]
+                    </div>
+                    <div class="mrg8L flex-rigid label label-big"
+                         [class.label-warning]="template.category?.toLowerCase() === 'marketing'"
+                         [class.label-info]="template.category?.toLowerCase() === 'utility'">
+                        {{ template.category }}
+                    </div>
+                </div>
+            </mat-option>
+        </ng-container>
+    </mat-select>
+</mat-form-field>

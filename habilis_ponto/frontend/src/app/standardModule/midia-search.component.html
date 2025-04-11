@@ -1,0 +1,82 @@
+<div class="message-search-base" [@visibilityState]="mouseOver || inputFocus ? 'visible' : 'transparent'"
+     (mouseover)="mouseOver = true" (mouseleave)="mouseOver = false" (clickOutside)="hide()">
+  <div class="full-width mrg4T s10 font-light">
+    Você pode buscar por mídias trocadas com esse cliente. Somente as mídias do atendimento corrente são exibidas.
+  </div>
+  <mat-form-field class="full-width mrg8T">
+    <mat-label i18n>Pesquisar</mat-label>
+    <input matInput placeholder="Pesquisar" [(ngModel)]="searchText" (focus)="inputFocus = true"
+           (ngModelChange)="updateRegexp()"
+           (blur)="inputFocus = false" #searchField id="searchField" (keyup.escape)="hide()">
+    <button class="btn btn-square-slim mrg8R" matSuffix aria-label="Clear" *ngIf="searchText" (click)="searchText = ''">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </button>
+  </mat-form-field>
+  <div class="flex-elastic overflow-hidden">
+    <mat-tab-group mat-align-tabs="start" class="h100" [dynamicHeight]="false">
+      <mat-tab label="Imagens" class="h100" i18n-label>
+        <div class="full-size scroll-y">
+
+          <ng-container  *ngFor="let m of chat.messages">
+            <div class="message-result" matRipple (click)="goToMessage(m)"
+                 *ngIf="m?.file_mimetype && status.imageMimes.includes(m?.file_mimetype.split(';')[0])
+                 && (!searchText || m?.file_name?.match(searchRegexp)?.length)">
+              <ca-message [highlight]="searchText" [idPrefix]="'search-result-'" [chat]="chat"
+                          [m]="m"></ca-message>
+            </div>
+
+          </ng-container>
+
+        </div>
+      </mat-tab>
+      <mat-tab label="Áudios" class="h100" i18n-label>
+        <div class="full-size scroll-y">
+
+          <ng-container  *ngFor="let m of chat.messages">
+            <div class="message-result" matRipple (click)="goToMessage(m)"
+                 *ngIf="m?.file_mimetype && status.audioMimes.includes(m?.file_mimetype.split(';')[0])
+                 && (!searchText || m?.file_name?.match(searchRegexp)?.length)">
+              <ca-message [highlight]="searchText" [idPrefix]="'search-result-'" [chat]="chat"
+                          [m]="m"></ca-message>
+            </div>
+
+          </ng-container>
+
+        </div>
+      </mat-tab>
+      <mat-tab label="Vídeos" class="h100" i18n-label>
+        <div class="full-size scroll-y">
+
+          <ng-container  *ngFor="let m of chat.messages">
+            <div class="message-result" matRipple (click)="goToMessage(m)"
+                 *ngIf="m?.file_mimetype && status.videoMimes.includes(m?.file_mimetype.split(';')[0])
+                 && (!searchText || m?.file_name?.match(searchRegexp)?.length)">
+              <ca-message [highlight]="searchText" [idPrefix]="'search-result-'" [chat]="chat"
+                          [m]="m"></ca-message>
+            </div>
+
+          </ng-container>
+
+        </div>
+      </mat-tab>
+      <mat-tab label="Documentos" class="h100" i18n-label>
+        <div class="full-size scroll-y">
+
+          <ng-container  *ngFor="let m of chat.messages">
+            <div class="message-result" matRipple (click)="goToMessage(m)"
+                 *ngIf="m?.file_mimetype &&
+                 !status.videoMimes.includes(m?.file_mimetype.split(';')[0]) &&
+                 !status.imageMimes.includes(m?.file_mimetype.split(';')[0]) &&
+                 !status.audioMimes.includes(m?.file_mimetype.split(';')[0])
+                 && (!searchText || m?.file_name?.match(searchRegexp)?.length)">
+              <ca-message [highlight]="searchText" [idPrefix]="'search-result-'" [chat]="chat"
+                          [m]="m"></ca-message>
+            </div>
+
+          </ng-container>
+
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

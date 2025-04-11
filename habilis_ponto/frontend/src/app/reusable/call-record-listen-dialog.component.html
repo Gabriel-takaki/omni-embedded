@@ -1,0 +1,18 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="full-width s16 font-bold" i18n>
+      Escutar gravação
+    </div>
+    <div class="full-width mrg10T s14 font-light">
+      <audio *ngIf="linkedid && accesskey" controls autoplay src="{{base}}/api/linkedidAudioStream?linkedid={{linkedid}}&accesskey={{accesskey}}"></audio>
+      <span i18n *ngIf="!linkedid || !accesskey">
+        Gravação não encontrada
+      </span>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" class="btn btn-transparent" (click)="close()">
+      <span i18n>Fechar</span>
+    </button>
+  </div>
+</div>

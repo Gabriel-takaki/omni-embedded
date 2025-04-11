@@ -1,0 +1,30 @@
+<div [class.dialog-medium]="big" [class.dialog-small]="!big">
+  <div class="dialog-content flex-column">
+    <div class="full-width h5">
+      {{title}}
+    </div>
+    <div class="full-width mrg10T s14">
+      {{text}}
+    </div>
+  </div>
+  <div class="dialog-buttons">
+
+    <button matRipple type="button" id="taskButton" #noButton *ngIf="taskId && status.allTasksMap[taskId]"
+            [tabIndex]="2" (keydown)="handleArrows($event, 'noButton')" style="margin-right: auto;"
+            class="btn btn-primary" (click)="openTask()">
+      <span i18n>Abrir tarefa</span>
+    </button>
+    <button matRipple type="button" id="noButton" #noButton [class.mrg-left-auto]="taskId && status.allTasksMap[taskId]"
+            [tabIndex]="2" (keydown)="handleArrows($event, 'noButton')"
+            class="btn {{noButtonStyle}}" (click)="result(false, $event)"
+            [class.btn-transparent]="!noButtonStyle">
+      <span>{{noButtonText}}</span>
+    </button>
+    <button matRipple type="button" id="yesButton" #yesButton
+            [tabIndex]="1" (keydown)="handleArrows($event, 'yesButton')"
+            class="bold mrg15L btn btn-{{yesButtonStyle}}" (click)="result(true, $event)">
+      <span>{{yesButtonText}}</span>
+    </button>
+  </div>
+
+</div>

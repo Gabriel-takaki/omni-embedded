@@ -1,0 +1,117 @@
+@import "scss/newcolors";
+
+.fg-white {
+  color: $white-base
+}
+
+.fg-black {
+  color: $black-base
+}
+
+.fg-success, .fg-green {
+  color: $green-base;
+}
+
+.fg-info, .fg-blue {
+  color: $blue-base;
+}
+
+.fg-blue-darken-1 {
+  color: $blue-darken-1;
+}
+
+.fg-danger, .fg-red {
+  color: $red-base;
+}
+
+.fg-yellow-darken-1 {
+  color: $yellow-darken-1;
+}
+
+.fg-alert, .fg-yellow {
+  color: $yellow-base;
+}
+
+.fg-yellow-lighten-1 {
+  color: $yellow-lighten-1;
+}
+
+.fg-yellow-lighten-2 {
+  color: $yellow-lighten-2;
+}
+
+.fg-purple {
+  color: $purple-base;
+}
+
+.fg-facebook {
+  color: $fb-color;
+}
+
+.fg-warning, .fg-orange {
+  color: $orange-base;
+}
+
+.fg-black-lighten-1 {
+  color: $black-lighten-1;
+}
+
+.fg-black-lighten-2 {
+  color: $black-lighten-2;
+}
+
+.fg-black-lighten-3 {
+  color: $black-lighten-3;
+}
+
+.fg-black-lighten-4 {
+  color: $black-lighten-4;
+}
+
+.fg-orange-darken-1 {
+  color: $orange-darken-1;
+}
+
+.fg-primary {
+  color: var(--primary-color);
+}
+
+.fg-wa {
+  color: $wa-color;
+}
+
+.fg-fb {
+  color: $fb-color;
+}
+
+.em-fb {
+  color: $em-color;
+}
+
+.fg-ig {
+  color: $ig-color;
+}
+
+.fg-tg {
+  color: $tg-color;
+}
+
+.fg-sg {
+  color: $tg-color;
+}
+
+.fg-we {
+  color: var(--primary-color);
+}
+
+.fg-gb {
+  color: $gb-color;
+}
+
+.fg-ol {
+  color: $ol-color;
+}
+
+.fg-ml {
+  color: $ml-color;
+}

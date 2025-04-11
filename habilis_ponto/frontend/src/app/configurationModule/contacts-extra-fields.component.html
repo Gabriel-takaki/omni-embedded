@@ -1,0 +1,45 @@
+<div class="full-width h100 overflow-hidden flex-column">
+    <div class="default-buttons-area">
+        <div class="h5 mrg-right-auto" i18n>
+            Campos de contato personalizados
+        </div>
+        <button class="mrg10L btn btn-primary" matRipple (click)="add()">
+            <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n>Adicionar</span>
+        </button>
+    </div>
+    <div class="flex-elastic card mrg15T full-width">
+        <div class="full-width h100" #gridContainer>
+            <dx-data-grid [columns]="columns" [masterDetail]="{enabled: false}" [hoverStateEnabled]="true"
+                          [dataSource]="service.contactsExtraFields" [height]="gridContainer.clientHeight"
+                          (onRowExpanded)="copyData($event)">
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-paging [enabled]="true"></dxo-paging>
+                <div *dxTemplate="let id of 'functionsTemplate'">
+                    <div class="grid-function-btn-area">
+                        <button class="grid-function-btn" (click)="removeItem(id.data)" matTooltip="Excluir texto"
+                                matRipple
+                                i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'times']"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+                <div *dxTemplate="let t of 'typeTemplate'" class="no-break-with-ellipses">
+                    <span i18n *ngIf="t.value === 0">Texto</span>
+                    <span i18n *ngIf="t.value === 1">Inteiro</span>
+                    <span i18n *ngIf="t.value === 2">Decimal</span>
+                    <span i18n *ngIf="t.value === 3">Data</span>
+                    <span i18n *ngIf="t.value === 4">Múltipla escolha</span>
+                    <span *ngIf="![0,1,2,3,4].includes(t.value)" i18n>Área de texto</span>
+                </div>
+                <div *dxTemplate="let t of 'lockTemplate'" class="no-break-with-ellipses">
+                    <div *ngIf="t.value" i18n>
+                        Sim
+                    </div>
+                    <div *ngIf="!t.value" i18n>
+                        Não
+                    </div>
+                </div>
+            </dx-data-grid>
+        </div>
+    </div>
+</div>

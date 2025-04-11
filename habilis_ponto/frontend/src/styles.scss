@@ -1,0 +1,252 @@
+@use '@angular/material' as mat;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://statics.atenderbem.com/css/custom-devextreme.css');
+@import url('https://statics.atenderbem.com/css/animate.css');
+@import url('https://statics.atenderbem.com/css/custom_animations.css');
+@import url('https://statics.atenderbem.com/css/custom.css');
+
+@import "scss/medias";
+@import "scss/mixins";
+@import "scss/diagram";
+@import "scss/cards";
+
+@import "scss/newcolors";
+@import "scss/newtypography";
+@import "scss/newhelpers";
+@import "scss/materialcustom";
+@import "scss/newbuttons";
+@import "scss/grid-elements";
+@import "scss/newelements";
+@import "scss/newchatelements";
+@import "scss/newbgcolors";
+@import "scss/newoutlinecolors";
+@import "scss/newfgcolors";
+@import "scss/newdragging";
+@import "scss/scrolls";
+@import "scss/rrweb.css";
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// The warn palette is optional (defaults to red).
+$app-custom-primary: mat.define-palette($dynamic-theme-primary);
+$app-custom-accent: mat.define-palette($dynamic-theme-accent);
+$app-custom-warn: mat.define-palette($material-red-theme);
+
+$custom-headline-1: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 700,
+  $font-size: 2.25rem,
+  $line-height: 2.5rem
+);
+
+$custom-headline-2: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 700,
+  $font-size: 2.25rem,
+  $line-height: 2.5rem
+);
+
+$custom-headline-3: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 700,
+  $font-size: 2.25rem,
+  $line-height: 2.5rem
+);
+
+$custom-headline-4: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 700,
+  $font-size: 2.25rem,
+  $line-height: 2.5rem
+);
+
+$custom-headline-5: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 700,
+  $font-size: 2.25rem,
+  $line-height: 2.5rem
+);
+
+$custom-headline-6: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 700,
+  $font-size: 1.75rem,
+  $line-height: 2rem
+);
+
+$custom-subtitle-1: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 700,
+  $font-size: 1.5rem,
+  $line-height: 1.75rem
+);
+
+$custom-subtitle-2: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 500,
+  $font-size: 1.25rem,
+  $line-height: 1.5rem
+);
+
+$custom-body-1: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 400,
+  $font-size: 0.875rem,
+  $line-height: 1
+);
+
+$custom-body-2: mat.define-typography-level(
+  $font-family: Inter,
+  $font-weight: 500,
+  $font-size: 0.875rem,
+  $line-height: 1
+);
+
+$app-custom-typography-config: mat.define-typography-config(
+  $headline-1: $custom-headline-1,
+  $headline-2: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+  $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+  $headline-4: mat.define-typography-level(34px, 40px, 400),
+  $headline-5: mat.define-typography-level(24px, 32px, 400),
+  $headline-6: mat.define-typography-level(24px, 32px, 400),
+  $subtitle-1: $custom-subtitle-1,
+  $subtitle-2: $custom-subtitle-2,
+  $body-1: $custom-body-1,
+  $body-2: $custom-body-2,
+  $caption: $custom-body-2,
+  $button: $custom-body-2,
+);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$app-custom-theme: mat.define-light-theme((
+  color: (
+    primary: $app-custom-primary,
+    accent: $app-custom-accent,
+    warn: $app-custom-warn,
+  ),
+  typography: $app-custom-typography-config,
+  density: -1
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($app-custom-theme);
+
+.mdc-tooltip__surface {
+  background-color: #fff !important;
+  color: #1e1e1e !important;
+  box-shadow: 0px 1px 2px -1px rgb(0 0 0 / 20%), 0px 2px 2.5px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+
+/* You can add global styles to this file, and also import other style files */
+//
+
+* {
+  box-sizing: border-box;
+  font-family: Inter, "Helvetica Neue", "Emoji", sans-serif;
+}
+
+html, body {
+  height: 100%;
+  max-height: 1920px;
+  margin: 0;
+  font-size: 0.875rem;
+  color: $black-base;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: #efefef;
+}
+
+a, a:hover, a:active {
+  outline: none !important;
+  text-decoration: none !important;
+}
+
+svg.leader-line {
+  stroke-linejoin: round;
+}
+
+fa-icon {
+  line-height: 1;
+}
+
+.move-cursor {
+  cursor: move;
+}
+
+.hand-cursor {
+  cursor: url('https://statics.atenderbem.com/assets/images/openhand.cur');
+}
+
+
+/* Loading Spinner */
+.spinner {
+  margin: 0;
+  width: 70px;
+  height: 18px;
+  margin: -35px 0 0 -9px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -.32s;
+  animation-delay: -.32s
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -.16s;
+  animation-delay: -.16s
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0.0)
+  }
+  40% {
+    -webkit-transform: scale(1.0)
+  }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0)
+  }
+  40% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0)
+  }
+}
+
+.dx-slider-bar {
+  margin: 14px 0px;
+}
+
+@import "scss/ivrelements";
+@import "scss/override";

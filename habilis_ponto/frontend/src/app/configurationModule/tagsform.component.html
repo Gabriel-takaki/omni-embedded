@@ -1,0 +1,76 @@
+<div class="dialog-small">
+    <div class="dialog-content">
+        <div class="h5" i18n *ngIf="!id">Nova etiqueta</div>
+        <div class="h5" i18n *ngIf="id">Atualizar etiqueta</div>
+        <div class="s12 font-light mrg5T" i18n>Campos marcados com * são obrigatórios</div>
+        <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg25T">
+
+            <mat-form-field class="full-width">
+                <mat-label i18n>Nome</mat-label>
+                <input matInput type="text" [(ngModel)]="name" name="nameInput" placeholder="Nome" i18n-placeholder
+                       required maxlength="200" class="full-width" #nameInput/>
+            </mat-form-field>
+            <div class="flex-row">
+                <div class="flex-grow-1">
+                    <mat-form-field class="full-width">
+                        <mat-label i18n>Cor do fundo</mat-label>
+                        <div class="flex-row flex-center pad8A" matPrefix>
+                            <fa-icon [icon]="['fas', 'square']" [style.color]="bgcolor"></fa-icon>
+                        </div>
+                        <mat-select [(value)]="bgcolor">
+                            <mat-option *ngFor="let c of bgColors" [value]="c">
+                                <div class="color-option" [style.background-color]="c"> {{ c }}</div>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex-grow-1 mrg5L">
+                    <mat-form-field class="full-width">
+                        <mat-label i18n>Cor da fonte</mat-label>
+                        <div class="flex-row flex-center pad8A" matPrefix>
+                            <fa-icon [icon]="['fas', 'square']" [style.color]="fgcolor"></fa-icon>
+                        </div>
+                        <mat-select [(value)]="fgcolor">
+                            <mat-option *ngFor="let c of fgColors" [value]="c">
+                                <div class="color-option" [style.background-color]="c"> {{ c }}</div>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="full-width no-break-with-ellipses flex-row align-items-center mrg5T">
+                <app-animated-toogle [(value)]="contactTag"></app-animated-toogle>
+                <span class="mrg10L" i18n>Etiqueta de contatos</span>
+            </div>
+            <div class="full-width no-break-with-ellipses flex-row align-items-center mrg15T">
+                <app-animated-toogle [(value)]="faqTag"></app-animated-toogle>
+                <span class="mrg10L" i18n>Etiqueta de FAQ e Novidade</span>
+            </div>
+            <div class="full-width no-break-with-ellipses flex-row align-items-center mrg15T">
+                <app-animated-toogle [(value)]="taskTag"></app-animated-toogle>
+                <span class="mrg10L" i18n>Etiqueta de Tarefas</span>
+            </div>
+            <div class="full-width no-break-with-ellipses flex-row align-items-center mrg15T"
+                 *ngIf="!status.disableCRM">
+                <app-animated-toogle [(value)]="dealTag"></app-animated-toogle>
+                <span class="mrg10L" i18n>Etiqueta de CRM</span>
+            </div>
+            <div class="full-width mrg15T overflow-hidden">
+                <div class="pad10A bold small no-break-with-ellipses tag-base overflow-hidden"
+                     [style.background-color]="bgcolor" [style.color]="fgcolor">
+                    {{ name }}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="dialog-buttons">
+        <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+            Cancelar
+        </button>
+        <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+                (click)="save()" [disabled]="!thisForm.valid">
+            <span *ngIf="id" i18n>Atualizar</span>
+            <span *ngIf="!id" i18n>Adicionar</span>
+        </button>
+    </div>
+</div>

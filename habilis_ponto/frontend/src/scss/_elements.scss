@@ -1,0 +1,59 @@
+@import "medias";
+
+.emoji-text-area {
+
+}
+
+.option-item {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 8px 10px;
+  border: 1px solid $grey-lighten-2;
+  border-radius: 3px;
+  background-color: white;
+  transition: background-color 0.1s ease;
+}
+
+.option-item.selected {
+  background-color: $blue-base;
+  color: $white;
+  border-color: $blue-darken-1;
+  font-weight: bold;
+}
+
+.option-item.option-red.selected {
+  background-color: $red-base;
+  color: $white;
+  border-color: $red-darken-1;
+  font-weight: bold;
+}
+
+.flex-form-input {
+  flex-grow: 1;
+  min-width: 272px;
+
+  @include phone() {
+    width: 100%;
+  }
+}
+
+.color-option {
+  padding: 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 90%;
+}
+
+.connector-preview {
+  color: #555;
+  cursor: grabbing;
+}
+
+.connector-preview:hover {
+  cursor: grabbing;
+}
+
+.connector-preview:active {
+  cursor: grabbing;
+}

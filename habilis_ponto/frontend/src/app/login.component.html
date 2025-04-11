@@ -1,0 +1,35 @@
+<div class="full-width flex-center flex-column h100">
+  <div class="login-area flex-center card">
+    <form (ngSubmit)="onSubmit()" #f="ngForm" class="full-width">
+      <div class="flex-column flex-center full-width">
+        <div class="full-width mrg20B mrg10T flex-center">
+          <img *ngIf="status.iconPrefix" src="https://static-styles.atenderbem.com/{{status.iconPrefix}}/login.svg"
+               style="max-width: 70%; max-height: 60vh;"/>
+        </div>
+        <mat-form-field class="full-width">
+          <span class="mrg10L mrg10R" matPrefix><fa-icon [icon]="['far', 'user']"></fa-icon></span>
+          <mat-label i18n="Nome do usuário para login">Usuário</mat-label>
+          <input matInput type="text" i18n-placeholder="Nome do usuário para login" placeholder="Usuário"
+                 [(ngModel)]="username" autocomplete="off" required #user name="user">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <span class="mrg10L mrg10R" matPrefix><fa-icon [icon]="['far', 'lock']"></fa-icon></span>
+          <mat-label i18n>Senha</mat-label>
+          <input matInput type="password" i18n-placeholder placeholder="Senha" [(ngModel)]="password"
+                 autocomplete="off" required #pass name="pass">
+        </mat-form-field>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!f.valid || logingIn">
+          <span *ngIf="!logingIn">
+              <fa-icon [icon]="['far', 'sign-in']"></fa-icon>&nbsp;&nbsp;<span i18n>Entrar</span>
+          </span>
+          <fa-icon [icon]="['far', 'spinner']" [spin]="true" *ngIf="logingIn"></fa-icon>
+        </button>
+
+      </div>
+    </form>
+  </div>
+  <div class="mrg10T">
+    <span class="s12 font-light">Versão v{{status.version}}</span>
+  </div>
+</div>

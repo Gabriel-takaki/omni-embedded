@@ -1,0 +1,19 @@
+<div class="dialog-large dialog-base-max-h">
+  <div class="dialog-content flex-elastic flex-row pad0A">
+    <div class="h100 full-width flex-row overflow-hidden">
+      <div class="news-card-area">
+        <news-card [newsData]="newData"></news-card>
+      </div>
+      <div class="flex-elastic h100 overflow-hidden">
+        <div class="news-content-area scroll1">
+          <div class="full-width" *ngIf="newData?.mainimage">
+            <img [src]="newData.mainimage" class="card-img">
+          </div>
+          <div class="mrg10T">
+            {{newData.content}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

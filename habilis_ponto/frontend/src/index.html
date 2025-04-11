@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    :root {
+      --primary-color: #9400D3;
+      --header-color: #9400D3;
+      --primary-bg-color: rgba(148, 0, 211, .1);
+      --primary-fg-color: #fff;
+      --secondary-color: #86F5F1;
+      --header-fg-color: #FFF;
+      --header-alert-color: #29BDFF;
+    }
+
+    .header-alert-bg {
+      background-color: var(--header-alert-color) !important;
+    }
+
+    .header-bg {
+      background-color: var(--header-color) !important;
+    }
+
+    .primary-bg {
+      background-color: var(--primary-color) !important;
+    }
+
+    .primary-border {
+      border-color: var(--primary-color) !important;
+    }
+
+    .primary-fg {
+      color: var(--primary-color) !important;
+    }
+
+    .primary-alt-bg {
+      background-color: var(--primary-bg-color) !important;
+    }
+
+    .primary-alt-bg {
+      color: var(--primary-bg-color) !important;
+    }
+
+    .secondary-bg {
+      background-color: var(--secondary-color) !important;
+    }
+
+    .secondary-fg {
+      color: var(--secondary-color) !important;
+    }
+
+    .header-fg {
+      color: var(--header-fg-color) !important;
+    }
+
+  </style>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta lang="pt">
+  <title></title>
+  <meta name="description" i18n-content="" content="Plataforma de gestão de atendimentos por chat.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="iconprefix" content="habilis">
+  <meta id="enablespecialport" name="specialport" content="false">
+  <link rel="icon" sizes="96x96" href="https://static-styles.atenderbem.com/habilis/fav-96x96.ico">
+  <link rel="icon" sizes="32x32" href="https://static-styles.atenderbem.com/habilis/fav-32x32.ico">
+  <link rel="icon" sizes="16x16" href="https://static-styles.atenderbem.com/habilis/fav.ico">
+  <link rel="manifest" href="static/getManifest">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
+  <meta name="robots" content="noindex">
+</head>
+
+<body>
+<ca-sp>
+  <div id="loading">
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+</ca-sp>
+<noscript i18n>Por favor habilite o Javascript para continuar a utilizar esta aplicação.</noscript>
+<script type="module">function setElementStyle(e,t){for(const i in t)e.style[i]=t[i]}const config={domain:"",bgType:"gradient",gradientDirection:"160deg",gradientColor1:"#1458EA 0%",gradientColor2:"#29BDFF 90%",gradientColor3:"#BFE2FF 100%",selectedMenuFgColor:"#1458EA",headerBgColor:"#1458EA",headerFgColor:"#fff",bgColor:"#fff",fgColor:"#333",buttonBgColor:"#1458EA",buttonFgColor:"#fff",showHelp:!0,showChat:!0,showButton:!1,queueId:0,debug:!0,host:"",autoInitialize:!1,sendNavigationEvents:!1,clientId:"",clientName:"",clientData:"",title:"Olá!",subtitle:"Como podemos ajudá-lo hoje?",homeChatButton:{title:"Iniciar atendimento",subtitle:"Inicie um atendimento por chat",bgColor:"#fff",fgColor:"#333"},homeFaqButton:{title:"Buscar ajuda",subtitle:"Consulta nossa base de conhecimento",bgColor:"#fff",fgColor:"#333"}},db=document.body,d=document,ds="div",is="iframe",isMobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent);let listenerFunction,bD,bI,cD,cI,btnLoaded=!1,chatLoaded=!1,initialized=!1;function initialize(){function e(){btnLoaded&&chatLoaded&&initialized&&setElementStyle(bD,{visibility:"visible"})}function t(){window.kwChat.state="opened",setElementStyle(cI,{visibility:"visible"}),n()}function i(){window.kwChat.state="closed",n(),setTimeout((()=>{setElementStyle(cI,{visibility:"hidden"})}),300)}function n(){bI?.contentWindow.postMessage([window.kwChat.state],"*"),cI?.contentWindow.postMessage([window.kwChat.state],"*")}initialized||(config.showButton&&(bD=d.createElement(ds),bI=d.createElement(is),bI.onload=function(){bI?.contentWindow.postMessage(["bgColor",config.buttonBgColor],"*"),bI?.contentWindow.postMessage(["fgColor",config.buttonFgColor],"*"),bI?.contentWindow.postMessage(["alertColor",config.buttonAlertColor],"*")},bI.id="kc-btn-frame",bI.src=`https://${config.domain}/webchat/getButton`,setElementStyle(bD,{position:"fixed",bottom:"24px",right:"24px",height:"50px",width:"50px",visibility:"hidden","z-index":1e4}),setElementStyle(bI,{border:"0",height:"100%",width:"100%"}),bD.appendChild(bI),db.appendChild(bD)),cD=d.createElement(ds),cI=document.createElement(is),cI.id="kc-cont-frame",cI.src=`https://${config.domain}/webchat/getIndex`,setElementStyle(cD,{position:"fixed",...isMobile?{top:"0px"}:window.kwChat.config.showButton?{bottom:"82px"}:{bottom:"32px"},...isMobile?{left:"0px"}:{right:"16px"},height:isMobile?"100vh":"80vh",width:isMobile?"100vw":"410px",visibility:"hidden","z-index":10001}),setElementStyle(cI,{border:"0",height:"100%",width:"100%"}),cD.appendChild(cI),db.appendChild(cD),listenerFunction=n=>{const o=n.data[0],d=n.data[1];switch(o){case"btnLoaded":btnLoaded=!0,e();break;case"chatLoaded":chatLoaded=!0,e(),window.kwChat.onloaded&&"function"==typeof window.kwChat.onloaded&&window.kwChat.onloaded();break;case"chatRegistered":cI?.contentWindow.postMessage(["url",window.location.href],"*");break;case"newMessages":bI?.contentWindow.postMessage(["newMessages",d],"*"),window.kwChat.onnewmessages&&"function"==typeof window.kwChat.onnewmessages&&window.kwChat.onnewmessages(d);break;case"toogle":"closed"===window.kwChat.state?t():i();break;case"setClosed":i();break;case"setOpened":t();break;case"getConfig":cI?.contentWindow.postMessage(["config",config],"*")}},window.addEventListener("message",listenerFunction,!1),window.kwChat.show=t,window.kwChat.hide=i,initialized=!0)}function destroy(){document.getElementById("kc-cont-frame")?.remove(),document.getElementById("kc-btn-frame")?.remove(),listenerFunction&&window.removeEventListener("message",listenerFunction),bD=null,bI=null,cD=null,cI=null,initialized=!1}config.host=window.location.host,window.kwChat={initialize:initialize,config:config,destroy:destroy,state:"closed"},config.autoInitialize&&initialize();</script>
+</body>
+</html>

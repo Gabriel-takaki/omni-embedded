@@ -1,0 +1,14 @@
+<div class="button-base" [style.border]="value === selectionValue ? '2px solid ' + color : null" (click)="click()"
+     matRipple>
+  <div class="full-width">
+    <div class="check-icon" [style.background-color]="value === selectionValue ? color : null">
+      <fa-icon [icon]="['fas', 'check']" *ngIf="value === selectionValue"></fa-icon>
+    </div>
+  </div>
+  <div class="selection-button-middle-icon">
+    <fa-icon [icon]="[iconFamily, icon]"></fa-icon>
+  </div>
+  <div class="selection-button-text">
+    {{text}}
+  </div>
+</div>

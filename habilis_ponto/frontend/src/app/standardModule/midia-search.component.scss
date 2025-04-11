@@ -1,0 +1,27 @@
+@import "scss/newcolors";
+
+.message-search-base {
+  width: 420px;
+  top: 86px;
+  right: 32px;
+  height: calc(100vh - 86px - 100px);
+  position: absolute;
+  display: flex;
+  background-color: $white;
+  border-radius: 16px;
+  z-index: 10000;
+  flex-direction: column;
+  opacity: 1;
+  padding: 12px;
+  box-shadow: #00000029 2px 2px 5px 2px;
+}
+
+.message-result {
+  width: 100%;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.message-result:hover {
+  background-color: $black-lighten-4;
+}

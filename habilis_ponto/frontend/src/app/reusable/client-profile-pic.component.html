@@ -1,0 +1,8 @@
+<div class="photo-frame mrg5L" [class.photo-frame-wa]="status.waQueues.includes(type)"
+     [class.photo-frame-fb]="type === 2"
+     [class.photo-frame-ig]="type === 4" [class.photo-frame-tg]="type === 3"
+     [class.photo-frame-ml]="type === 7" [class.photo-frame-ol]="type === 6"
+     [class.photo-frame-sg]="type === 8">
+    <img [src]="base + '/media/getClientProfilePic?id=' + id" alt="Foto" *ngIf="id"
+         style="width: 44px; height: 44px; border-radius: 50%;" i18n-alt/>
+</div>

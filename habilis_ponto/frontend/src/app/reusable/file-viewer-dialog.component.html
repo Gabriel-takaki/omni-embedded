@@ -1,0 +1,44 @@
+<div class="dialog-x-large">
+  <div class="dialog-content">
+
+    <div class="full-size mrg15T pad5A text-center" *ngIf="file">
+
+      <img *ngIf="file?.mimetype.includes('image/')"
+           [src]="file.fileSrc || (baseUrl + '/static/downloadMedia?id=' + file.id + '&auth=' + file.auth + (status.isIOS ? '&ios=y' : ''))"
+           style="max-height: 450px;" crossorigin="Anonymous"
+           [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 290 : 370"/>
+
+      <video *ngIf="file?.mimetype.includes('video/')" (error)="showError=true"
+             [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 290 : 370"
+             controls autoplay
+             [src]="file.fileSrc || (baseUrl + '/static/downloadMedia?id=' + file.id + '&auth=' + file.auth + (status.isIOS ? '&ios=y' : ''))"></video>
+
+      <audio *ngIf="file?.mimetype.includes('audio/')" (error)="showError=true"
+             [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 290 : 370"
+             controls autoplay
+             [src]="file.fileSrc || (baseUrl + '/static/downloadMedia?id=' + file.id + '&auth=' + file.auth + (status.isIOS ? '&ios=y' : ''))"></audio>
+
+      <embed *ngIf="['application/pdf'].includes(file?.mimetype)"
+             [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 280 : 370"
+             [src]="file.fileSrc || (baseUrl + '/static/downloadMedia?id=' + file.id + '&auth=' + file.auth + (status.isIOS ? '&ios=y' : ''))"
+             type="application/pdf" width="375" height="500"/>
+
+      <div *ngIf="showError" class="mrg10T">
+        <fa-icon [icon]="['far', 'exclamation-triangle']" class="fg-warning"></fa-icon>
+        &nbsp;&nbsp; <span i18n>Não é possível executar a mídia.</span>
+      </div>
+
+      <div *ngIf="!['application/pdf'].includes(file?.type) && !file?.type.includes('audio/') &&
+  !file?.type.includes('video/') && !file?.type.includes('image/')" i18n="Formato de arquivo">
+        Formato desconhecido. {{file.name}}
+      </div>
+
+    </div>
+
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n tabindex="3">
+      Fechar
+    </button>
+  </div>
+</div>

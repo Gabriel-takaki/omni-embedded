@@ -1,0 +1,69 @@
+<div class="chat-grid" [class.chat-grid-mobile]="status.isMobile">
+  <div class="clients-list" [style.visibility]="!status.isMobile || !status.internalSelectedChat ? 'visible' : 'hidden'"
+       [style.position]="!status.isMobile || !status.internalSelectedChat ? null : 'absolute'">
+    <div class="flex-column full-width">
+      <div id="busca" class="search-div">
+        <div class="search-icon" matTooltip="{{searchText ? 'Filtro aplicado' : ''}}">
+          <fa-icon [icon]="[searchText ? 'fas' : 'fal', 'search']" [class.fg-primary]="searchText"
+                   class="animated infinite duration-4000" [class.flash]="searchText"></fa-icon>
+        </div>
+        <div class="flex-elastic position-relative overflow-hidden">
+          <input class="chat-search" [(ngModel)]="searchText"
+                 i18n-placeholder="Busca de texto" placeholder="Buscar" #searchField id="searchField"/>
+        </div>
+        <div class="mrg8L mrg4R pad2A pointer flex-rigid" matRipple (click)="searchText = ''" *ngIf="searchText">
+          <fa-icon [icon]="['fal', 'times']"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div class="chats-list scroll1 scroll-y">
+      <div *ngFor=" let c of status.internalChats | filterChats:searchText:status.internalChats.length"
+           (click)="selectChat(c.chat)" matRipple
+           class="pad8A pointer full-width flex-row flex-center flex-rigid"
+           style="height: 70px; border-bottom: 1px solid #f6f5f5;"
+           [style.background-color]="c.chat === status.internalSelectedChat ? '#f6f5f5' : null">
+        <div class="flex-column position-relative">
+          <div *ngIf="status.allLoggedMap[c?.chat.id?.split('-')[0]]?.socketConnected && c?.chat.type === 1"
+               class="user-online-chat-marker" matTooltip="Online">
+            <fa-icon [icon]="['fas', 'circle']"></fa-icon>
+          </div>
+          <div class="overflow-hidden" style="width: 40px; max-width: 40px;" *ngIf="[1,2].includes(c?.chat.type)">
+            <user-profile-pic [id]="c?.chat.type == 1 ? c?.chat.id?.split('-')[0] : 0"
+                              [picVersion]="status.allUsersMap[c?.chat.id?.split('-')[0]]?.userPicVersion"
+                              [auth]="status.allUsersMap[c?.chat.id?.split('-')[0]]?.userPicAuth"
+                              [initials]="(c?.chat.name || status.allUsersMap[c?.chat.id?.split('-')[0]]?.fullName || '').slice(0, 2).toUpperCase()"
+                              [alertRing]="true" [dark]="c?.chat.type == 2"></user-profile-pic>
+          </div>
+          <div class="overflow-hidden" style="width: 40px; max-width: 40px;" *ngIf="c.chat.type === 3">
+            <app-client-list-item-photo [type]="c?.chat.queueType" [queueName]="c?.chat.queueName" [new]="false"
+                                        [fontSize]="24" [picHash]="c?.chat.groupPicHash" [picId]="c?.chat?.id"
+                                        [queueId]="c?.chat.queueId" [group]="true"></app-client-list-item-photo>
+          </div>
+        </div>
+
+        <div class="flex-elastic overflow-hidden s12 mrg8L">
+          <div class="no-break-with-ellipses font-medium overflow-hidden">{{c.chat.name || status.allUsersMap[c?.chat.id?.split('-')[0]]?.fullName}}</div>
+          <div class="no-break-with-ellipses"
+               *ngIf="c.chat.messages[c.chat.messages.length - 1] && (c.chat.messages[c.chat.messages.length - 1].text || c.chat.messages[c.chat.messages.length - 1].file_name)"
+          >{{c.chat.messages[c.chat.messages.length - 1].text || c.chat.messages[c.chat.messages.length - 1].file_name}}</div>
+          <div class="no-break-with-ellipses"
+               *ngIf="!c.chat.messages.length && c.chat.oldMessages[c.chat.oldMessages.length - 1] && (c.chat.oldMessages[c.chat.oldMessages.length - 1].text || c.chat.oldMessages[c.chat.oldMessages.length - 1].file_name)"
+          >{{c.chat.oldMessages[c.chat.oldMessages.length - 1].text || c.chat.oldMessages[c.chat.oldMessages.length - 1].file_name}}</div>
+          <div class="no-break-with-ellipses font-medium" *ngIf="status.now <= c.chat.typingTime + 15"
+               style="max-width: 100%; color: #0097a7;">Digitando...
+          </div>
+        </div>
+        <div class="flex-rigid flex-column flex-center">
+          <div style="width: 28px; height: 28px; border-radius: 50%"
+               class="s10 font-semi-bold flex-row flex-center" [class.bg-success]="c.chat.newMsgCount > 0"
+               [class.bg-black-lighten-4]="c.chat.newMsgCount === 0">
+            {{c.chat.newMsgCount > 99 ? '99' : c.chat.newMsgCount}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="overflow-hidden full-width" *ngIf="!status.isMobile || status.internalSelectedChat">
+    <ca-chat-alt [chat]="status.internalSelectedChat"></ca-chat-alt>
+  </div>
+</div>

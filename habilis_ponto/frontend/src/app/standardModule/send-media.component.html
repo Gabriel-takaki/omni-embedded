@@ -1,0 +1,61 @@
+<div class="dialog-medium">
+  <div class="dialog-content">
+    <div class="full-width mrg15T mrg15B pad10A flex-row flex-align-center" *ngIf="!file && !multiple">
+      <mat-progress-spinner mode="indeterminate" [strokeWidth]="5" [diameter]="50">
+      </mat-progress-spinner>
+    </div>
+
+    <div class="col-12 mrg15T pad5A text-center" *ngIf="file || multiple">
+
+      <img *ngIf="file?.type.includes('image/') && !multiple" [src]="fileSrc" style="max-height: 450px;" crossorigin="Anonymous"
+           [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 290 : 370"/>
+
+      <video *ngIf="file?.type.includes('video/') && !multiple" (error)="showError=true"
+             [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 290 : 370"
+             controls [src]="fileSrc"></video>
+
+      <audio *ngIf="file?.type.includes('audio/') && !multiple" (error)="showError=true"
+             [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 290 : 370"
+             controls [src]="fileSrc"></audio>
+
+      <embed *ngIf="['application/pdf'].includes(file?.type) && !multiple"
+             [style.max-width.px]="status.isMobile ? 280 : 375" [style.max-height.px]="status.isMobile ? 280 : 370"
+             [src]="fileSrc" type="application/pdf" width="375" height="500"/>
+
+      <div *ngIf="showError" class="mrg10T">
+        <fa-icon [icon]="['far', 'exclamation-triangle']" class="fg-warning"></fa-icon>
+        &nbsp;&nbsp; <span i18n>Não é possível executar a mídia.</span>
+      </div>
+
+      <div *ngIf="!['application/pdf'].includes(file?.type) && !file?.type.includes('audio/') &&
+  !file?.type.includes('video/') && !file?.type.includes('image/') && !multiple" i18n="Formato de arquivo">
+        Formato desconhecido. {{file.name}}
+      </div>
+
+      <h4 *ngIf="multiple">
+        {{filesSelected}} <span i18n>arquivos selecionados.</span>
+      </h4>
+
+    </div>
+    <canvas #canvasEl hidden></canvas>
+    <canvas #canvasThumbEl hidden></canvas>
+    <video hidden #videoEl [src]="fileSrc" preload></video>
+    <input type="file" hidden (change)="fileSelected($event)" #filesDialog
+           style="visibility: hidden; height: 0px;" [multiple]="true"/>
+    <input type="file" hidden (change)="fileSelected($event)" #videosDialog accept=".mp4"
+           style="visibility: hidden; height: 0px;" [multiple]="true"/>
+    <input type="file" hidden (change)="fileSelected($event)" #imagesDialog
+           accept=".jpg,.png,.gif,.svg,.jpeg,.webp" style="visibility: hidden; height: 0px;" [multiple]="true"/>
+    <input type="file" hidden (change)="fileSelected($event)" #stickerDialog
+           accept=".webp" style="visibility: hidden; height: 0px;" [multiple]="true"/>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n tabindex="3">
+      Cancelar
+    </button>
+    <button matRipple type="button" class="mrg15L btn btn-success" tabindex="4" #sendBtn
+            (click)="multiple ? sendMulti() : send()" [disabled]="!file && !multiple" i18n="Enviar arquivo">
+      Enviar
+    </button>
+  </div>
+</div>

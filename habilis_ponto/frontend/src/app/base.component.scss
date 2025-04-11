@@ -1,0 +1,241 @@
+@import "scss/newtypography";
+@import "scss/medias";
+@import "scss/newcolors";
+
+.header-base {
+  height: 64px;
+  width: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 3;
+  @include phone() {
+    padding: 8px;
+  }
+}
+
+.header-logo {
+  display: flex;
+  font-size: 1.5rem;
+  align-items: center;
+  margin-right: 32px;
+  min-width: 70px;
+  @include phone() {
+    margin-right: 0px;
+    min-width: 60px;
+  }
+}
+
+.header-logo > img {
+  max-height: 32px;
+}
+
+.header-menu {
+  flex-grow: 1;
+  flex-shrink: 1;
+  display: flex;
+  margin-left: 32px;
+  height: 100%;
+  align-items: center;
+
+  @include phone() {
+    margin-left: 0px;
+    justify-content: flex-end;
+  }
+
+}
+
+.header-mobile-alert {
+  width: 100%;
+  height: 16px;
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  overflow: hidden;
+}
+
+.content-base {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-direction: row;
+  overflow: hidden;
+  padding: 15px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.header-splitter {
+  height: 32px;
+  width: 1px;
+  background-color: $white-base;
+  opacity: 0.3;
+  @include phone() {
+    visibility: hidden;
+  }
+}
+
+.header-user {
+  margin-left: 22px;
+}
+
+.header-menu-alert {
+  @extend .s14;
+  @extend .font-semi-bold;
+  height: 34px;
+  width: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin-right: 10px;
+}
+
+.phone-base {
+  display: flex;
+  position: fixed;
+  right: 16px;
+  width: 280px;
+  height: 510px;
+  top: 71px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: white;
+  z-index: 200;
+  box-shadow: #00000029 0 5px 4px;
+
+  @include phone() {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    border-radius: 0px;
+    box-shadow: none;
+  }
+
+}
+
+.tasks-base {
+  display: flex;
+  position: fixed;
+  right: 16px;
+  width: 420px;
+  height: calc(100% - 101px);
+  top: 71px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: white;
+  z-index: 200;
+  box-shadow: #00000029 0 5px 4px;
+  transition: right ease-in-out 0.2s;
+
+  @include phone() {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    border-radius: 0px;
+    box-shadow: none;
+  }
+
+}
+
+.tasks-with-phone-opened {
+  right: 316px;
+}
+
+.notifications-base {
+  position: fixed;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  overflow: hidden;
+  background: transparent;
+  z-index: 400;
+}
+
+.notifications-dialog {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  height: 320px;
+  top: 66px;
+  background: white;
+  overflow: hidden;
+  color: $black-base;
+  border-radius: 16px;
+  z-index: 400;
+  box-shadow: #00000029 0 5px 4px;
+
+  @include phone() {
+    width: 90%;
+    height: 80%;
+    top: 72px;
+    left: 5%;
+  }
+
+}
+
+.notification-close-btn {
+  width: 100%;
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notification-close-btn:hover {
+  background: $black-lighten-4;
+}
+
+.notification-button-badge {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  padding: 2px 6px;
+  height: 20px;
+  border-radius: 4px;
+  color: white !important;
+  font-weight: 600;
+}
+
+.notification-item {
+  width: 100%;
+  padding: 12px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid $black-lighten-4;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: $black-lighten-5;
+}
+
+.notification-item-icon {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  line-height: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

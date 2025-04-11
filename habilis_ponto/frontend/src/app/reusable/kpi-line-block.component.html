@@ -1,0 +1,22 @@
+<div class="flex-column flex-center full-width h100">
+  <div class="s12 font-regular">
+    {{title}}
+  </div>
+  <div class="number-display">
+    <div class="number-data" *ngIf="!onlyText">
+      <span *ngIf="showDollarSign">$</span> {{value | number:digitsInfo}}
+    </div>
+    <div class="number-data" *ngIf="onlyText">
+      <span *ngIf="showDollarSign">$</span> {{value}}
+    </div>
+    <div class="percent-data" matTooltip="Comparação com período anterior" i18n-matTooltip *ngIf="!hidePercent">
+      <fa-icon
+        [icon]="['fas', diffDirection > 1 ? 'arrow-circle-up' : diffDirection < 1 ? 'arrow-circle-down' : 'dot-circle']"
+        [class.fg-success]="diffDirection > 1" [class.fg-danger]="diffDirection < 1"
+        [class.fg-info]="diffDirection === 1" class="percent-icon"
+        [transform]="diffDirection > 1 ? 'rotate-45' : diffDirection < 1 ? 'rotate--45' :  ''"></fa-icon>
+      <span
+        style="margin-left: 2px;">{{diff | percent:'1.0-0'}}</span>
+    </div>
+  </div>
+</div>

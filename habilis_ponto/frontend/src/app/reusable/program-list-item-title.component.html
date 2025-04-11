@@ -1,0 +1,15 @@
+<div class="full-width h100 flex-row no-break-with-ellipses overflow-hidden align-items-center justify-content-start">
+  <div style="min-width: 32px;">
+    <img *ngIf="icon" [src]="sanitizer.bypassSecurityTrustResourceUrl(icon)" alt="Ícone" i18n-alt
+         style="height: 32px; border-radius: 4px;"/>
+    <span *ngIf="!icon">&nbsp;</span>
+  </div>
+  <div class="flex-column mrg10L">
+    <div class="font-medium">
+      {{title}}
+    </div>
+    <div class="font-light">
+      {{description}}
+    </div>
+  </div>
+</div>

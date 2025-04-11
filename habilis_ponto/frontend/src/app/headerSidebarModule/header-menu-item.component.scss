@@ -1,0 +1,62 @@
+@import "scss/newtypography";
+@import "scss/newhelpers";
+
+.header-menu-item {
+  @extend .p5;
+  @extend .font-semi-bold;
+  cursor: pointer;
+  height: 34px;
+  min-width: 34px;
+  width: 34px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: width ease-in-out 200ms;
+}
+
+.header-menu-item.disabled {
+  cursor: auto;
+}
+
+.header-menu-item-bg {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  border-radius: 16px;
+  z-index: 0;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.header-menu-item-badge {
+  @extend .flex-center;
+  height: 18px;
+  width: 18px;
+  top: -7px;
+  right: -7px;
+  position: absolute;
+  border-radius: 50%;
+  z-index: 2;
+  border: 2px solid;
+  font-size: 8px;
+  font-weight: 600;
+  color: white !important;
+}
+
+.small-badge {
+  border: none !important;
+  height: 10px;
+  width: 10px;
+  top: -1px;
+  right: 0px;
+}
+
+.header-menu-item:hover > .header-menu-item-bg {
+  background-color: rgba(255, 255, 255, 0.30);
+}
+
+.header-menu-item-bg-fo {
+  opacity: 1 !important;
+  transition: opacity ease-in-out 200ms;
+}

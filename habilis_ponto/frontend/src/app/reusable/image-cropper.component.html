@@ -1,0 +1,28 @@
+<div class="dialog-medium">
+  <div class="dialog-content" style="height: 70vh;">
+    <div class="full-width">
+      <div class="s14 font-semi-bold">
+        {{caption}}
+      </div>
+      <div class="s12 font-light mrg4T">
+        {{description}}
+      </div>
+    </div>
+    <div class="full-size flex-row flex-center overflow-hidden mrg8T">
+      <fa-icon style="font-size: 4rem;" [pulse]="true" [icon]="['fal', 'spinner-third']" *ngIf="!loaded"></fa-icon>
+      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [imageFile]="imageFile"
+                     [resizeToHeight]="resizeToHeight" onlyScaleDown="true" format="jpeg" (imageCropped)="imageCropped($event)"
+                     (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton"
+            class="btn btn-transparent" (click)="result(false)">
+      <span i18n>Cancelar</span>
+    </button>
+    <button matRipple type="button" id="yesButton"
+            class="mrg15L btn btn-success" (click)="result(true)" tabindex="0">
+      <span i18n="Configurações">Aplicar</span>
+    </button>
+  </div>
+</div>

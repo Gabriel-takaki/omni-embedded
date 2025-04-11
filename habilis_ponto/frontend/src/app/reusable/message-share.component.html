@@ -1,0 +1,51 @@
+<div class="dialog-small" [class.dialog-large]="status.isMobile">
+  <div class="dialog-content">
+    <div class="h5" i18n>Encaminhar mensagem</div>
+    <div class="s12 font-light mrg5T" i18n>Selecione o atendimento ou chat interno para onde deseja encaminhar a
+      mensagem
+    </div>
+    <div class="full-width mrg5T">
+      <mat-form-field class="full-width">
+        <mat-label i18n>Buscar</mat-label>
+        <input matInput type="text" placeholder="Buscar" [(ngModel)]="filter" i18n-placeholder="Busca de texto"
+               id="searchField" #searchField (keyup)="handleKeyUp($event)" (ngModelChange)="applyFilter()"/>
+      </mat-form-field>
+    </div>
+    <div class="scroll1 pad5R flex-column scroll-y" style="height: 185px;" #scrollDiv id="scrollDiv">
+
+      <div class="full-width font-base" *ngIf="!filteredItems.length" i18n>
+        Nenhum resultado encontrado
+      </div>
+
+      <div (click)="share(a)" *ngFor="let a of filteredItems; let i = index;"
+           class="agent-item mrg5B" [class.selected]="selectedItem === i">
+
+        <div class="flex-rigid mrg10R" style="width: 36px;">
+          <user-profile-pic [id]="a.parsedId" [picVersion]="status.allUsersMap[a.parsedId]?.userPicVersion"
+                            [auth]="status.allUsersMap[a.parsedId]?.userPicAuth" [fontSize]="12" [dark]="a.type === 2"
+                            [initials]="(a.name || status.allUsersMap[a.parsedId]?.fullName)?.slice(0, 2).toUpperCase()"
+                            *ngIf="!a.queueId"></user-profile-pic>
+          <app-client-list-item-photo [type]="a.queueType" [queueName]="a.queueName" [new]="false"
+                                      [fontSize]="24" [picHash]="a.groupPicHash" [picId]="a.id" *ngIf="a.queueId"
+                                      [queueId]="a.queueId" [group]="true"></app-client-list-item-photo>
+        </div>
+
+        <div class="flex-elastic overflow-hidden">
+          <div class="flex-row overflow-hidden" style="align-items: center;">
+            <div class="font-medium no-break-with-ellipses">
+              {{(status.allUsersMap[a.parsedId]?.fullName || a.clientName || a.clientNumber || a.clientProfileName || a.name)}}
+            </div>
+          </div>
+          <div class="flex-row s12 scroll1 align-items-center pad3T pad3B" style="overflow-x: auto;">
+            <div class="flex-rigid">
+              {{a.queueId && a.type === 3 ? texts.externalGroup : a.queueId ? texts.atendimento : a.type === 2 ? texts.internalGroup : texts.internalChat}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<!-- 
+<div class="jornada-container">
+    <mat-slide-toggle
+      [checked]="inClockin"
+      (change)="toggleJornada()"
+      color="primary"
+      class="jornada-toggle"
+      [@estadoJornada]="animationState">
+      {{ getTextoSlide() }}
+    </mat-slide-toggle>
+    
+    <div class="status-texto">
+      <span *ngIf="inClockin" class="status-ativo">
+        <mat-icon>access_time</mat-icon> Jornada em andamento
+      </span>
+      <span *ngIf="!inClockin" class="status-inativo">
+        <mat-icon>schedule</mat-icon> Fora de expediente
+      </span>
+    </div>
+  </div> -->
+
+  
+  <button *ngIf="!clockinState?.inclockin" class="mrg-left-auto btn btn-primary" matRipple (click)="registerClock(false)">
+    <fa-icon [icon]="['far', 'sign-in']"></fa-icon>&nbsp;&nbsp;<span i18n="Registrar entrada de ponto">Iniciar jornada</span>
+  </button>
+  
+  <button *ngIf="clockinState?.inclockin" class="mrg-left-auto btn btn-primary" matRipple (click)="registerClock(true)">
+    <fa-icon [icon]="['far', 'sign-out']"></fa-icon>&nbsp;&nbsp;<span i18n="Registrar entrada de ponto">Encerrar jornada</span>
+  </button>

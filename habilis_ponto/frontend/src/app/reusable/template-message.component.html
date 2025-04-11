@@ -1,0 +1,39 @@
+<div class="message-template-area scroll1 scroll-y">
+  <div class="full-width overflow-hidden">
+    <div class="message">
+      <div class="full-width font-semi-bold message-header" *ngIf="template?.headertype === 4 && template?.headertext"
+           [innerHtml]="template?.headertext | templateMessageFormattingPipe:template?.headerparams:headerData">
+
+      </div>
+      <div class="full-width pad7T pad7L pad7R" *ngIf="[1,2,3].includes(template?.headertype)">
+        <div class="full-width message-media">
+          <fa-icon
+            [icon]="['fas', template?.headertype === 1 ? 'image' : template?.headertype === 2 ? 'video' : 'file']"
+            class="s40 fg-black-lighten-4"></fa-icon>
+        </div>
+      </div>
+      <div [innerHtml]="template?.text | templateMessageFormattingPipe:template?.params:bodyData"
+           class="mrg6T full-width font-light message-body"></div>
+      <div *ngIf="template?.footertext" [innerHtml]="template?.footertext | templateMessageFormattingPipe"
+           class="mrg2T full-width font-light message-footer"></div>
+      <div *ngIf="template?.buttons?.length" class="button-box">
+        <div class="full-width flex-row flex-center message-button" [class.no-top-border]="i === 0"
+             *ngFor="let button of template.buttons; let i = index;">
+          <div>
+            <fa-icon [icon]="['far', button.type === 'URL' ? 'external-link' : 'reply']"></fa-icon>
+          </div>
+          <div class="mrg4L">
+            {{ button.text }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s10 font-light mrg24T overflow-hidden" style="text-wrap: wrap" i18n>
+    Essa representação é uma prévia do modelo de mensagem que será enviada. Trata-se apenas de uma
+    referência visual,
+    o layout final pode variar de acordo com o dispositivo do cliente, o aplicativo de mensagens utilizado,
+    a versão instalada
+    e outros fatores.
+  </div>
+</div>

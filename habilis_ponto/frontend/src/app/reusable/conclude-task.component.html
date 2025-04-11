@@ -1,0 +1,22 @@
+<div [class.dialog-medium]="big" [class.dialog-small]="!big">
+    <div class="dialog-content flex-column">
+        <div class="full-width h5" i18n>
+            Concluir tarefa
+        </div>
+        <div class="full-width mrg10T s14" i18n>
+            Tem certeza que deseja marcar essa tarefa como concluída?
+        </div>
+    </div>
+    <div class="dialog-buttons">
+        <button class="btn" matRipple type="button" tabindex="3" (click)="cancel()">
+            <span i18n>Cancelar</span>
+        </button>
+        <button class="btn btn-success" matRipple type="button" tabindex="2" (click)="conclude()">
+            <span i18n>Concluir</span>
+        </button>
+        <button class="btn btn-success" matRipple type="button" tabindex="1" #yesAndNewButton
+                (click)="concludeAndOpenTask()">
+            <span i18n>Concluir e abrir nova</span>
+        </button>
+    </div>
+</div>

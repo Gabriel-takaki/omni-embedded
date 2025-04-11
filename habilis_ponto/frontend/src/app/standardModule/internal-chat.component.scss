@@ -1,0 +1,10 @@
+@import "scss/newcolors";
+
+.user-online-chat-marker {
+  color: $success-base;
+  position: absolute;
+  top: -2px;
+  left: -1px;
+  font-size: 75%;
+  z-index: 25;
+}

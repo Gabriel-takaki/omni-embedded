@@ -1,0 +1,20 @@
+<a [title]="title" class="header-menu-item" [routerLink]="link ? link : null"
+   [style.width.px]="(selectedMenu === section && !status.isMobile) || opened ? content.clientWidth + 30 : null"
+   [class.primary-fg]="selectedMenu === section" [class.header-fg]="selectedMenu !== section"
+   [class.header-fg:hover]="selectedMenu !== section" [class.disabled]="disabled">
+  <div class="header-menu-item-badge primary-border animated infinite {{badgeColor ? 'bg-' + badgeColor : 'header-alert-bg'}}" *ngIf="badge"
+  [class.small-badge]="smallBadge" [class.flash]="badgeFlash">
+    {{badge > 9 && !smallBadge ? '+' : !smallBadge ? badge : ''}}
+  </div>
+  <div class="flex-center header-menu-item-bg" [class.secondary-bg]="selectedMenu === section"
+       [class.header-menu-item-bg-fo]="selectedMenu === section" matRipple [matRippleDisabled]="disabled">
+    <div #content class="flex-center">
+      <div class="p3 flex-rigid" [style.opacity]="disabled ? 0.2 : 1">
+        <fa-icon [icon]="[selectedMenu !== section ? 'far' : 'far', icon]"></fa-icon>
+      </div>
+      <div class="mrg5L flex-rigid text-nowrap" *ngIf="(selectedMenu === section && !status.isMobile) || opened">
+        {{selectedMenuText || status.selectedMenuText}}
+      </div>
+    </div>
+  </div>
+</a>

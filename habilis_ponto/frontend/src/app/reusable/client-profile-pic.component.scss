@@ -1,0 +1,46 @@
+@import "../../scss/newcolors";
+
+.photo-frame {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #f1f2f2;
+}
+
+.photo-frame-wa {
+  border-color: $wa-color;
+}
+
+.photo-frame-fb {
+  border-color: $fb-color;
+}
+
+.photo-frame-ig {
+  border-color: $ig-color;
+}
+
+.photo-frame-tg {
+  border-color: $tg-color;
+}
+
+.photo-frame-sg {
+  border-color: $tg-color;
+}
+
+.photo-frame-ol {
+  border-color: $ol-color;
+}
+
+.photo-frame-ml {
+  border-color: $ml-color;
+}
+
+.photo-frame:before {
+  content: '';
+  float: left;
+  padding-top: 100%;
+}

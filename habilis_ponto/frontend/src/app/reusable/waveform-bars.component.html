@@ -1,0 +1,7 @@
+<div class="full-size flex-row overflow-hidden">
+  <ng-container *ngFor="let b of waveform; let i = index;">
+    <div class="h100 flex-elastic overflow-hidden pad1A flex-row flex-center">
+      <div class="bar-div {{bgColorClass || 'outline-white'}}" [style.height.%]="((b / 255) * 100)"></div>
+    </div>
+  </ng-container>
+</div>

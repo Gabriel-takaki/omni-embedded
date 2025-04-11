@@ -1,0 +1,17 @@
+@mixin phone() {
+  @media screen and (max-width: 40rem) {
+    @content;
+  }
+}
+
+@mixin tablet() {
+  @media screen and (min-width: 40rem) {
+    @content;
+  }
+}
+
+@mixin desktop() {
+  @media screen and (min-width: 80rem) {
+    @content;
+  }
+}

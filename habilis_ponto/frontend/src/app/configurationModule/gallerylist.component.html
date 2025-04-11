@@ -1,0 +1,84 @@
+<div class="full-width h100 overflow-hidden flex-column">
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Galeria de arquivos
+    </div>
+    <button class="mrg10L btn btn-primary" matRipple [matMenuTriggerFor]="galleryMenu">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+    <mat-menu #galleryMenu="matMenu" xPosition="before">
+      <button mat-menu-item i18n-title i18n title="Carregar arquivo" (click)="add()">
+        Carregar arquivo
+      </button>
+      <button mat-menu-item i18n-title i18n title="Gravar áudio" (click)="recordAudio()">
+        Gravar áudio
+      </button>
+    </mat-menu>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: false}" [hoverStateEnabled]="true"
+                    [dataSource]="texts" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="true"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <div class="grid-function-btn-area">
+            <button class="grid-function-btn" matTooltip="Baixar arquivo" matRipple i18n-matTooltip
+                    (click)="downloadFile(id.data.fk_file, id.data.file_auth)">
+              <fa-icon [icon]="['far', 'download']"></fa-icon>
+            </button>
+            <button class="grid-function-btn" matTooltip="Copiar link de compartilhamento" matRipple i18n-matTooltip
+                    (click)="copyShareLink(id.data.fk_file, id.data.file_auth)">
+              <fa-icon [icon]="['far', 'link']"></fa-icon>
+            </button>
+            <button class="grid-function-btn" (click)="removeItem(id.data)" matTooltip="Excluir arquivo" matRipple
+                    i18n-matTooltip>
+              <fa-icon [icon]="['far', 'times']"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div *dxTemplate="let t of 'photoTemplate'">
+          <div class="mediaArea" *ngIf="!service.audioMimes.includes(t.data.file_mimetype?.split(';')[0])">
+            <div class="flex-rigid s32"
+                 *ngIf="!service.videoMimes.includes(t.data.file_mimetype?.split(';')[0]) &&
+               !service.audioMimes.includes(t.data.file_mimetype?.split(';')[0]) &&
+               !service.imageMimes.includes(t.data.file_mimetype) &&
+               (!['application/pdf'].includes(t.data.file_mimetype) || !t.data.hasthumb)">
+              <fa-duotone-icon i18n-matTooltip
+                               [icon]="['fad', t.data.file_mimetype === 'application/pdf' ? 'file-pdf' : service.documentsMimes.includes(t.data.file_mimetype) ? 'file-alt' : service.spreadSheetsMimes.includes(t.data.file_mimetype) ? 'file-spreadsheet' : service.presentationMimes.includes(t.data.file_mimetype) ? 'file-powerpoint' : service.compressMimes.includes(t.data.file_mimetype) ? 'file-archive' : service.imageMimes.includes(t.data.file_mimetype) ? 'file-image' : 'file']"
+                               [primaryOpacity]="t.data.file_mimetype === 'application/pdf' ? 0.4 : service.documentsMimes.includes(t.data.file_mimetype) ? 0.4 : service.spreadSheetsMimes.includes(t.data.file_mimetype) ? 0.4 : service.presentationMimes.includes(t.data.file_mimetype) ? 0.4 : service.compressMimes.includes(t.data.file_mimetype) ? 1 : 1"
+                               [secondaryOpacity]="t.data.file_mimetype === 'application/pdf' ? 1 : service.documentsMimes.includes(t.data.file_mimetype) ? 1 : service.spreadSheetsMimes.includes(t.data.file_mimetype) ? 1 : service.presentationMimes.includes(t.data.file_mimetype) ? 1 : service.compressMimes.includes(t.data.file_mimetype) ? 0.18 : 0.18"
+                               [primaryColor]="t.data.file_mimetype === 'application/pdf' ? '#c62828' : service.documentsMimes.includes(t.data.file_mimetype) ? '#0d47a1' : service.spreadSheetsMimes.includes(t.data.file_mimetype) ? '#2e7d32' : service.presentationMimes.includes(t.data.file_mimetype) ? '#e65100' : service.compressMimes.includes(t.data.file_mimetype) ? '#2e3951' : '#2e3951'"
+                               [secondaryColor]="t.data.file_mimetype === 'application/pdf' ? '#c62828' : service.documentsMimes.includes(t.data.file_mimetype) ? '#0d47a1' : service.spreadSheetsMimes.includes(t.data.file_mimetype) ? '#2e7d32' : service.presentationMimes.includes(t.data.file_mimetype) ? '#e65100' : service.compressMimes.includes(t.data.file_mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+            </div>
+            <img class="mediaElement" *ngIf="['application/pdf'].includes(t.data.file_mimetype) && t.data.hasthumb"
+                 [src]="baseUrl + '/static/downloadThumbnail?id=' + t.data.fk_file + '&auth=' + t.data.file_auth"/>
+
+            <img class="mediaElement" *ngIf="service.imageMimes.includes(t.data.file_mimetype)"
+                 [src]="baseUrl + '/static/downloadMedia?id=' + t.data.fk_file + '&download=true' + '&auth=' + t.data.file_auth"/>
+
+            <video class="mediaElement"
+                   *ngIf="service.videoMimes.includes(t.data.file_mimetype?.split(';')[0])">
+              <source [src]="baseUrl + '/static/downloadMedia?id=' + t.data.fk_file + '&auth=' + t.data.file_auth"
+                      [type]="t.data.file_mimetype">
+            </video>
+
+          </div>
+
+          <div class="audioArea"
+               *ngIf="service.audioMimes.includes(t.data.file_mimetype?.split(';')[0])">
+            <audio controls [playbackRate]="service.playBackSpeed">
+              <source [src]="baseUrl + '/static/downloadMedia?id=' + t.data.fk_file + '&auth=' + t.data.file_auth"
+                      [type]="t.data.file_mimetype">
+            </audio>
+            <div class="player-speed-control" i18n-matTooltip="Reprodução de áudio"
+                 matTooltip="Alterar velocidade de reprodução" (click)="changePlaybackRate()" matRipple>
+              {{service.playBackSpeed}}x
+            </div>
+          </div>
+
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

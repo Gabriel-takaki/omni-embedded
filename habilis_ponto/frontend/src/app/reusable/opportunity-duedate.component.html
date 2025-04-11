@@ -1,0 +1,90 @@
+<mat-datepicker #picker touchUi>
+  <input [matDatepicker]="picker" (dateChange)="changeDueDate($event)"
+         style="visibility: hidden !important; position:absolute;" [value]="duedate">
+  <!--  <mat-datepicker-actions>-->
+  <!--    <div class="pad10A">-->
+  <!--      <button class="btn btn-slim" matDatepickerCancel i18n>Cancelar</button>-->
+  <!--      <button class="btn btn-slim btn-success" i18n matDatepickerApply>Aplicar</button>-->
+  <!--    </div>-->
+  <!--  </mat-datepicker-actions>-->
+</mat-datepicker>
+
+<div *ngIf="[0,4].includes(opportunityStatus)" (click)="editable ? picker.open() : null" [class.pointer]="editable">
+  <div class="label-big label-warning flex-row flex-center" *ngIf="isToday"
+       [style.font-size.px]="fontSize">
+    <div class="flex-rigid" *ngIf="showIcon">
+      <fa-icon [icon]="['far', 'calendar-alt']"></fa-icon>
+    </div>
+    <div i18n [class.mrg8L]="showIcon">
+      Vence hoje
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-alert flex-row flex-center" *ngIf="isTommorow"
+       [style.font-size.px]="fontSize">
+    <div class="flex-rigid" *ngIf="showIcon">
+      <fa-icon [icon]="['far', 'calendar-alt']"></fa-icon>
+    </div>
+    <div i18n [class.mrg8L]="showIcon">
+      Vence amanhã
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-danger flex-row flex-center" *ngIf="isPast" [style.font-size.px]="fontSize">
+    <div class="flex-rigid" *ngIf="showIcon">
+      <fa-icon [icon]="['far', 'calendar-alt']"></fa-icon>
+    </div>
+    <div [class.mrg8L]="showIcon" *ngIf="!onlyDate">
+        <span i18n>Vencido em</span> {{ date | date:'shortDate' }}
+    </div>
+    <div [class.mrg8L]="showIcon" *ngIf="onlyDate">
+      {{ date | date:'shortDate' }}
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-default flex-row flex-center" *ngIf="duedate && !isToday &&
+        !isTommorow && !isPast"
+       [style.font-size.px]="fontSize">
+    <div class="flex-rigid" *ngIf="showIcon">
+      <fa-icon [icon]="['far', 'calendar-alt']"></fa-icon>
+    </div>
+    <div [class.mrg8L]="showIcon" *ngIf="!onlyDate">
+        <span i18n>Vence em</span> {{ date | date:'shortDate' }}
+    </div>
+    <div [class.mrg8L]="showIcon" *ngIf="onlyDate">
+      {{ date | date:'shortDate' }}
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-default" *ngIf="!duedate" [style.font-size.px]="fontSize" i18n>
+    Sem vencimento
+  </div>
+</div>
+<div *ngIf="opportunityStatus !== 0 && opportunityStatus !== 4">
+  <div class="label-big flex-row flex-center" [style.font-size.px]="fontSize"
+       [class.label-success]="opportunityStatus === 1" [class.label-danger]="opportunityStatus === 2">
+    <div class="mrg4R" *ngIf="finishedDue" matTooltip="Concluído em atraso"
+         i18n-matTooltip>
+      <fa-icon [icon]="['fas', 'exclamation-triangle']" class="fg-danger"></fa-icon>
+    </div>
+    <div class="mrg4R" *ngIf="!finishedDue" matTooltip="Concluído no prazo" i18n-matTooltip>
+      <fa-icon [icon]="['fas', 'check-circle']"></fa-icon>
+    </div>
+    <div class="flex-elastic">
+      <span *ngIf="opportunityStatus === 1" i18n>Ganhou em </span><span *ngIf="opportunityStatus === 2"
+                                                                        i18n>Perdeu em </span> {{ finishDate | date:'shortDate' }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="dialog-large" style="height: 80vh;">
+    <div class="dialog-content h100">
+        <div class="full-size flex-column overflow-hidden">
+            <div class="full-width s16 font-medium flex-row flex-rigid">
+                <div class="flex-elastic" i18n>
+                    Gerar documentação por vídeo
+                </div>
+            </div>
+            <div class="full-width mrg16T flex-elastic overflow-hidden flex-row">
+                <div class="flex-rigid h100" style="width: 60%; min-width: 60%; max-width: 60%;">
+                    <div class="full-size overflow-hidden">
+                        <video id="video" class="full-width" controls [src]="fileSrc" style="max-height: 100%;"></video>
+                    </div>
+                </div>
+                <div class="flex-rigid h100 pad12L scroll-y" style="width: 40%; min-width: 40%; max-width: 40%;">
+                    <div class="full-width flex-elastic">
+                        <div class="full-size pad8R">
+                            <div class="full-width mrg8T">
+                                <mat-form-field class="full-width">
+                                    <mat-select [(ngModel)]="docRecordingConfig.type">
+                                        <mat-option [value]="0">Explicação</mat-option>
+                                        <mat-option [value]="1">Tutorial</mat-option>
+                                        <mat-option [value]="2">Resolução de problemas</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <mat-form-field class="full-width mrg8T">
+                                <mat-label i18n>Título</mat-label>
+                                <input matInput type="text" [(ngModel)]="docRecordingConfig.title" name="titleInput"
+                                       placeholder="Título" i18n-placeholder required maxlength="500" #titleInput/>
+                            </mat-form-field>
+                            <mat-form-field class="full-width">
+                                <mat-label i18n>Descrição</mat-label>
+                                <textarea matInput type="text" [(ngModel)]="docRecordingConfig.description" name="text"
+                                          style="height: 50px;" placeholder="Descrição"></textarea>
+                            </mat-form-field>
+                            <div class="full-width">
+                                <app-styled-tag-box label="Etiquetas" i18n-label [items]="tags"
+                                                    [allowReordering]="false" [(value)]="docRecordingConfig.tags"
+                                                    [placeholder]="'Selecionar etiquetas ...'"></app-styled-tag-box>
+                            </div>
+                            <div class="full-width align-items-center flex-row mrg12T" i18n-matTooltip
+                                 matTooltip="Se habilitado, ao final do processamento, o vídeo será disponibilizado como um anexo do documento criado.">
+                                <app-animated-toogle
+                                        [(value)]="docRecordingConfig.includeVideo"></app-animated-toogle>
+                                <span class="mrg10L" i18n>Incluir vídeo como anexo na Base de Conhecimento</span>
+                            </div>
+                            <div class="full-width align-items-center flex-row mrg8T" i18n-matTooltip
+                                 *ngIf="docRecordingConfig.includeVideo"
+                                 matTooltip="Se habilitado, a IA irá criar uma nova narração para o vídeo gravado, substituindo o áudio original.">
+                                <app-animated-toogle
+                                        [(value)]="docRecordingConfig.createNewAudio"></app-animated-toogle>
+                                <span class="mrg10L" i18n>Produzir novo áudio</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-buttons">
+        <button matRipple type="button" id="noButton" tabindex="4" class="btn btn-transparent" (click)="close()">
+            <span i18n>Cancelar</span>
+        </button>
+        <button matRipple type="button" id="startRecording" tabindex="2" class="mrg15L btn btn-success"
+                (click)="startProcessing()" [matRippleDisabled]="!docRecordingConfig.title || processing"
+                [disabled]="!docRecordingConfig.title || processing">
+            <span *ngIf="!processing" i18n>
+                Processar vídeo
+            </span>
+            <fa-icon *ngIf="processing" [icon]="['far', 'spinner']" [spin]="true"></fa-icon>
+        </button>
+    </div>
+</div>

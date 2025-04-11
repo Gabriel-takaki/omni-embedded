@@ -1,0 +1,147 @@
+@import "../../scss/newcolors";
+
+.messages {
+  width: 100%;
+  min-height: 100%;
+  flex-direction: column-reverse;
+  display: flex;
+  z-index: 5;
+}
+
+.message {
+  max-width: 60%;
+  min-width: 120px;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 1rem;
+  margin: 10px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.message-in {
+  background-color: $blue-lighten-2;
+  border-bottom-left-radius: 0px;
+}
+
+.message-out {
+  background-color: $green-lighten-2;
+  border-bottom-right-radius: 0px;
+}
+
+.message-info {
+  background-color: $blue-darken-1;
+  color: $white-base;
+}
+
+.message-alert {
+  background-color: $warning-base;
+  color: $white-base;
+}
+
+.to-bottom-button {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--primary-color);
+  background-color: var(--primary-bg-color);
+  position: absolute;
+  opacity: 0;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  transition: opacity 0.2s linear;
+  z-index: 10;
+}
+
+.to-bottom-button-counter {
+  position: absolute;
+  bottom: 42px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  background-color: $success-base;
+  color: white;
+  font-weight: bold;
+  font-size: 75%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.2s linear;
+  z-index: 11;
+}
+
+.system-info-label {
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.mobile-reply-icon {
+  position: absolute;
+  z-index: 0;
+  top: 0px;
+  left: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 1.3rem;
+  opacity: 0;
+}
+
+.upload-card {
+  display: flex;
+  border: 1px solid $black-lighten-4;
+  border-radius: 8px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  opacity: 1;
+  max-width: 260px;
+  width: 100%;
+  align-self: flex-end;
+}
+
+.progress-bar-base {
+  width: 100%;
+  background: $black-lighten-4;
+  border-radius: 6px;
+  height: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--primary-color);
+}
+
+.exec-automation-div {
+  padding: 6px 12px;
+  opacity: 1;
+  background: $white-base;
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  width: 240px;
+  border-radius: 8px;
+  box-shadow: #00000029 0 5px 4px;
+  z-index: 100000;
+}

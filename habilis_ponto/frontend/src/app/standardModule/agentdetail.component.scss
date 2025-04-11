@@ -1,0 +1,80 @@
+@import "scss/newcolors";
+
+.agent-area {
+  background-color: $black-lighten-5;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.tag-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 2px 8px 2px 8px;
+  font-size: 10px;
+  font-weight: 300;
+  background-color: $black-lighten-1;
+  color: $white-base;
+}
+
+.agent-detail-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.25s ease-in-out background-color;
+}
+
+.agent-detail-button:hover {
+  background-color: $black-lighten-3;
+}
+
+.agent-detail-table {
+  height: 100%;
+  border-radius: 8px;
+  border: 1px solid $black-lighten-4;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-div {
+  background-color: $black-lighten-5;
+  padding: 4px 8px;
+  font-weight: 500;
+  display: flex;
+}
+
+.agent-queue-content {
+  height: 36px;
+  max-height: 36px;
+  min-height: 36px;
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid $black-lighten-5;
+}
+
+.agent-chat-content {
+  height: 46px;
+  max-height: 46px;
+  min-height: 46px;
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid $black-lighten-5;
+}
+
+.agent-chat-content:hover {
+  background-color: $black-lighten-5;
+}

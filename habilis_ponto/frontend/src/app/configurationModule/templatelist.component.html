@@ -1,0 +1,357 @@
+<div class="full-width h100 overflow-hidden flex-column">
+
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Templates WA Cloud API
+    </div>
+    <button class="mrg10L btn btn-info" matRipple (click)="updateTemplates()"
+            [matRippleDisabled]="templateUpdating" [disabled]="templateUpdating">
+      <fa-icon [icon]="['far', 'spinner']" *ngIf="templateUpdating" [spin]="true"></fa-icon>
+      <span *ngIf="!templateUpdating" i18n>
+        Atualizar online
+      </span>
+    </button>
+    <button class="mrg10L btn btn-primary" matRipple (click)="addTemplate()">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'templateDetailTemplate'}"
+                    [dataSource]="templates" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)"
+                    [hoverStateEnabled]="true">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <button class="grid-function-btn" (click)="removeItem(id.data)" matRipple
+                  matTooltip="Excluir etiqueta" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'times']"></fa-icon>
+          </button>
+        </div>
+        <div *dxTemplate="let id of 'statusTemplate'">
+          <div class="full-width flex-column" *ngIf="id.data.type === 1">
+            <div class="label-big label label-success flex-center" i18n *ngIf="id.data.status === 'APPROVED'">
+              Aprovado
+            </div>
+            <div class="label-big label label-danger flex-center" i18n *ngIf="id.data.status === 'REJECTED'">
+              Rejeitado
+            </div>
+            <div class="label-big label label-info flex-center" i18n *ngIf="id.data.status === 'IN_APPEAL'">
+              Em apelação
+            </div>
+            <div class="label-big label label-info flex-center" i18n *ngIf="id.data.status === 'PENDING'">
+              Pendente
+            </div>
+            <div class="label-big label label-danger flex-center" i18n *ngIf="id.data.status === 'PENDING_DELETION'">
+              Exclusão pendente
+            </div>
+            <div class="label-big label label-danger flex-center" i18n *ngIf="id.data.status === 'DELETED'">
+              Excluído
+            </div>
+            <div class="label-big label label-default flex-center" i18n *ngIf="id.data.status === 'DISABLED'">
+              Desabilitado
+            </div>
+            <div class="label-big label label-alert flex-center" i18n *ngIf="id.data.status === 'PAUSED'">
+              Em pausa
+            </div>
+            <div class="label-big label label-warning flex-center" i18n *ngIf="id.data.status === 'LIMIT_EXCEEDED'">
+              Limite excedido
+            </div>
+          </div>
+          <div class="full-width flex-column" *ngIf="id.data.type === 0">
+            <div class="label label-big label-default flex-center" i18n>
+              Desconhecido
+            </div>
+          </div>
+        </div>
+        <div *dxTemplate="let id of 'queueTemplate'">
+          <div class="full-width flex-column">
+            <div class="full-width no-break-with-ellipses">
+              {{ service.allQueuesMap[id.data.queueid]?.name }}
+            </div>
+          </div>
+        </div>
+        <div *dxTemplate="let item of 'templateDetailTemplate'" class="pad10A">
+          <div class="pad10A full-width flex-row overflow-hidden">
+            <div class="flex-elastic overflow-hidden">
+              <div class="h5">
+                Configurações
+              </div>
+              <div class="full-width overflow-hidden" *ngIf="item.data.copy">
+                <div class="flex-column full-width">
+                  <div class="flex-row full-width mrg10T">
+                    <mat-form-field>
+                      <mat-label i18n>Nome</mat-label>
+                      <input matInput type="text" [(ngModel)]="item.data.copy.name" name="name"
+                             maxlength="150" i18n-placeholder
+                             placeholder="Nome" required #nameInput="ngModel"/>
+                    </mat-form-field>
+                    <mat-form-field class="mrg8L">
+                      <mat-label i18n>Nome do modelo</mat-label>
+                      <input matInput type="text" [(ngModel)]="item.data.copy.templatename" name="templatename"
+                             maxlength="128" i18n-placeholder [disabled]="item.data.type === 1"
+                             placeholder="Nome do modelo" required #templatenameInput="ngModel"/>
+                    </mat-form-field>
+                    <mat-form-field class="mrg8L">
+                      <mat-label i18n>Idioma</mat-label>
+                      <input matInput type="text" [(ngModel)]="item.data.copy.language" name="language"
+                             maxlength="64" i18n-placeholder [disabled]="item.data.type === 1"
+                             placeholder="Idioma" required #languageInput="ngModel"/>
+                    </mat-form-field>
+
+                  </div>
+                  <div class="full-width flex-column mrg20T">
+                    <div class="h5" i18n>
+                      Cabeçalho
+                    </div>
+                    <div class="full-width mrg8T flex-row">
+                      <mat-form-field>
+                        <mat-label i18n>Tipo do cabeçalho</mat-label>
+                        <mat-select [(value)]="item.data.copy.headertype" [disabled]="item.data.type === 1"
+                                    (change)="incrementCounter()">
+                          <mat-option [value]="0" i18n>
+                            Sem cabeçalho
+                          </mat-option>
+                          <mat-option [value]="4" i18n>
+                            Texto
+                          </mat-option>
+                          <mat-option [value]="1" i18n>
+                            Imagem
+                          </mat-option>
+                          <mat-option [value]="2" i18n>
+                            Vídeo
+                          </mat-option>
+                          <mat-option [value]="3" i18n>
+                            Documento
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="flex-elastic mrg6L"
+                                      *ngIf="item.data.copy.headertype > 0 && item.data.copy.headertype !== 4">
+                        <mat-label i18n="Enviar arquivo">Mídia padrão do cabeçalho</mat-label>
+                        <mat-select [(ngModel)]="item.data.copy.header_file">
+                          <ng-container *ngFor="let g of service.allGallerys">
+                            <mat-option *ngIf="(item.data.copy.headertype === 1 && service.imageMimes.includes(g.file_mimetype)) ||
+(item.data.copy.headertype === 2 && service.videoMimes.includes(g.file_mimetype)) ||
+(item.data.copy.headertype === 3 && (service.documentsMimes.includes(g.file_mimetype)
+|| service.pdfMimes.includes(g.file_mimetype)|| service.spreadSheetsMimes.includes(g.file_mimetype)))"
+                                        [value]="g.fk_file + '|||' + g.file_auth">
+                              <fa-duotone-icon
+                                [icon]="['fad', g.file_mimetype === 'application/pdf' ? 'file-pdf' :
+                service.documentsMimes.includes(g.file_mimetype) ? 'file-alt' :
+                service.spreadSheetsMimes.includes(g.file_mimetype) ? 'file-spreadsheet' :
+                service.presentationMimes.includes(g.file_mimetype) ? 'file-powerpoint' :
+                service.compressMimes.includes(g.file_mimetype) ? 'file-archive' :
+                service.imageMimes.includes(g.file_mimetype) ? 'file-image' :
+                service.videoMimes.includes(g.file_mimetype) ? 'file-video' : 'file']"
+                                [primaryOpacity]="g.file_mimetype === 'application/pdf' ? 0.4 : service.documentsMimes.includes(g.file_mimetype) ? 0.4 : service.spreadSheetsMimes.includes(g.file_mimetype) ? 0.4 : service.presentationMimes.includes(g.file_mimetype) ? 0.4 : service.compressMimes.includes(g.file_mimetype) ? 1 : 1"
+                                [secondaryOpacity]="g.file_mimetype === 'application/pdf' ? 1 : service.documentsMimes.includes(g.file_mimetype) ? 1 : service.spreadSheetsMimes.includes(g.file_mimetype) ? 1 : service.presentationMimes.includes(g.file_mimetype) ? 1 : service.compressMimes.includes(g.file_mimetype) ? 0.18 : 0.18"
+                                [primaryColor]="g.file_mimetype === 'application/pdf' ? '#c62828' : service.documentsMimes.includes(g.file_mimetype) ? '#0d47a1' : service.spreadSheetsMimes.includes(g.file_mimetype) ? '#2e7d32' : service.presentationMimes.includes(g.file_mimetype) ? '#e65100' : service.compressMimes.includes(g.file_mimetype) ? '#2e3951' : '#2e3951'"
+                                [secondaryColor]="g.file_mimetype === 'application/pdf' ? '#c62828' : service.documentsMimes.includes(g.file_mimetype) ? '#0d47a1' : service.spreadSheetsMimes.includes(g.file_mimetype) ? '#2e7d32' : service.presentationMimes.includes(g.file_mimetype) ? '#e65100' : service.compressMimes.includes(g.file_mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+                              {{ g.title }} ({{ g.file_name }})
+                            </mat-option>
+                          </ng-container>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="h6" *ngIf="item.data.headerparams?.length">
+                      Varíaveis do cabeçalho
+                    </div>
+                    <div class="mrg12T full-width" *ngIf="item.data.headerparams?.length">
+                      <div class="full-width" *ngFor="let param of item.data.copy.headerparams">
+                        <div class="full-width flex-row">
+                          <mat-form-field>
+                            <mat-label i18n>Nome do parâmetro</mat-label>
+                            <input matInput type="text" [(ngModel)]="param.name" maxlength="50" i18n-placeholder
+                                   placeholder="Nome do parâmetro" required (ngModelChange)="incrementCounter()"/>
+                          </mat-form-field>
+                          <mat-form-field class="mrg6L">
+                            <mat-label i18n>Tipo</mat-label>
+                            <mat-select [(value)]="param.type" (change)="incrementCounter()">
+                              <mat-option [value]="0" i18n>
+                                Texto
+                              </mat-option>
+                              <!--                          <mat-option [value]="1" i18n>-->
+                              <!--                            Número inteiro-->
+                              <!--                          </mat-option>-->
+                              <mat-option [value]="2" i18n>
+                                Moeda
+                              </mat-option>
+                              <mat-option [value]="3" i18n>
+                                Data
+                              </mat-option>
+                              <mat-option [value]="4" i18n>
+                                Múltipla escolha
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field *ngIf="param.type === 2" class="mrg6L flex-elastic">
+                            <mat-label i18n>Código Moeda</mat-label>
+                            <input matInput type="text" placeholder="Código Moeda"
+                                   [(ngModel)]="param.currencyCode" maxlength="10" i18n-placeholder/>
+                          </mat-form-field>
+                          <mat-form-field *ngIf="param.type === 0 || param.type === 2" class="mrg6L flex-elastic">
+                            <mat-label i18n>Valor padrão</mat-label>
+                            <input matInput type="{{param.type === 0 ? 'text' : 'number'}}"
+                                   (ngModelChange)="incrementCounter()"
+                                   [step]="param.type === 1 ? 1 : 0.01" placeholder="Valor padrão"
+                                   [(ngModel)]="param.default" maxlength="250" i18n-placeholder/>
+                          </mat-form-field>
+                          <mat-form-field class="mrg6L flex-elastic" *ngIf="[3].includes(param.type)">
+                            <mat-label i18n>Valor padrão</mat-label>
+                            <input matInput [matDatepicker]="pickerStart" [(ngModel)]="param.default">
+                            <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                            <mat-datepicker touchUi #pickerStart></mat-datepicker>
+                          </mat-form-field>
+                          <mat-form-field class="mrg6L flex-elastic" *ngIf="param.type === 4">
+                            <mat-label i18n>Opções</mat-label>
+                            <mat-chip-grid #chipList aria-label="Opções">
+                              <mat-chip-row *ngFor="let tag of param.options"
+                                            [removable]="true" (removed)="removeTag(tag, param.options)">
+                                {{ tag }}&nbsp;&nbsp;
+                                <fa-icon class="pointer" [icon]="['fal', 'times']" matChipRemove
+                                         matTooltip="Remover tag"
+                                         i18n-matTooltip></fa-icon>
+                              </mat-chip-row>
+                              <input placeholder="Opções" i18n-placeholder
+                                     [matChipInputFor]="chipList"
+                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                     [matChipInputAddOnBlur]="true"
+                                     (matChipInputTokenEnd)="addTag($event, param.options)">
+                            </mat-chip-grid>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="full-width flex-column">
+                    <div class="h5 mrg20T" i18n>
+                      Corpo
+                    </div>
+                    <div class="h6 mrg12T mrg12B" *ngIf="item.data.copy.params?.length || item.data.type === 0">
+                      Varíaveis do corpo
+                    </div>
+                    <div class="full-width flex-row overflow-hidden mrg12B flex-center" *ngIf="item.data.type === 0">
+                      <div class="flex-elastic overflow-hidden" i18n style="text-wrap: wrap;">
+                        Atenção à ordem dos parâmetros. Os parâmetros devem ser
+                        adicionados na mesma ordem em que aparecem no Modelo da Cloud API.
+                      </div>
+                      <div class="flex-rigid mrg16L">
+                        <button class="btn btn-primary" matTooltip="Adicionar parâmetro" i18n-matTooltip matRipple
+                                (click)="addParam(item.data.copy.params)">
+                          <fa-icon [icon]="['far', 'plus']"></fa-icon>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="full-width" *ngFor="let param of item.data.copy.params">
+                      <div class="full-width flex-row">
+                        <mat-form-field>
+                          <mat-label i18n>Nome do parâmetro</mat-label>
+                          <input matInput type="text" [(ngModel)]="param.name" maxlength="50" i18n-placeholder
+                                 placeholder="Nome do parâmetro" required (ngModelChange)="incrementCounter()"/>
+                        </mat-form-field>
+                        <mat-form-field class="mrg6L">
+                          <mat-label i18n>Tipo</mat-label>
+                          <mat-select [(value)]="param.type" (change)="incrementCounter()">
+                            <mat-option [value]="0" i18n>
+                              Texto
+                            </mat-option>
+                            <!--                          <mat-option [value]="1" i18n>-->
+                            <!--                            Número inteiro-->
+                            <!--                          </mat-option>-->
+                            <mat-option [value]="2" i18n>
+                              Moeda
+                            </mat-option>
+                            <mat-option [value]="3" i18n>
+                              Data
+                            </mat-option>
+                            <mat-option [value]="4" i18n>
+                              Múltipla escolha
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="param.type === 2" class="mrg6L flex-elastic">
+                          <mat-label i18n>Código Moeda</mat-label>
+                          <input matInput type="text" placeholder="Código Moeda" (ngModelChange)="incrementCounter()"
+                                 [(ngModel)]="param.currencyCode" maxlength="10" i18n-placeholder/>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="param.type === 0 || param.type === 2" class="mrg6L flex-elastic">
+                          <mat-label i18n>Valor padrão</mat-label>
+                          <input matInput type="{{param.type === 0 ? 'text' : 'number'}}"
+                                 (ngModelChange)="incrementCounter()"
+                                 [step]="param.type === 1 ? 1 : 0.01" placeholder="Valor padrão"
+                                 [(ngModel)]="param.default" maxlength="250" i18n-placeholder/>
+                        </mat-form-field>
+                        <mat-form-field class="mrg6L flex-elastic" *ngIf="[3].includes(param.type)">
+                          <mat-label i18n>Valor padrão</mat-label>
+                          <input matInput [matDatepicker]="pickerStart" [(ngModel)]="param.default"
+                                 (ngModelChange)="incrementCounter()">
+                          <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                          <mat-datepicker touchUi #pickerStart></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="mrg6L flex-elastic" *ngIf="param.type === 4">
+                          <mat-label i18n>Opções</mat-label>
+                          <mat-chip-grid #chipList aria-label="Opções">
+                            <mat-chip-row *ngFor="let tag of param.options"
+                                          [removable]="true" (removed)="removeTag(tag, param.options)">
+                              {{ tag }}&nbsp;&nbsp;
+                              <fa-icon class="pointer" [icon]="['fal', 'times']" matChipRemove
+                                       matTooltip="Remover tag"
+                                       i18n-matTooltip></fa-icon>
+                            </mat-chip-row>
+                            <input placeholder="Opções" i18n-placeholder (change)="incrementCounter()"
+                                   [matChipInputFor]="chipList"
+                                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                   [matChipInputAddOnBlur]="true"
+                                   (matChipInputTokenEnd)="addTag($event, param.options)">
+                          </mat-chip-grid>
+                        </mat-form-field>
+                        <div class="mrg6L flex-rigid" *ngIf="item.data.type === 0">
+                          <button class="btn btn-danger btn-square-slim"
+                                  (click)="removeParam(item.data.copy.params, param)" matRipple>
+                            <fa-icon [icon]="['far', 'times']"></fa-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="full-width flex-column" *ngIf="item.data.copy.buttonsparams?.length">
+                    <div class="h5 mrg20T" i18n>
+                      Botões
+                    </div>
+                    <div class="h6 mrg12T mrg12B">
+                      Varíaveis dos botões
+                    </div>
+                    <div class="full-width" *ngFor="let param of item.data.copy.buttonsparams">
+                      <div class="full-width flex-row">
+                        <mat-form-field>
+                          <mat-label i18n>Nome do parâmetro</mat-label>
+                          <input matInput type="text" [(ngModel)]="param.name" maxlength="50" i18n-placeholder
+                                 placeholder="Nome do parâmetro" required (ngModelChange)="incrementCounter()"/>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="param.type === 0 || param.type === 2" class="mrg6L flex-elastic">
+                          <mat-label i18n>Valor padrão</mat-label>
+                          <input matInput type="text" placeholder="Valor padrão" (ngModelChange)="incrementCounter()"
+                                 [(ngModel)]="param.default" maxlength="250" i18n-placeholder/>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-row flex-center mrg10T">
+                  <button class="btn btn-success" (click)="saveConfig(item.data)" matRipple
+                          matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                    <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="mrg12L flex-rigid h100 flex-row flex-center overflow-hidden">
+                <ca-template-message [template]="item.data.copy" [counter]="changeCounter"></ca-template-message>
+            </div>
+          </div>
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

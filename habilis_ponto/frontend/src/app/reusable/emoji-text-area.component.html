@@ -1,0 +1,391 @@
+<div class="text-area-base">
+    <div class="full-width pad16A overflow-hidden" *ngIf="replyTo?.text"
+         [@visibilityChanged]="replyTo?.text ? 'shown' : 'hidden'">
+        <div class="reply-area" id="reply-area"
+             [class.reply-in]="messageRef[status[selectedChatKey]?.id]?.[replyTo.id]?.direction === 'in'"
+             [class.reply-out]="['out', 'system-out'].includes(messageRef[status[selectedChatKey]?.id]?.[replyTo.id]?.direction)">
+            <div class="overflow-hidden s18 no-break-with-ellipses" style="max-height: 45px;" *ngIf="replyTo.quotedFile && status.selectedChat && messageRef[status[selectedChatKey]?.id] &&
+         messageRef[status[selectedChatKey]?.id][replyTo.id] &&
+         (['application/pdf'].includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ||
+           status.documentsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ||
+           status.presentationMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ||
+           status.compressMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ||
+           status.spreadSheetsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype))">
+                <fa-duotone-icon
+                        [icon]="['fad', messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype === 'application/pdf' ? 'file-pdf' :
+          status.documentsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 'file-alt' :
+          status.spreadSheetsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 'file-spreadsheet' :
+          status.presentationMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 'file-powerpoint' : status.compressMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 'file-archive' : 'file']"
+                        [primaryOpacity]="messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype === 'application/pdf' ? 0.4 :
+          status.documentsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 0.4 : status.spreadSheetsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 0.4 :
+          status.presentationMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 0.4 : status.compressMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 1 : 1"
+                        [secondaryOpacity]="messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype === 'application/pdf' ? 1 :
+          status.documentsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 1 : status.spreadSheetsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 1 :
+          status.presentationMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 1 : status.compressMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? 0.18 : 0.18"
+                        [primaryColor]="messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#e65100' : status.compressMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#2e3951' : '#2e3951'"
+                        [secondaryColor]="messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#e65100' : status.compressMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+            </div>
+            <div style="max-height: 45px; overflow: hidden; max-width: 55px;" class="no-break-with-ellipses"
+                 *ngIf="replyTo.comment && replyTo.previewUrl">
+                <img style="max-width: 55px;" [src]="replyTo.previewUrl"/>
+            </div>
+            <div style="max-height: 45px; overflow: hidden; max-width: 55px;" class="no-break-with-ellipses"
+                 *ngIf="replyTo.quotedFile && messageRef[status[selectedChatKey]?.id] && messageRef[status[selectedChatKey]?.id][replyTo.id] && status.imageMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype)">
+                <img style="max-width: 55px;"
+                     [src]="baseUrl + '/' + (messageRef[status[selectedChatKey]?.id][replyTo.id].file_auth ? 'static' : 'api') + '/downloadMedia?id=' + messageRef[status[selectedChatKey]?.id][replyTo.id].fk_file + '&download=true&auth=' + messageRef[status[selectedChatKey]?.id][replyTo.id].file_auth"/>
+            </div>
+            <div style="max-height: 45px; overflow: hidden; font-size: 1.6rem;" class="no-break-with-ellipses"
+                 *ngIf="replyTo.quotedFile && messageRef[status[selectedChatKey]?.id] && messageRef[status[selectedChatKey]?.id][replyTo.id] && status.audioMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype?.split(';')[0])">
+                <fa-icon [icon]="['far', 'file-music']"></fa-icon>
+            </div>
+            <div style="max-height: 45px; overflow: hidden; font-size: 1.6rem;" class="no-break-with-ellipses"
+                 *ngIf="replyTo.quotedFile && messageRef[status[selectedChatKey]?.id] && messageRef[status[selectedChatKey]?.id][replyTo.id] && status.videoMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype?.split(';')[0])">
+                <fa-icon [icon]="['far', 'file-video']"></fa-icon>
+            </div>
+            <div style="max-height: 45px; overflow: hidden; font-size: 1.6rem;" class="no-break-with-ellipses" *ngIf="replyTo.quotedFile && messageRef[status[selectedChatKey]?.id] && messageRef[status[selectedChatKey]?.id][replyTo.id] &&
+           !status.videoMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype?.split(';')[0]) &&
+           !status.audioMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype?.split(';')[0]) &&
+           !status.imageMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) &&
+           !status.spreadSheetsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) &&
+           !status.documentsMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) &&
+           !status.presentationMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) &&
+           !status.compressMimes.includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype) &&
+           !['application/pdf'].includes(messageRef[status[selectedChatKey]?.id][replyTo.id].file_mimetype)">
+                <fa-duotone-icon [icon]="['fad', 'file']" [primaryOpacity]="1" [secondaryOpacity]="0.18"
+                                 [primaryColor]="'#2e3951'" [secondaryColor]="'#222'"></fa-duotone-icon>
+            </div>
+            <div class="flex-elastic overflow-hidden no-break-with-ellipses"
+                 [class.mrg8L]="replyTo.quotedFile || replyTo.previewUrl">
+                <span class="font-semi-bold mrg6R" i18n *ngIf="replyTo?.comment">Comentário:<br/></span>{{
+                    replyTo?.text
+                }}
+            </div>
+            <div class="flex-rigid mrg6L">
+                <app-dialog-close-button (click)="clearReplyTo()" [size]="28"></app-dialog-close-button>
+            </div>
+        </div>
+        <div class="label bg-orange-lighten-2 flex-row full-width flex-center mrg4T" *ngIf="replyTo.comment">
+            <div class="s14">
+                <fa-icon [icon]="['far', 'exclamation-triangle']"></fa-icon>
+            </div>
+            <div class="mrg8L s10 font-light fg-black-lighten-1" i18n>
+                <b>Atenção:</b> Você está respondendo a um comentário. A sua resposta será pública e somente uma
+                resposta pode
+                ser adicionada a um comentário. Depois de enviada, essa reposta não poderá mais ser modificada.
+            </div>
+        </div>
+    </div>
+    <div class="position-relative" style="height: auto;">
+        <div class="chat-control-area" [@textareaVisibilityChanged]="'shown'"
+             *ngIf="!this.recordingAudio && !recordingChunks.length">
+            <emoji-mart [style]="{ position: 'absolute', bottom: '70px', left: status.isEmbedded ? '12px' : '25px', 'z-index': 50,
+      'max-width': '85dvw'}" (clickOutside)="toggleEmoji()" *ngIf="!disabled && showEmojiPicker" [i18n]="ngxPtBr"
+                        [emoji]="'grinning'" [isNative]="true" [enableSearch]="false" [showPreview]="true"
+                        (emojiClick)="emojiClick($event)" title=""></emoji-mart>
+            <div (click)="toggleEmoji()" *ngIf="!isMobile" class="text-area-button"
+                 [class.text-area-button-disabled]="disabled" matRipple [matRippleDisabled]="disabled">
+                <fa-icon [icon]="['fal', showEmojiPicker && !disabled ? 'times' : 'smile']"></fa-icon>
+            </div>
+
+            <div class="text-area-button" [class.text-area-button-disabled]="disabled || replyTo?.comment" matRipple
+                 [matRippleDisabled]="disabled || replyTo?.comment" *ngIf="!status.isEmbedded"
+                 [matMenuTriggerFor]="!disabled && !replyTo?.comment ? fileMenu : null">
+                <fa-icon [icon]="['fal', 'paperclip']"></fa-icon>
+            </div>
+            <mat-menu #fileMenu="matMenu">
+                <button mat-menu-item (click)="mediaEvent('image')" i18n>Foto</button>
+                <button mat-menu-item (click)="mediaEvent('sticker')" [disabled]="queueType === 14" i18n>Figurinha
+                </button>
+                <button mat-menu-item (click)="mediaEvent('video')" [disabled]="[4, 14].includes(queueType)" i18n>
+                    Vídeo
+                </button>
+                <button mat-menu-item (click)="mediaEvent('contact')" i18n [disabled]="![5, 10].includes(queueType)">Contato
+                </button>
+                <button mat-menu-item (click)="mediaEvent('others')" [disabled]="[4, 12, 14].includes(queueType)"
+                        i18n="Arquivo de computador">Documento
+                </button>
+            </mat-menu>
+
+            <div class="text-area-button" matRipple (click)="toggleEmoji()" *ngIf="status.isEmbedded && showEmojiPicker"
+                 matTooltip="Fechar emojis" i18n-matTooltip>
+                <fa-icon [icon]="['fal', 'times']"></fa-icon>
+            </div>
+            <div class="text-area-button" [class.text-area-button-disabled]="disabled || replyTo?.comment" matRipple
+                 [matRippleDisabled]="disabled || replyTo?.comment" *ngIf="status.isEmbedded && !showEmojiPicker"
+                 [matMenuTriggerFor]="!disabled && !replyTo?.comment ? optionsMenu : null">
+                <fa-icon [icon]="['fal', 'ellipsis-v']"></fa-icon>
+            </div>
+            <mat-menu #optionsMenu="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="fileMenu" i18n>Anexos</button>
+                <button mat-menu-item (click)="openTextsDialog()" i18n>Mensagens</button>
+                <button mat-menu-item (click)="openGalleryDialog()" i18n *ngIf="!replyTo?.comment">Galeria</button>
+                <button mat-menu-item (click)="toggleEmoji()" i18n>Emojis</button>
+                <button mat-menu-item *ngIf="showDisableSignature"
+                        matTooltip="{{disableSignature ? texts.signatureDisabled : texts.signatureEnabled}}" matRipple
+                        (click)="disableSignature = !disableSignature"
+                        (mouseenter)="status.showAdvancedTooltip('#disable-signature-div', 'disable-signature')"
+                        (mouseleave)="status.hideAdvancedTooltip()" [class.text-area-button-disabled]="disabled"
+                        [matRippleDisabled]="disabled">
+                    <div class="flex-row flex-center full-width">
+                        <div>
+                            <fa-layers [fixedWidth]="true">
+                                <fa-icon [icon]="['fal', 'signature']"></fa-icon>
+                                <fa-icon *ngIf="!disableSignature" transform="shrink-6 right-6 down-8"
+                                         [icon]="['fal', 'check']"></fa-icon>
+                                <fa-icon *ngIf="disableSignature" class="fg-danger" transform="shrink-8 right-6 down-8"
+                                         [icon]="['far', 'times']"></fa-icon>
+                            </fa-layers>
+                        </div>
+                        <div class="mrg8L s10 font-medium">
+                            <span i18n *ngIf="disableSignature">Desabilitado</span>
+                            <span i18n *ngIf="!disableSignature">Habilitado</span>
+                        </div>
+                    </div>
+                </button>
+            </mat-menu>
+
+            <div class="text-area-button" *ngIf="!isMobile"
+                 [matMenuTriggerFor]="!disabled && !recordingAudio && !recordingChunks.length ? ansMenu : null"
+                 matTooltip="Respostas pré definidas (Alt + m), Galeria (Alt + g)" i18n-matTooltip matRipple
+                 [class.text-area-button-disabled]="disabled" [matRippleDisabled]="disabled">
+                <fa-icon [icon]="['fal', 'comment-lines']"></fa-icon>
+            </div>
+            <mat-menu #ansMenu="matMenu">
+                <button mat-menu-item (click)="openTextsDialog()" i18n>Mensagens</button>
+                <button mat-menu-item (click)="openGalleryDialog()" i18n *ngIf="!replyTo?.comment">Galeria</button>
+            </mat-menu>
+            <div class="text-area-button" *ngIf="showDisableSignature && !isMobile" id="disable-signature-div"
+                 matTooltip="{{disableSignature ? 'Assinatura desabilitada' : 'Assinatura habilitada'}}" i18n-matTooltip
+                 matRipple (click)="disableSignature = !disableSignature"
+                 (mouseenter)="status.showAdvancedTooltip('#disable-signature-div', 'disable-signature')"
+                 (mouseleave)="status.hideAdvancedTooltip()" [class.text-area-button-disabled]="disabled"
+                 [matRippleDisabled]="disabled">
+                <fa-layers [fixedWidth]="true">
+                    <fa-icon [icon]="['fal', 'signature']"></fa-icon>
+                    <fa-icon *ngIf="!disableSignature" transform="shrink-6 right-6 down-8"
+                             [icon]="['fal', 'check']"></fa-icon>
+                    <fa-icon *ngIf="disableSignature" class="fg-danger" transform="shrink-8 right-6 down-8"
+                             [icon]="['far', 'times']"></fa-icon>
+                </fa-layers>
+            </div>
+            <!-- <div class="text-area-button" *ngIf="showDisableSignature && !isMobile" id="disable-signature-div"
+                matTooltip="Recursos de IA" i18n-matTooltip matRipple (click)="getAiMessageSuggestion()"
+                [class.text-area-button-disabled]="disabled" [matRippleDisabled]="disabled">
+                <fa-layers [fixedWidth]="true">
+                    <fa-icon [icon]="['fal', 'stars']"></fa-icon>
+                    <fa-icon *ngIf="!disableSignature" transform="shrink-6 right-6 down-8"
+                        [icon]="['fal', 'check']"></fa-icon>
+                    <fa-icon *ngIf="disableSignature" class="fg-danger" transform="shrink-8 right-6 down-8"
+                        [icon]="['far', 'times']"></fa-icon>
+                </fa-layers>
+            </div> -->
+
+            <div class="text-area-button"
+                 *ngIf="!isMobile && status.enableAI && status.iaQueueTypes.includes(queueType) && status.user.canrequestaisummary"
+                 [matMenuTriggerFor]="!disabled && !executingAi ? AiMenu : null"
+                 matTooltip="Recursos de IA" i18n-matTooltip matRipple [matRippleDisabled]="disabled || executingAi"
+                 [class.text-area-button-disabled]="disabled || executingAi">
+                <fa-icon [icon]="['fal', 'stars']" *ngIf="!executingAi"></fa-icon>
+                <fa-icon [icon]="['fas', 'spinner-third']" [spin]="true" *ngIf="executingAi"></fa-icon>
+            </div>
+            <mat-menu #AiMenu="matMenu">
+                <button mat-menu-item (click)="getAiMessageSuggestion()" i18n i18n-matTooltip
+                        matTooltip="Solicita a IA uma sugestão de resposta para o cliente com base no contexto atual">
+                    Sugerir uma resposta
+                </button>
+                <button mat-menu-item (click)="genAiSummary()" i18n i18n-matTooltip
+                        matTooltip="Solicita a IA um resumo do atendimento até o momento">
+                    Resumir atendimento
+                </button>
+                <button mat-menu-item (click)="requestMessageInprovement('grammar')" i18n i18n-matTooltip [disabled]="!text"
+                        matTooltip="Solicita a IA que altere a mensagem digitada para torná-la mais amigável">
+                    Corrigir ortografia e gramática
+                </button>
+                <button mat-menu-item (click)="requestMessageInprovement('friendly')" i18n i18n-matTooltip [disabled]="!text"
+                        matTooltip="Solicita a IA que altere a mensagem digitada para torná-la mais amigável">
+                    Tornar amigável
+                </button>
+                <button mat-menu-item (click)="requestMessageInprovement('professional')" i18n i18n-matTooltip [disabled]="!text"
+                        matTooltip="Solicita a IA que altere a mensagem digitada para torná-la mais amigável">
+                    Tornar profissional
+                </button>
+                <button mat-menu-item (click)="requestMessageInprovement('simplify')" i18n i18n-matTooltip [disabled]="!text"
+                        matTooltip="Solicita a IA que altere a mensagem digitada para torná-la mais amigável">
+                    Simplificar
+                </button>
+                <button mat-menu-item (click)="revertAiChange()" i18n i18n-matTooltip
+                        [disabled]="!aiChatControl?.oldText" matTooltip="Reverte a última modificação feita pela AI">
+                    Desfazer alterações
+                </button>
+            </mat-menu>
+
+            <div class="divider"></div>
+
+            <div class="text-box-base">
+                <div id="shortcuts" [@popupVisibilityChanged]="'shown'" *ngIf="showShortcuts" class="shortcuts-popup">
+                    <div *ngIf="!filteredItens.length" class="full-width flex-row flex-align-center"
+                         style="height: 165px;">
+                        <div class="s12" i18n>
+                            Nenhum item para exibir
+                        </div>
+                    </div>
+                    <div *ngIf="filteredItens.length" class="full-width scroll1 scroll-y flex-column"
+                         style="height: 165px;" #shortcutPopup id="shortcutsPopup" (scroll)="adjustShowLimit()">
+                        <ng-container *ngFor="let item of filteredItens; let i = index;">
+                            <div class="shortcut-menu-item-base" (mouseover)="changeSelectedItem(i, true)" matRipple>
+                                <div class="shortcut-menu-item" (click)="handleShortcutAction(i)"
+                                     [class.shortcut-menu-item-selected]="this.selectedShortcutItemIndex === i">
+                                    <div class="shortcut-menu-item-icon">
+                                        <fa-duotone-icon [icon]="['fad', !item.fk_file ? (item.id === 'njwjd93unx12' ? 'door-closed' :
+                    item.id === 'njwjd93unx13' ? 'exchange' : item.id === 'njwjd93unx11' ? 'file' :
+                    item.id === 'njwjd93unx10' ? 'video' : item.id === 'njwjd93unx9' ? 'image' :
+                    item.id === 'njwjd93unx14' ? 'info-square' : item.id === 'njwjd93unx80' ? 'chart-network' :
+                    item.id === 'njwjd93unx15' ? 'address-book' :
+                    item.automation ? 'robot' : 'comment') :
+                    item.file_mimetype === 'application/pdf' ? 'file-pdf' :
+          status.documentsMimes.includes(item.file_mimetype) ? 'file-alt' :
+          status.spreadSheetsMimes.includes(item.file_mimetype) ? 'file-spreadsheet' :
+          status.presentationMimes.includes(item.file_mimetype) ? 'file-powerpoint' :
+          status.compressMimes.includes(item.file_mimetype) ? 'file-archive' :
+          status.videoMimes.includes(item.file_mimetype) ? 'video' :
+          status.imageMimes.includes(item.file_mimetype) ? 'image' :
+          status.audioMimes.includes(item.file_mimetype) ? 'file-audio' : 'file']"
+                                                         [primaryOpacity]="item.file_mimetype === 'application/pdf' ? 0.4 :
+          status.documentsMimes.includes(item.file_mimetype) ? 0.4 : status.spreadSheetsMimes.includes(item.file_mimetype) ? 0.4 :
+          status.presentationMimes.includes(item.file_mimetype) ? 0.4 : status.compressMimes.includes(item.file_mimetype) ? 1 : 1"
+                                                         [secondaryOpacity]="item.file_mimetype === 'application/pdf' ? 1 :
+          status.documentsMimes.includes(item.file_mimetype) ? 1 : status.spreadSheetsMimes.includes(item.file_mimetype) ? 1 :
+          status.presentationMimes.includes(item.file_mimetype) ? 1 : status.compressMimes.includes(item.file_mimetype) ? 0.18 : 0.18"
+                                                         [primaryColor]="item.file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(item.file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(item.file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(item.file_mimetype) ? '#e65100' : status.compressMimes.includes(item.file_mimetype) ? '#2e3951' : 'var(--primary-color)'"
+                                                         [secondaryColor]="item.file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(item.file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(item.file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(item.file_mimetype) ? '#e65100' : status.compressMimes.includes(item.file_mimetype) ? '#222' : 'var(--primary-color)'"></fa-duotone-icon>
+                                    </div>
+                                    <div class="flex-elastic flex-column overflow-hidden s12">
+                                        <div class="full-width no-break-with-ellipses overflow-hidden font-medium"
+                                             (click)="handleShortcutAction()">
+                                            {{ item.title }}
+                                        </div>
+                                        <div class="full-width no-break-with-ellipses font-regular fg-black-lighten-1">
+                                            {{ item.text || item.file_name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="shortcut-menu-footer-base">
+                        <div class="shortcut-menu-footer-icon">
+                            <fa-icon [icon]="['fas', 'search']"></fa-icon>
+                        </div>
+                        <div class="mrg5L s8 fg-black-lighten-1" i18n>
+                            Digite algo para buscar
+                        </div>
+                        <div class="shortcut-menu-footer-icon mrg15L" *ngIf="!status.isMobile">
+                            <fa-icon [icon]="['fas', 'arrow-alt-up']"></fa-icon>
+                        </div>
+                        <div class="shortcut-menu-footer-icon mrg2L" *ngIf="!status.isMobile">
+                            <fa-icon [icon]="['fas', 'arrow-alt-down']"></fa-icon>
+                        </div>
+                        <div class="mrg5L s8 fg-black-lighten-1" i18n *ngIf="!status.isMobile">
+                            Use as setas para navegar
+                        </div>
+                        <div class="shortcut-menu-footer-icon mrg15L" *ngIf="status.isMobile">
+                            <fa-icon [icon]="['fas', 'hand-pointer']"></fa-icon>
+                        </div>
+                        <div class="mrg5L s8 fg-black-lighten-1" i18n *ngIf="status.isMobile">
+                            Toque para selecionar
+                        </div>
+                        <div class="mrg15L s8 font-semi-bold fg-primary" i18n="Tecla do teclado"
+                             *ngIf="!status.isMobile">
+                            ENTER
+                        </div>
+                        <div class="mrg5L s8 fg-black-lighten-1" i18n *ngIf="!status.isMobile">
+                            Enter para selecionar
+                        </div>
+                    </div>
+                </div>
+                <div style="position: relative;" class="full-width h100">
+                    <textarea #messageArea placeholder="{{placeholder}}" [(ngModel)]="text"
+                              (resize)="textAreaSizeChange($event)" [style.height.px]="textAreaHeight"
+                              [style.font-size]="status.isEmbedded ? '14px' : null" [disabled]="disabled"
+                              (keyup.escape)="escKey()" (press)="openMenuMessageArea()" (paste)="paste($event)"
+                              class="message-text-area" (tap)="openShortcutFromPhone()" (focusout)="hideShortcuts()"
+                              (keydown)="handleArrows($event)" (ngModelChange)="textChanged()"></textarea>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div style="visibility: hidden" [matMenuTriggerFor]="mobileSendMenu" #hiddenButton2></div>
+
+
+            <mat-menu #mobileSendMenu="matMenu" [yPosition]="'above'" [hasBackdrop]="false"
+                      (clickOutside)="closeMenu()">
+                <button mat-menu-item (click)="publish($event, true)" i18n>Enviar sem assinatura</button>
+            </mat-menu>
+            <div class="text-area-button text-area-action-button"
+                 [class.text-area-button-disabled]="(disabled && queueType !== 10 && queueType !== 16) || sending"
+                 [matRippleDisabled]="(disabled && queueType !== 10 && queueType !== 16) || sending" #sendButton
+                 matRipple
+                 (click)="canRecord && !this.text && !disabled && !disableAudio && !replyTo?.comment ? startRecording($event) : publish($event)"
+                 (press)="this.text && !disabled && isMobile && showDisableSignature ? openMobileSendMenu($event) : null"
+                 matTooltip="{{disabled && queueType === 10 ? 'Enviar template' : canRecord && !this.text && !disableAudio && !disabled ? textsT.gravarAudio : textsT.enviarMensagem}}">
+                <fa-icon [icon]="['fas', 'microphone']"
+                         *ngIf="canRecord && !this.text && !disableAudio && !disabled && !replyTo?.comment && !sending"></fa-icon>
+                <fa-icon [icon]="['fas', 'paper-plane']"
+                         *ngIf="(!canRecord || this.text || disableAudio || disabled || replyTo?.comment) && !sending"></fa-icon>
+                <fa-icon [icon]="['fas', 'spinner-third']" [spin]="true" *ngIf="sending"></fa-icon>
+            </div>
+            <div style="visibility: hidden" [matMenuTriggerFor]="textFileMenu" #hiddenButton></div>
+            <mat-menu #textFileMenu="matMenu" [yPosition]="'above'" [hasBackdrop]="false" (clickOutside)="closeMenu()">
+                <button mat-menu-item (click)="openTextsDialog()" i18n>Mensagens</button>
+                <button mat-menu-item (click)="openGalleryDialog()" i18n>Galeria</button>
+            </mat-menu>
+
+
+        </div>
+        <div class="chat-control-area" [@textareaVisibilityChanged]="'shown'"
+             *ngIf="this.recordingAudio || recordingChunks.length">
+
+            <div class="flex-elastic h100 justify-content-end align-items-center">
+
+            </div>
+            <div class="h100 flex-center mrg12R">
+                <div class="audio-recording-area">
+                    <div class="flex-row flex-center" *ngIf="this.recordingAudio">
+                        <div class="mrg12R" style="width: 64px;">
+                            {{ recordTime | formatTime }}
+                        </div>
+                        <div style="height: 42px;" *ngIf="!status.disableAnimations && !status.disableWaveform">
+                            <app-waveform-viewer [bars]="status.isMobile ? 32 : 48"
+                                                 [bgColorClass]="'outline-black-lighten-5'"
+                                                 [waveform]="instantSamples"></app-waveform-viewer>
+                        </div>
+                    </div>
+                    <div class="flex-row flex-center" *ngIf="!this.recordingAudio">
+                        <div (click)="clearRecording()" class="text-area-button text-area-action-button-stop"
+                             [class.text-area-button-disabled]="disabled" matRipple [matRippleDisabled]="disabled">
+                            <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+                        </div>
+                        <div class="flex-elastic">
+                            <app-custom-audio [waveform]="waveform" [bgColorClass]="'outline-black-lighten-5'"
+                                              [src]="audioUrl" [bars]="status.isMobile ? 20 : 64"
+                                              [fallBackWidth]="status.isMobile ? 80 : 240" [compact]="true"
+                                              [type]="mp4Audio ? 'video/mp4' : 'audio/ogg; codecs=opus'"></app-custom-audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-area-button animated infinite duration-2000" [class.text-area-button-disabled]="disabled"
+                 [matRippleDisabled]="disabled" [class.text-area-action-button]="!this.recordingAudio"
+                 [class.text-area-action-button-stop]="this.recordingAudio" [class.flash]="this.recordingAudio"
+                 matRipple
+                 (click)="this.recordingAudio ? stopRecording($event) : publish($event)"
+                 matTooltip="{{this.recordingAudio ? textsT.pararGravacao : textsT.enviarGravacao}}">
+                <fa-icon [icon]="['far', 'stop-circle']" *ngIf="this.recordingAudio"></fa-icon>
+                <fa-icon [icon]="['fas', 'paper-plane']" *ngIf="!this.recordingAudio"></fa-icon>
+            </div>
+
+        </div>
+    </div>
+</div>

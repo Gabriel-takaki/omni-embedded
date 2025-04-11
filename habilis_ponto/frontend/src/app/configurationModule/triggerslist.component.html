@@ -1,0 +1,444 @@
+<div class="full-width h100 overflow-hidden flex-column">
+
+    <div class="default-buttons-area">
+        <div class="h5 mrg-right-auto" i18n>
+            Conjunto de gatilhos
+        </div>
+        <button class="mrg10L btn btn-primary" matRipple (click)="addTrigger()">
+            <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+        </button>
+    </div>
+    <div class="flex-elastic card mrg15T full-width">
+        <div class="full-width h100" #gridContainer>
+            <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'triggerDetailTemplate'}"
+                          [dataSource]="triggers" [height]="gridContainer.clientHeight"
+                          (onRowExpanded)="copyData($event)"
+                          [hoverStateEnabled]="true">
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-paging [enabled]="true"></dxo-paging>
+                <div *dxTemplate="let id of 'functionsTemplate'">
+                    <button class="grid-function-btn" (click)="removeItem(id.data)" matRipple
+                            matTooltip="Excluir conjunto" i18n-matTooltip>
+                        <fa-icon [icon]="['far', 'times']"></fa-icon>
+                    </button>
+                </div>
+                <div *dxTemplate="let id of 'triggersTemplate'">
+                    <div *ngIf="!id.data.data.length" i18n>
+                        Sem regras
+                    </div>
+                    <div *ngIf="id.data.data.length === 1" i18n>
+                        1 regra
+                    </div>
+                    <div *ngIf="id.data.data.length > 1" i18n>
+                        {{ id.data.data.length }} regras
+                    </div>
+                </div>
+                <div *dxTemplate="let item of 'triggerDetailTemplate'" class="pad10A">
+                    <div class="pad10A full-width flex-column">
+                        <div class="h5">
+                            Configurações
+                        </div>
+                        <div class="full-width overflow-hidden" *ngIf="item.data.copy">
+                            <div class="full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label i18n>Nome</mat-label>
+                                    <input matInput type="text" [(ngModel)]="item.data.copy.name" name="name"
+                                           maxlength="255" i18n-placeholder placeholder="Nome" required/>
+                                </mat-form-field>
+                            </div>
+                            <div class="full-width flex-column overflow-hidden" style="height: 300px;">
+                                <div class="full-width flex-rigid flex-row align-items-center">
+                                    <div class="font-medium flex-elastic">
+                                        Regras
+                                    </div>
+                                    <button class="btn btn-info btn-slim flex-rigid"
+                                            (click)="addRule(item.data.copy.data)" matRipple>
+                                        Adicionar regra
+                                    </button>
+                                </div>
+                                <div class="full-width flex-elastic mrg10T overflow-hidden">
+                                    <div class="full-width h100 scroll-y scroll1 flex-column pad5R">
+                                        <div *ngFor="let r of item.data.copy.data; let i = index"
+                                             class="full-width flex-row overflow-hidden flex-rigid"
+                                             [class.mrg5T]="i > 0">
+                                            <div class="flex-elastic">
+                                                <div class="full-width flex-row">
+                                                    <mat-form-field class="flex-grow-1">
+                                                        <mat-label i18n>Tipo</mat-label>
+                                                        <mat-select [(value)]="r.type">
+                                                            <mat-option [value]="0">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento aberto há mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="1">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento nunca atribuído, aberto há mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="2">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento já atribuído, sem nenhuma primeira resposta,
+                                                                        atribuído pela primeira vez há
+                                                                        mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="8">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, sem nenhuma primeira resposta,
+                                                                        atribuído para o agente atual há
+                                                                        mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="6">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, sem primeira resposta pelo agente
+                                                                        atual, atribuído para o agente
+                                                                        atual há mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="3">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, já respondido por qualquer
+                                                                        agente, sem interação pelo agente há
+                                                                        mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="4">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, já respondido por qualquer
+                                                                        agente, sem interação pelo cliente há
+                                                                        mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="7">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, já respondido por qualquer
+                                                                        agente, sem interação por ambas as
+                                                                        partes há mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="9">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, já respondido pelo agente atual,
+                                                                        sem interação pelo agente há
+                                                                        mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="10">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, já respondido pelo agente atual,
+                                                                        sem interação pelo cliente há
+                                                                        mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="11">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído, já respondido pelo agente atual,
+                                                                        sem interação por ambas as
+                                                                        partes há mais de X minutos
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="14">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento atribuído
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-info"
+                                                                             matTooltip="Esse é um gatilho recorrente e será executado todas as vezes que seu critério for atendido."
+                                                                             i18n i18n-matTooltip>
+                                                                            Recorrente
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="5">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Atendimento encerrado
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-info"
+                                                                             matTooltip="Esse é um gatilho recorrente e será executado todas as vezes que seu critério for atendido."
+                                                                             i18n i18n-matTooltip>
+                                                                            Recorrente
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="15">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Enviado para sala de espera
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-info"
+                                                                             matTooltip="Esse é um gatilho recorrente e será executado todas as vezes que seu critério for atendido."
+                                                                             i18n i18n-matTooltip>
+                                                                            Recorrente
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="13">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Periódico
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-info"
+                                                                             matTooltip="Esse é um gatilho recorrente e será executado todas as vezes que seu critério for atendido."
+                                                                             i18n i18n-matTooltip>
+                                                                            Recorrente
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                            <mat-option [value]="12">
+                                                                <div class="full-width flex-elastic flex-row overflow-hidden">
+                                                                    <div class="flex-elastic" i18n>
+                                                                        Avançado
+                                                                    </div>
+                                                                    <div class="mrg6L flex-rigid">
+                                                                        <div class="label label-big label-warning"
+                                                                             matTooltip="Esse gatilho só será executado uma única vez, na primeira ocorrência, e será removido da lista de gatilhos do atendimento."
+                                                                             i18n i18n-matTooltip>
+                                                                            Única
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="mrg5L" *ngIf="![5, 14, 15].includes(r.type)">
+                                                        <mat-label i18n *ngIf="![13].includes(r.type)">Tempo (min.)
+                                                        </mat-label>
+                                                        <mat-label i18n *ngIf="[13].includes(r.type)">Intervalo (min.)
+                                                        </mat-label>
+                                                        <input matInput type="number" [(ngModel)]="r.time"
+                                                               i18n-placeholder placeholder="Tempo (min.)" required/>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="mrg5L" i18n-matTooltip
+                                                                    *ngIf="[12].includes(r.type)"
+                                                                    matTooltip="Se preenchido, essa regra se tornará dependente (filha) da regra de ID selecionada (mãe) e somente será executada após a regra mãe ter sido executada.">
+                                                        <mat-label i18n>Dependência</mat-label>
+                                                        <mat-select [(value)]="r.dp">
+                                                            <ng-container *ngFor="let r2 of item.data.copy.data;">
+                                                                <mat-option [value]="r2.rId" i18n
+                                                                            *ngIf="r2.rId !== r.rId && r2.type !== 13">
+                                                                    Regra {{ r2.rId }}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <div class="flex-elastic mrg5L">
+                                                        <app-ivr-selection [showType]="2" [(value)]="r.aId"
+                                                                           caption="Fluxo de automação" i18n-caption
+                                                                           i18n-matTooltip
+                                                                           matTooltip="Selecione qual automação será executada por essa regra">
+                                                        </app-ivr-selection>
+                                                    </div>
+                                                </div>
+                                                <div class="full-width" *ngIf="[12].includes(r.type)">
+                                                    <mat-form-field class="flex-grow-1" i18n-matTooltip
+                                                                    matTooltip="Essa regra será executada se a última mensagem no atendimento tiver como origem a pessoa selecionada abaixo. Mensagens enviadas por automações contam como mensagens do agente.">
+                                                        <mat-label i18n>Última mensagem</mat-label>
+                                                        <mat-select [(value)]="r.lm">
+                                                            <mat-option [value]="0" i18n>
+                                                                Do agente
+                                                            </mat-option>
+                                                            <mat-option [value]="1" i18n>
+                                                                Do cliente
+                                                            </mat-option>
+                                                            <mat-option [value]="2" i18n>
+                                                                Qualquer
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="flex-grow-1 mrg5L" i18n-matTooltip
+                                                                    matTooltip="Se o atendimento já deve ou não ter sido respondido, para que essa regra seja executada.">
+                                                        <mat-label i18n>Já respondido</mat-label>
+                                                        <mat-select [(value)]="r.resp">
+                                                            <mat-option [value]="0" i18n>
+                                                                Pelo agente atual
+                                                            </mat-option>
+                                                            <mat-option [value]="1" i18n>
+                                                                Por qualquer agente
+                                                            </mat-option>
+                                                            <mat-option [value]="2" i18n>
+                                                                Não respondido
+                                                            </mat-option>
+                                                            <mat-option [value]="3" i18n>
+                                                                Qualquer
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="flex-grow-1 mrg5L" i18n-matTooltip
+                                                                    matTooltip="Se o atendimento precisa ou não estar atribuído para que a regra seja executada. Se sim, somente atendimentos com agente no momento serão contemplados.
+                                          Se não, somente atendimentos na fila, mas que já foram atribuídos em algum momento.
+                                          Se já foi atribuído em algum momento, atendimentos que estão ou não atribuídos nesse momento serão considerados, desde que eles já tenham sido atribuídos em algum momento.
+                                          Se nunca, somente atendimentos na fila e que nunca foram atribuídos. Se qualquer, todos os casos serão contemplados.">
+                                                        <mat-label i18n>Está atribuído?</mat-label>
+                                                        <mat-select [(value)]="r.at">
+                                                            <mat-option [value]="0" i18n>
+                                                                Sim
+                                                            </mat-option>
+                                                            <mat-option [value]="1" i18n>
+                                                                Não, mas já foi atribuído em algum momento
+                                                            </mat-option>
+                                                            <mat-option [value]="2" i18n>
+                                                                Já foi atribuído em algum momento
+                                                            </mat-option>
+                                                            <mat-option [value]="3" i18n>
+                                                                Nunca atribuído
+                                                            </mat-option>
+                                                            <mat-option [value]="4" i18n>
+                                                                Qualquer
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="flex-grow-1 mrg5L" i18n-matTooltip
+                                                                    matTooltip="Se agente, será considerado o tempo desde a última mensagem enviada pelo agente. Mensagens de automação contam como mensagens do agente. Se cliente, será considerado o tempo desde a última mensagem enviada pelo cliente. Se ambos, a inativdade de ambos tem que exceder o tempo especificado para que a regra seja executada. Se qualquer, caso qualquer um atinja o tempo limite a regra será executada.">
+                                                        <mat-label i18n>Inatividade por</mat-label>
+                                                        <mat-select [(value)]="r.in">
+                                                            <mat-option [value]="0" i18n>
+                                                                Agente
+                                                            </mat-option>
+                                                            <mat-option [value]="1" i18n>
+                                                                Cliente
+                                                            </mat-option>
+                                                            <mat-option [value]="2" i18n>
+                                                                Ambos
+                                                            </mat-option>
+                                                            <mat-option [value]="3" i18n>
+                                                                Qualquer
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="flex-rigid mrg5L flex-column">
+                                                <div class="small">Reg. {{ r.rId }}</div>
+                                                <button class="btn btn-slim btn-danger mrg5T" matTooltip="Remover regra"
+                                                        (click)="removeRule(r, item.data.copy.data)" matRipple
+                                                        i18n-matTooltip>
+                                                    <fa-icon [icon]="['far', 'times']"></fa-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-row flex-center mrg10T">
+                                <button class="btn btn-success" (click)="saveConfig(item.data)" matRipple
+                                        matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                                    <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dx-data-grid>
+        </div>
+    </div>
+</div>

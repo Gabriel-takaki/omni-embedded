@@ -1,0 +1,14 @@
+@import "../../scss/newcolors";
+
+.bar-div {
+  width: 100%;
+  min-width: 100%;
+  border-radius: 4px;
+  min-height: 5%;
+  background-color: transparent;
+  outline: 30px solid white;
+}
+
+.bar-div:before {
+  content: '';
+}

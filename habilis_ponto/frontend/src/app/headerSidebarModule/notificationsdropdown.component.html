@@ -1,0 +1,33 @@
+<div id="notifications-btn" class="header-btn">
+    <a title="Notificações" (click)="dropDown()" class="pointer-cursor header-btn-icon">
+        <span class="small-badge bg-yellow" *ngIf="messages.unreadedItems.length > 0"></span>
+        <i class="fa fa-bell-o glyph-icon" style="margin-top: 10px;"></i>
+    </a>
+    <div class="dropdown-menu box-md float-right" [@visibilityChanged]="visibility" style="display: block;">
+        <div class="popover-title display-block clearfix pad10A" i18n>
+            Mensagens
+        </div>
+        <div class="scrollable-content scrollable-slim-box">
+            <ul class="no-border notifications-box">
+                <li *ngFor="let item of messages.unreadedItems">
+                    <a [routerLink]="['messages']" [queryParams]="{'id': item.id}" (click)="dropDown(true)">
+                    <span [class.bg-danger]="item.type === 3" [class.bg-warning]="item.type === 2"
+                          [class.bg-info]="item.type === 1"
+                          [class.fa-exclamation]="item.type === 3 || item.type === 2" [class.fa-info]="item.type === 1"
+                          class="fa icon-notification font-white"></span>
+                        <span class="notification-text">{{item.title}}</span>
+                        <div class="notification-time">
+                            {{item.sendDate|date:'dd/MM/yy'}}
+                            <span class="fa fa-clock-o"></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="pad10A button-pane button-pane-alt text-center">
+            <a class="btn btn-default" title="Visualizar notificações" (click)="dropDown(true)" i18n>
+                Visualizar mensagens
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="custom-audio-base">
+  <div class="flex-row flex-center">
+    <div class="seek-bar" [class.seek-bar-bg-transparent]="!resampledWaveform?.length"
+         [style.width.px]="(resampledWaveform?.length * 4) || fallBackWidth">
+      <div class="progress-color-div full-width" *ngIf="resampledWaveform?.length"></div>
+      <div class="waveform-base" *ngIf="resampledWaveform?.length"
+           [style.width.px]="(resampledWaveform?.length * 4) || fallBackWidth">
+        <app-waveform-bars [waveform]="resampledWaveform" [bgColorClass]="bgColorClass"></app-waveform-bars>
+      </div>
+    </div>
+  </div>
+</div>

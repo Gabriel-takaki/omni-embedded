@@ -1,0 +1,49 @@
+@import "../../scss/newcolors";
+@import "../../scss/medias";
+
+.task-action-area {
+  top: 0;
+  right: 0;
+  position: absolute;
+  background-color: $black-lighten-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  font-size: 12px;
+  border-bottom-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.progress-bar-base {
+  width: 100%;
+  background: $black-lighten-4;
+  border-radius: 6px;
+  height: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: $success-base;
+}
+
+.control-btn {
+  background-color: transparent;
+  color: $black-lighten-1;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  outline: none;
+  font-size: 10px;
+}
+
+.control-btn:hover {
+  background-color: $black-lighten-5;
+  color: $black-base;
+}

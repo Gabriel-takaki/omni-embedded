@@ -1,0 +1,44 @@
+.shortcut-key {
+  padding: 1.5px 3px 1.5px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #fafafa;
+  background: #333;
+  border: 1px solid #111;
+  border-radius: 2px;
+}
+
+.black {
+  color: #111;
+  font-size: 150%;
+  font-weight: bolder;
+}
+
+.shortcut-base {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 2px;
+}
+
+.shortcut-mask {
+  background: rgba(240, 240, 240, 0.35);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 4px 6px;
+  opacity: 0.92;
+  font-size: 10px;
+}
+
+.mini {
+  padding: 1px 2px 1px 2px;
+}
+
+.mini-mask {
+  padding: 2px 3px;
+  font-size: 8px;
+}

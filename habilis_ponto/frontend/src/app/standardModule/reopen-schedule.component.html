@@ -1,0 +1,34 @@
+<div  class="dialog-no-margins">
+  <div class="pad15A fg-grey-darken-3">
+    <div class="full-width" style="font-size: 1.3rem; font-weight: 400;" i18n>
+      Agendar reabertura
+    </div>
+    <div class="full-width mrg10T" style="font-size: 1rem; font-weight: 300;" i18n>
+      Criar agendamento para que este atendimento seja automaticamente reaberto.
+    </div>
+    <div class="full-width mrg10T small">
+      <mat-form-field>
+        <mat-label i18n="Etiqueta de um campo de calendário, para seleção de uma data">Data</mat-label>
+        <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="date" name="data" tabindex="4">
+        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #pickerEnd></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="pad8A full-width bg-grey-lighten-4 mrg10T">
+    <div class="flex-row" style="justify-content: flex-end;">
+      <button style="padding: 0.5rem 1.2rem; font-size: 0.95rem;" matRipple type="button" id="noButton" tabindex="4"
+              class="btn btn-transparent bold no-outline" (click)="result(false)">
+        <span i18n>Cancelar</span>
+      </button>
+      <button style="padding: 0.5rem 1.2rem; font-size: 0.95rem;" matRipple type="button" id="deleteButton" tabindex="4"
+              class="btn btn-danger bold mrg15L" (click)="result('delete')">
+        <span i18n>Remover</span>
+      </button>
+      <button style="padding: 0.5rem 1.2rem; font-size: 0.95rem;" matRipple type="button" id="yesButton" tabindex="3"
+              class="bold mrg15L btn btn-success" (click)="result(true)">
+        <span>{{haveSchedule ? update : create}}</span>
+      </button>
+    </div>
+  </div>
+</div>

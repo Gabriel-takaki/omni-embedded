@@ -1,0 +1,16 @@
+{
+  "title": "Kentro - Gestão de Atendimentos",
+  "headerColor": "#9400D3",
+  "headerFgColor": "#FFF",
+  "headerSelectedColor": "#86F5F1",
+  "headerAlertColor" : "#FF3C78",
+  "primaryColor": "#9400D3",
+  "primaryFgColor": "#FFF",
+  "primaryBgColor": "rgba(148, 0, 211,.1)",
+  "chartColor1": "",
+  "chartColor2": "",
+  "chartColor3": "",
+  "chartColor4": "",
+  "chartColor5": "",
+  "chartColor6": ""
+}

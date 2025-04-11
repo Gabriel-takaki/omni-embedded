@@ -1,0 +1,36 @@
+<div class="dialog-small overflow-hidden" style="height: 80vh;">
+  <div class="full-width h100 flex-column scroll1 scroll-y">
+    <div class="full-width" *ngIf="newData?.mainimage">
+      <img [src]="newData.mainimage" class="card-img">
+    </div>
+    <div class="dialog-content pad24A" style="overflow: visible;">
+      <div class="full-width flex-row">
+        <div class="tag-base s10 font-medium mrg10R mrg4T" *ngFor="let tag of newData?.tags"
+             [style.background-color]="tag.bgcolor"
+             [style.color]="tag.fgcolor">
+          {{tag.name}}
+        </div>
+      </div>
+      <div class="full-width s20 font-medium mrg16T">
+        {{newData?.title}}
+      </div>
+      <div class="full-width s14 font-medium mrg16T flex-row">
+        <div style="width: 32px;">
+          <user-profile-pic [id]="newData?.writtenby" [picVersion]="newData?.writtenbypicversion"
+                            [auth]="newData?.writtenbypicauth"
+                            [initials]="newData?.writtenbyname?.slice(0, 2).toUpperCase()"></user-profile-pic>
+        </div>
+        <div class="mrg10L flex-elastic overflow-hidden flex-column s12">
+          <div class="font-medium overflow-hidden no-break-with-ellipses">
+            {{newData?.writtenbyname}}
+          </div>
+          <div class="overflow-hidden no-break-with-ellipses font-light">
+            Publicado em: {{newData?.date | date:'shortDate'}}
+          </div>
+
+        </div>
+      </div>
+      <div class="mrg25T s14 font-regular" [innerHTML]="newData?.content"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="dialog-x-large overflow-hidden">
+    <div class="dialog-content overflow-hidden">
+        <div *ngIf="chat" class="flex-column overflow-hidden pad8A justify-content-center full-size">
+            <div class="full-width flex-rigid">
+                <mat-form-field class="full-width">
+                    <mat-label i18n>Sessão</mat-label>
+                    <mat-select [(value)]="chat.selectedSession" class="full-width">
+                        <mat-option *ngFor="let sessionId of ObjectPass.keys(chat.cards)" [value]="sessionId">
+                            {{ chat.cards[sessionId].name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="full-width flex-elastic scroll-y pad8A flex-column"
+                 style="background: #f5f5f5; border-radius: 8px;" *ngIf="chat?.cards[chat.selectedSession]?.cards">
+                <ng-container *ngFor="let card of chat.cards[chat.selectedSession].cards; index as i">
+                    <div class="full-width flex-center flex-row" [class.mrg8T]="i > 0">
+                        <app-information-card-viewer [viewOnly]="false" [chat]="chat" [varsChangeCounter]="chat?.varsChangeCounter"
+                                                     [card]="card > 0 ? status.allInformationCardsMap[card] : card"></app-information-card-viewer>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-buttons">
+        <button matRipple type="button" id="noButton" class="btn btn-transparent" (click)="close()">
+            <span i18n>Fechar</span>
+        </button>
+    </div>
+</div>

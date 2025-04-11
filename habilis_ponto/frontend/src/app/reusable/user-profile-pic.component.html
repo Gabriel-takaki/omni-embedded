@@ -1,0 +1,21 @@
+<div class="flex-center full-width div-square position-relative flex-row flex-center" [matTooltip]="toolTip || null">
+  <div class="full-width h100 div-square animated" style="position: absolute; z-index: 20;"
+       [class.alert-ring]="alertRing" [class.ring-success]="alertLevel === 1"
+       [class.ring-information]="alertLevel === 2" [class.ring-alert]="alertLevel === 3"
+       [class.ring-warning]="alertLevel === 4" [class.ring-danger]="alertLevel === 5"
+       [class.flash]="alertLevel > 3 && blink" [class.ring-primary]="alertLevel === -1">
+  </div>
+  <img class="user-photo-frame" [class.transparent-border]="transparentBorder" *ngIf="img && id && picVersion"
+       [src]="base + '/static/getUserProfilePic?id=' + id + '&auth=' + auth + '&u=' + picVersion"
+       (error)="imgError()" [style.width]="alertLevel === -1 ? 'calc(100% - 12px)' : null"
+       [style.height]="alertLevel === -1 ? 'calc(100% - 12px)' : null" [style.left.px]="alertLevel === -1 ? 6 : null"
+       [style.top.px]="alertLevel === -1 ? 6 : null"/>
+  <div class="photo-error-fallback" [class.transparent-border]="transparentBorder"  [class.dark]="dark"
+       [class.bg-black-lighten-4]="grayLevel === 4 && !dark" [class.bg-black-lighten-3]="grayLevel === 3 && !dark"
+       [class.bg-black-lighten-2]="grayLevel === 2 && !dark" [class.bg-black-lighten-1]="grayLevel === 1 && !dark"
+       [class.bg-black-lighten-5]="grayLevel === 5 && !dark"
+       *ngIf="!img || !id || !picVersion" [style.font-size.px]="fontSize">
+    <span class="font-bold" *ngIf="fontBold">{{initials?.toString().substr(0, 2)}}</span>
+    <span class="font-semi-bold" *ngIf="!fontBold">{{initials?.toString().substr(0, 2)}}</span>
+  </div>
+</div>

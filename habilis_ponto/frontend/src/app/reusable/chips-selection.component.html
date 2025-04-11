@@ -1,0 +1,15 @@
+<mat-form-field class="full-width pointer" (click)="openSelectionDialog()">
+  <mat-label>{{label}}</mat-label>
+  <mat-chip-listbox #chipList>
+    <ng-container *ngIf="value.length <= maxDisplay">
+      <mat-chip *ngFor="let i of value">
+        {{i[firstField]}}
+      </mat-chip>
+    </ng-container>
+    <ng-container *ngIf="value.length > maxDisplay">
+      <mat-chip>
+        {{value.length}} {{value.length > 1 ? 'selecionados' : 'selecionado'}}
+      </mat-chip>
+    </ng-container>
+  </mat-chip-listbox>
+</mat-form-field>

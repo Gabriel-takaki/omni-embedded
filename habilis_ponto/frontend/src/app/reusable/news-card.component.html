@@ -1,0 +1,20 @@
+<div class="full-width card pad0A pointer fg-black" *ngIf="newsData" matRipple>
+  <div class="full-width overflow-hidden" style="max-height: 145px;" *ngIf="newsData.mainimage">
+    <img [src]="newsData.mainimage" class="card-img">
+  </div>
+  <div class="full-width pad8T pad16R pad16L pad16B">
+    <div class="full-width flex-row flex-wrap">
+      <div class="tag-base s10 font-medium mrg10R mrg4T" *ngFor="let tag of (newsData.tags | idstoobjects:status.faqTagsMap)"
+           [style.background-color]="tag.bgcolor"
+           [style.color]="tag.fgcolor">
+        {{tag.name}}
+      </div>
+    </div>
+    <div class="mrg10T full-width s14 font-medium">
+      {{newsData.title}}
+    </div>
+    <div class="mrg5T full-width s12 font-light">
+      {{newsData.description}}
+    </div>
+  </div>
+</div>

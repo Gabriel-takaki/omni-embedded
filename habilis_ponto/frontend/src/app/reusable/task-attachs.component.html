@@ -1,0 +1,93 @@
+<div class="flex-row font-semi-bold s14 flex-center">
+  <div class="flex-elastic">
+    {{caption}}
+  </div>
+  <div class="pointer fg-info flex-rigid mrg4L s12" i18n (click)="clearList()" *ngIf="editable">
+    Limpar lista
+  </div>
+  <div class="mrg12L flex-rigid">
+    <app-dialog-close-button [white]="false" [size]="status.isMobile ? 32 : 26" [rotateOnMouseOver]="false"
+                             [matMenuTriggerFor]="attachMenu"
+                             *ngIf="list?.length < maxFiles && editable"
+                             [icon]="'plus'" toolTip="Adicionar anexo" i18n-toolTip></app-dialog-close-button>
+    <mat-menu #attachMenu="matMenu" xPosition="before">
+
+      <button class="mat-menu-min-width" title="Selecionar arquivo" mat-menu-item i18n-title i18n
+              (click)="openFileDialog()">
+        Selecionar arquivo
+      </button>
+      <button class="mat-menu-min-width" title="Gravar áudio" mat-menu-item i18n-title i18n
+              (click)="openAudioRecordDialog()" *ngIf="allowAudio">
+        Gravar áudio
+      </button>
+
+    </mat-menu>
+
+    <input type="file" hidden (change)="fileSelected($event)" #filesDialog
+           [accept]="accept || null"
+           style="visibility: hidden; height: 0;" [multiple]="true"/>
+
+  </div>
+</div>
+<div class="items-list-base scroll1" [style.max-height.%]="noMaxHeight ? 1000 : null">
+  <div class="mrg8T" *ngIf="!list?.length" i18n style="align-self: center; justify-self: center">
+    Nenhum item para exibir
+  </div>
+  <div class="list-item" [class.mrg4T]="i > 0" *ngFor="let item of list; let i = index;">
+    <div class="full-size flex-row flex-center" *ngIf="!item.mimetype?.includes('audio/')">
+      <div style="width: 46px;" class="flex-rigid flex-row flex-center h100 s18">
+        <fa-duotone-icon
+          [icon]="['fad', item.mimetype === 'application/pdf' ? 'file-pdf' : status.documentsMimes.includes(item.mimetype) ? 'file-alt' : status.spreadSheetsMimes.includes(item.mimetype) ? 'file-spreadsheet' : status.presentationMimes.includes(item.mimetype) ? 'file-powerpoint' : status.compressMimes.includes(item.mimetype) ? 'file-archive' : status.imageMimes.includes(item.mimetype) ? 'file-image' : 'file']"
+          [primaryOpacity]="item.mimetype === 'application/pdf' ? 0.4 : status.documentsMimes.includes(item.mimetype) ? 0.4 : status.spreadSheetsMimes.includes(item.mimetype) ? 0.4 : status.presentationMimes.includes(item.mimetype) ? 0.4 : status.compressMimes.includes(item.mimetype) ? 1 : 1"
+          [secondaryOpacity]="item.mimetype === 'application/pdf' ? 1 : status.documentsMimes.includes(item.mimetype) ? 1 : status.spreadSheetsMimes.includes(item.mimetype) ? 1 : status.presentationMimes.includes(item.mimetype) ? 1 : status.compressMimes.includes(item.mimetype) ? 0.18 : 0.18"
+          [primaryColor]="item.mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(item.mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(item.mimetype) ? '#2e7d32' : status.presentationMimes.includes(item.mimetype) ? '#e65100' : status.compressMimes.includes(item.mimetype) ? '#2e3951' : '#2e3951'"
+          [secondaryColor]="item.mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(item.mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(item.mimetype) ? '#2e7d32' : status.presentationMimes.includes(item.mimetype) ? '#e65100' : status.compressMimes.includes(item.mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+      </div>
+      <div class="flex-elastic mrg8L pad4T pad4B flex-column overflow-hidden s12">
+        <div class="full-width no-break-with-ellipses font-medium s12">
+          {{item.name}}
+        </div>
+        <!--        <div class="full-width font-light editable-div no-break-with-ellipses mrg2T"-->
+        <!--             data-text="Insira uma descrição para o arquivo" i18n-data-text [innerText]="item.description"-->
+        <!--             (focusout)="updateDescription($event.target.innerHTML, item)" contentEditable="true"-->
+        <!--             (keydown.enter)="removeFocus($event)" (keydown.escape)="removeFocus($event)">-->
+        <!--        </div>-->
+      </div>
+      <div class="flex-rigid flex-center flex-row mrg8L pad4T pad4B pad8R">
+        <div class="item-btn" matTooltip="Visualizar" i18n-matTooltip
+             *ngIf="item.id && item.auth && (item.mimetype?.includes('image/') || item.mimetype?.includes('video/') ||
+                    item.mimetype?.includes('application/pdf'))"
+             (click)="viewFile(item)" matRipple>
+          <fa-icon [icon]="['fas', 'eye']"></fa-icon>
+        </div>
+        <div class="item-btn" [class.mrg8L]="item.mimetype?.includes('image/') || item.mimetype?.includes('video/') ||
+                    item.mimetype?.includes('application/pdf')" matTooltip="Baixar arquivo"
+             i18n-matTooltip *ngIf="item.id && item.auth"
+             (click)="downloadFile(item)" matRipple>
+          <fa-icon [icon]="['fas', 'download']"></fa-icon>
+        </div>
+        <div class="item-btn mrg8L" matTooltip="Remover" i18n-matTooltip [class.disabled]="!editable"
+             (click)="editable ? removeListItem(item) : null" matRipple [matRippleDisabled]="!editable">
+          <fa-icon [icon]="['fas', 'times']"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div class="full-size flex-center flex-row overflow-hidden pad8R pad8L" *ngIf="item.mimetype?.includes('audio/')">
+      <div class="flex-elastic">
+        <app-custom-audio [waveform]="item.waveform"
+                          [src]="item.fileSrc || (baseUrl + '/static/downloadMedia?id=' + item.id + '&auth=' + item.auth + (status.isIOS ? '&ios=y' : ''))"
+                          [bars]="status.isMobile ? 36 : 48" [fallBackWidth]="status.isMobile ? 80 : 305"
+                          [compact]="true" [type]="'audio/ogg; codecs=opus'"></app-custom-audio>
+      </div>
+      <div class="flex-rigid flex-row mrg8L pad4T pad4B flex-center overflow-hidden">
+        <!--        <div class="item-btn" matTooltip="Baixar arquivo" i18n-matTooltip (click)="downloadFile(item)" matRipple>-->
+        <!--          <fa-icon [icon]="['fas', 'download']"></fa-icon>-->
+        <!--        </div>-->
+        <div class="item-btn mrg8L" matTooltip="Remover" i18n-matTooltip matRipple [matRippleDisabled]="!editable"
+             (click)="editable ? removeListItem(item) : null" [class.disabled]="!editable">
+          <fa-icon [icon]="['fas', 'times']"></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

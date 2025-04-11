@@ -1,0 +1,540 @@
+<div class="flex-elastic full-width overflow-hidden">
+
+  <div class="report-options-area">
+    <div class="align-self-start">
+      <ca-register-clock-action></ca-register-clock-action>
+    </div>
+    <mat-form-field class="form-input">
+      <mat-label i18n="Fila de atendimentos">Fila</mat-label>
+      <mat-select [(ngModel)]="userSelected" tabindex="1" multiple (selectionChange)="checkSelection($event)">
+        <mat-option [value]="0" i18n="Todas as filas de atendimento">Todas</mat-option>
+        <mat-option [value]="q.id" *ngFor="let q of status.allQueues">{{q.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-input">
+      <mat-label i18n="Intervalo de datas">Período</mat-label>
+      <mat-select [(ngModel)]="period" tabindex="2">
+        <mat-option [value]="0" i18n>Hoje</mat-option>
+        <mat-option [value]="8" i18n>Ontem</mat-option>
+        <mat-option [value]="4" i18n>Esta semana</mat-option>
+        <mat-option [value]="6" i18n>Semana anterior</mat-option>
+        <mat-option [value]="1" i18n>Este mês</mat-option>
+        <mat-option [value]="5" i18n>Mês anterior</mat-option>
+        <mat-option [value]="2" i18n>Últimos 30 dias</mat-option>
+        <mat-option [value]="7" i18n>Últimos 365 dias</mat-option>
+        <mat-option [value]="3" i18n="Intervalo de datas personalizado">Personalizado</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-input" *ngIf="period === 3">
+      <mat-label i18n>Data de início</mat-label>
+      <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate" name="data" tabindex="3">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #pickerStart></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="form-input" *ngIf="period === 3">
+      <mat-label i18n>Data de fim</mat-label>
+      <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate" name="data" tabindex="4">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #pickerEnd></mat-datepicker>
+    </mat-form-field>
+    <div class="mrg-left-auto align-self-start">
+      <button type="button" matRipple class="btn btn-primary" (click)="loadData()" i18n>
+        <fa-icon [icon]="['far', 'sync']"></fa-icon>
+        &nbsp;Atualizar
+      </button>
+      </div>
+    </div>
+
+
+  <div class="dashboard-grid flex-rigid" >
+
+    <div class="flex-center grid-area-line">
+
+      <div class="grid-line-block flex-row">
+        <app-kpi-line-block title="Jornadas concluídas" [digitsInfo]="'1.0-0'" [value]="10" i18n-title
+                            [diffDirection]=" 0"
+                            [diff]="5"></app-kpi-line-block>
+      </div>
+
+      <div class="divisor"></div>
+
+      <div class="grid-line-block flex-row">
+        <app-kpi-line-block title="Horas totais" [digitsInfo]="'1.0-0'" [value]="10" i18n-title
+                            [diffDirection]=" 0"
+                            [diff]="5"></app-kpi-line-block>
+      </div>
+
+      <div class="divisor"></div>
+
+      <div class="grid-line-block flex-row">
+        <app-kpi-line-block title="Horas extras totais" [digitsInfo]="'1.0-0'" [value]="10" i18n-title
+                            [diffDirection]=" 0"
+                            [diff]="5"></app-kpi-line-block>
+      </div>
+
+      <div class="grid-line-block flex-row">
+        <app-kpi-line-block title="Turnos em aberto" [digitsInfo]="'1.0-0'" [value]="10" i18n-title
+                            [diffDirection]=" 0"
+                            [diff]="5"></app-kpi-line-block>
+      </div>
+
+    </div>
+
+
+  
+<div class="notifications-panel">
+  <div class="notifications-header">
+    <h2>Notificações</h2>
+    <span class="badge">{{ notifications.length }}</span>
+  </div>
+
+  <div class="notifications-content">
+    <div *ngIf="notifications.length === 0" class="empty-state">
+      <p>Não há notificações</p>
+    </div>
+    
+    <div 
+      *ngFor="let notification of notifications" 
+      class="notification-item"
+      [ngClass]="getNotificationClass(notification.type)"
+    >
+      <div class="notification-avatar">
+        <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fwww.gravatar.com%2Favatar%2F2c7d99fe281ecd3bcd65ab915bac6dd5%3Fs%3D250" [alt]="notification.userName">
+      </div>
+      
+      <div class="notification-content">
+        <div class="notification-header">
+          <strong>{{ notification.userName }}</strong>
+          <span class="notification-date">{{ notification.date | date:'dd/MM/yyyy' }}</span>
+        </div>
+        
+        <p class="notification-description">
+          <mat-icon [fontIcon]="getNotificationIcon(notification.type)"></mat-icon>
+          {{ notification.description }}
+        </p>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+<!-- <div class="h100 full-width flex-column overflow-hidden">
+
+  <div class="report-options-area">
+    <div class="align-self-start">
+    </div>
+ 
+    <mat-form-field class="form-input">
+      <mat-label i18n="Intervalo de datas">Período</mat-label>
+      <mat-select [(ngModel)]="period" tabindex="2">
+        <mat-option [value]="0" i18n>Hoje</mat-option>
+        <mat-option [value]="8" i18n>Ontem</mat-option>
+        <mat-option [value]="4" i18n>Esta semana</mat-option>
+        <mat-option [value]="6" i18n>Semana anterior</mat-option>
+        <mat-option [value]="1" i18n>Este mês</mat-option>
+        <mat-option [value]="5" i18n>Mês anterior</mat-option>
+        <mat-option [value]="2" i18n>Últimos 30 dias</mat-option>
+        <mat-option [value]="7" i18n>Últimos 365 dias</mat-option>
+        <mat-option [value]="3" i18n="Intervalo de datas personalizado">Personalizado</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="form-input" *ngIf="period === 3">
+      <mat-label i18n>Data de início</mat-label>
+      <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate" name="data" tabindex="3">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #pickerStart></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="form-input" *ngIf="period === 3">
+      <mat-label i18n>Data de fim</mat-label>
+      <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate" name="data" tabindex="4">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #pickerEnd></mat-datepicker>
+    </mat-form-field>
+    <div class="mrg-left-auto align-self-start">
+      <button type="button" matRipple class="btn btn-primary" (click)="loadData()" i18n
+          >
+        <fa-icon [icon]="['far', 'sync']"></fa-icon>
+        &nbsp;Atualizar
+      </button>
+    </div>
+  </div>
+
+  <div class="flex-elastic full-width overflow-hidden">
+
+    <div class="dashboard-grid flex-rigid" *ngIf="true">
+
+      <div class="flex-center grid-area-line">
+
+        <div class="grid-line-block flex-row">
+
+        <div class="divisor"></div>
+
+        <div class="grid-line-block flex-row">
+
+          <app-kpi-line-block title="Horas trabalhadas" [digitsInfo]="'1.0-0'" [value]="generalData.hoursWorked" i18n-title
+                              [diffDirection]="generalData.hoursWorked / (generalData.prev.hoursWorked || 1)"
+                              [diff]="(generalData.prev.hoursWorked > 0 ? math.abs((generalData.hoursWorked / generalData.prev.hoursWorked) - 1) : 0)"></app-kpi-line-block>
+
+          <div class="s12 mrg15L">
+            <ngx-gauge [type]="'full'" [value]="generalData.hoursCompliance" [append]="'%'" [min]="0" [max]="100"
+                       [foregroundColor]="'#06c270'" [thick]="4" [size]="60"></ngx-gauge>
+          </div>
+
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="grid-line-block flex-row">
+          <div class="flex-elastic">
+            <app-kpi-line-block title="Faltas" [digitsInfo]="'1.0-0'" i18n-title
+                                [value]="employeeStatusData.absent || 0"
+                                [diffDirection]="employeeStatusData.absent / (employeeStatusData.prev.absent || 1)"
+                                [diff]="(employeeStatusData.prev.absent > 0 ? math.abs((employeeStatusData.absent / employeeStatusData.prev.absent) - 1) : 0)"></app-kpi-line-block>
+          </div>
+          <div class="flex-elastic mrg10L">
+            <app-kpi-line-block title="Home Office" [digitsInfo]="'1.0-0'" i18n-title
+                                [value]="employeeStatusData.homeOffice || 0"
+                                [diffDirection]="employeeStatusData.homeOffice / (employeeStatusData.prev.homeOffice || 1)"
+                                [diff]="(employeeStatusData.prev.homeOffice > 0 ? math.abs((employeeStatusData.homeOffice / employeeStatusData.prev.homeOffice) - 1) : 0)"></app-kpi-line-block>
+          </div>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="grid-line-block flex-column">
+          <app-kpi-line-block title="Horas extras" [digitsInfo]="'1.1-1'" i18n-title
+                              [value]="generalData.overtimeHours"
+                              [diffDirection]="generalData.overtimeHours / (generalData.prev.overtimeHours || 1)"
+                              [diff]="(generalData.prev.overtimeHours > 0 ? math.abs((generalData.overtimeHours / generalData.prev.overtimeHours) - 1) : 0)"></app-kpi-line-block>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="grid-line-block flex-column"
+             matTooltip="Tempo médio de permanência na empresa" i18n-matTooltip>
+          <app-kpi-line-block title="TMP" [onlyText]="true" [hidePercent]="true" i18n-title="Abreviação para Tempo Médio de Permanência"
+                              [value]="generalData.avgRetentionTime | formatTime"></app-kpi-line-block>
+        </div>
+
+      </div>
+
+      <div class="card flex-column" style="grid-area: card1;">
+        <div class="full-width flex-row">
+          <app-option-toggle option1Text="Horas trabalhadas por dia" i18n-option1Text i18n-option2Text [option1Value]="2"
+                             [(value)]="card1Toogle" [option1BgColor]="status.primaryColor"
+                             [option2BgColor]="status.primaryColor" [color]="status.primaryColor"
+                             [bgColor]="status.primaryBgColor" [fontSize]="12"
+                             [height]="32" [width]="368"
+                             option2Text="Horas extras por semana" [option2Value]="1"></app-option-toggle>
+          <div class="chart-legend font-medium" style="margin-left: auto;">
+            <div class="chart-legend-color" [style.background-color]="status.chartColors[0]"></div>
+            <div class="mrg4L" i18n>
+              Horas regulares
+            </div>
+            <div class="chart-legend-color mrg12L" [style.background-color]="status.chartColors[1]"></div>
+            <div class="mrg4L" i18n>
+              Horas extras
+            </div>
+            <div class="chart-legend-color mrg12L" [style.background-color]="status.chartColors[2]"></div>
+            <div class="mrg4L" i18n>
+              Home Office
+            </div>
+          </div>
+        </div>
+        <div class="full-width h100 mrg10T flex-elastic overflow-hidden" #chart1Container>
+          <dx-chart [palette]="status.chartColors.length ? status.chartColors : null" [dataSource]="byDayData" *ngIf="card1Toogle === 2">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxi-series valueField="regular" name="Horas regulares"></dxi-series>
+            <dxi-series valueField="overtime" name="Horas extras"></dxi-series>
+            <dxi-series valueField="homeOffice" name="Home Office"></dxi-series>
+            <dxo-size [width]="chart1Container.offsetWidth" [height]="chart1Container.offsetHeight"></dxo-size>
+            <dxo-common-series-settings cornerRadius="4" argumentField="caption"
+                                        type="stackedBar"></dxo-common-series-settings>
+            <dxi-value-axis [visible]="false">
+              <dxo-grid [visible]="false"></dxo-grid>
+            </dxi-value-axis>
+            <dxo-legend verticalAlignment="top" horizontalAlignment="left" backgroundColor="#fafafa"
+                        [border]="{cornerRadius: 3}" itemTextPosition="right" [font]="{size: 10}" [visible]="false"
+                        position="inside"></dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-chart>
+          <dx-chart [palette]="status.chartColors.length ? status.chartColors : null" [dataSource]="byWeekData" *ngIf="card1Toogle === 0">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxi-series valueField="worked" name="Horas trabalhadas" i18n-name></dxi-series>
+            <dxi-series valueField="overtime" name="Horas extras" i18n-name></dxi-series>
+            <dxo-size [width]="chart1Container.offsetWidth" [height]="chart1Container.offsetHeight"></dxo-size>
+            <dxo-common-series-settings cornerRadius="4" argumentField="caption"
+                                        type="stackedBar"></dxo-common-series-settings>
+            <dxi-value-axis [visible]="false">
+              <dxo-grid [visible]="false"></dxo-grid>
+            </dxi-value-axis>
+            <dxo-legend verticalAlignment="top" horizontalAlignment="left" backgroundColor="#fafafa"
+                        [border]="{cornerRadius: 3}" itemTextPosition="right" [font]="{size: 10}" [visible]="false"
+                        position="inside"></dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-chart>
+          <dx-chart [palette]="status.chartColors.length ? status.chartColors : null" [dataSource]="byWeekOvertimeData" *ngIf="card1Toogle === 1">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxi-series valueField="overtime" name="Horas extras"></dxi-series>
+            <dxi-series valueField="approved" name="Aprovadas"></dxi-series>
+            <dxi-series valueField="rejected" name="Rejeitadas" i18n-name></dxi-series>
+            <dxo-size [width]="chart1Container.offsetWidth" [height]="chart1Container.offsetHeight"></dxo-size>
+            <dxo-common-series-settings cornerRadius="4" argumentField="caption"
+                                        type="stackedBar"></dxo-common-series-settings>
+            <dxi-value-axis [visible]="false">
+              <dxo-grid [visible]="false"></dxo-grid>
+            </dxi-value-axis>
+            <dxo-legend verticalAlignment="top" horizontalAlignment="left" backgroundColor="#fafafa"
+                        [border]="{cornerRadius: 3}" itemTextPosition="right" [font]="{size: 10}" [visible]="false"
+                        position="inside"></dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-chart>
+        </div>
+      </div>
+
+      <div class="card flex-column" style="grid-area: card2;">
+        <div class="full-width">
+          <app-option-toggle option1Text="Funcionários por departamento" i18n-option1Text i18n-option2Text [option1Value]="0"
+                             [(value)]="card2Toogle" [option1BgColor]="status.primaryColor"
+                             [option2BgColor]="status.primaryColor" [color]="status.primaryColor"
+                             [bgColor]="status.primaryBgColor" [fontSize]="12"
+                             [height]="32" [width]="368"
+                             option2Text="Horas por departamento" [option2Value]="1"></app-option-toggle>
+        </div>
+        <div class="flex-elastic full-width mrg10T smaller-1" style="overflow:hidden;" #chart2Container>
+          <dx-pie-chart *ngIf="card2Toogle === 0" title=""
+                        [palette]="status.chartColors.length ? status.chartColors : null"
+                        [dataSource]="byDepartmentData" (onLegendClick)="legendClickHandler($event)">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxo-size [height]="chart2Container.offsetHeight - 10"
+                      [width]="chart2Container.offsetWidth - 10"></dxo-size>
+            <dxi-series argumentField="caption" valueField="employees"></dxi-series>
+            <dxo-legend itemsAlignment="center" horizontalAlignment="right" [visible]="true" [columnCount]="1"
+                        [columnItemSpacing]="8" [orientation]="'vertical'">
+              <dxo-font [size]="10"></dxo-font>
+              <dxo-margin [bottom]="8" [left]="8" [right]="8" [top]="8"></dxo-margin>
+            </dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-pie-chart>
+          <dx-pie-chart *ngIf="card2Toogle === 1" title=""
+                        [palette]="status.chartColors.length ? status.chartColors : null"
+                        [dataSource]="byDepartmentHoursData"
+                        (onLegendClick)="legendClickHandler($event)">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxo-size [height]="chart2Container.offsetHeight - 10"
+                      [width]="chart2Container.offsetWidth - 10"></dxo-size>
+            <dxi-series argumentField="caption" valueField="hours"></dxi-series>
+            <dxo-legend itemsAlignment="center" horizontalAlignment="right" [visible]="true" [columnCount]="1"
+                        [columnItemSpacing]="8" [orientation]="'vertical'">
+              <dxo-font [size]="10"></dxo-font>
+              <dxo-margin [bottom]="8" [left]="8" [right]="8" [top]="8"></dxo-margin>
+            </dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-pie-chart>
+        </div>
+      </div>
+
+      <div class="card" style="grid-area: card3;">
+        <div class="h100 full-width" style="overflow:hidden;" #chart3Container>
+          <dx-data-grid [columns]="employeeColumns" [dataSource]="employeeRankingData" [height]="chart3Container.offsetHeight">
+            <dxo-search-panel [visible]="false"></dxo-search-panel>
+            <dxo-paging [enabled]="false"></dxo-paging>
+            <div *dxTemplate="let data of 'timeTemplate'">
+              {{data.value | formatTime}}
+            </div>
+            <div *dxTemplate="let data of 'decimalTemplate'">
+              {{data.value | number:'1.1-1'}}
+            </div>
+          </dx-data-grid>
+        </div>
+      </div>
+
+      <div class="card flex-column" style="grid-area: card4; overflow: hidden;">
+        <div class="full-width">
+          <app-option-toggle option1Text="Distribuição por turnos" [option1Value]="0" [(value)]="card4Toogle"
+                             [option1BgColor]="status.primaryColor"
+                             [option2BgColor]="status.primaryColor" [color]="status.primaryColor"
+                             [bgColor]="status.primaryBgColor" [fontSize]="12"
+                             [height]="32" [width]="368" i18n-option1Text i18n-option2Text
+                             option2Text="Motivos de ausências" [option2Value]="1"></app-option-toggle>
+        </div>
+        <div class="flex-elastic full-width mrg10T" style="overflow:hidden;" #chart4Container>
+          <dx-pie-chart *ngIf="card4Toogle === 0" class="full-width"
+                        [palette]="status.chartColors.length ? status.chartColors : null"
+                        [dataSource]="byShiftData" (onLegendClick)="legendClickHandler($event)">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxo-size [height]="chart4Container.offsetHeight"
+                      [width]="chart4Container.offsetWidth"></dxo-size>
+            <dxi-series argumentField="caption" valueField="employees"></dxi-series>
+            <dxo-legend itemsAlignment="center" horizontalAlignment="right" [visible]="true" [columnCount]="1"
+                        [columnItemSpacing]="8" [orientation]="'vertical'">
+              <dxo-font [size]="10"></dxo-font>
+              <dxo-margin [bottom]="8" [left]="8" [right]="8" [top]="8"></dxo-margin>
+            </dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-pie-chart>
+          <dx-pie-chart *ngIf="card4Toogle === 1" class="full-width"
+                        [palette]="status.chartColors.length ? status.chartColors : null"
+                        [dataSource]="byAbsenceReasonData" (onLegendClick)="legendClickHandler($event)">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxo-size [height]="chart4Container.offsetHeight"
+                      [width]="chart4Container.offsetWidth"></dxo-size>
+            <dxi-series argumentField="caption" valueField="count"></dxi-series>
+            <dxo-legend itemsAlignment="center" horizontalAlignment="right" [visible]="true" [columnCount]="1"
+                        [columnItemSpacing]="8" [orientation]="'vertical'">
+              <dxo-font [size]="10"></dxo-font>
+              <dxo-margin [bottom]="8" [left]="8" [right]="8" [top]="8"></dxo-margin>
+            </dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-pie-chart>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="full-width h100 dashboard-grid-2" style="flex-grow: 1; flex-shrink: 1;" *ngIf="true">
+
+      <div class="flex-center grid-area-line">
+
+        <div class="grid-line-block flex-row">
+          <app-kpi-line-block title="Horas trabalhadas (mês)" [digitsInfo]="'1.0-0'" i18n-title
+                              [value]="monthlyData.totalHours" [hidePercent]="true"></app-kpi-line-block>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="grid-line-block flex-row">
+
+          <app-kpi-line-block title="Meta atingida" [digitsInfo]="'1.0-0'" i18n-title
+                              [value]="monthlyData.targetHours"
+                              [hidePercent]="true"></app-kpi-line-block>
+
+          <div class="s12 mrg15L">
+            <ngx-gauge [type]="'full'" [value]="monthlyData.targetPercent" [append]="'%'" [min]="0"
+                       [max]="100"
+                       [foregroundColor]="'#06c270'" [thick]="4" [size]="60"></ngx-gauge>
+          </div>
+
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="grid-line-block flex-row">
+          <div class="flex-elastic">
+            <app-kpi-line-block title="Férias agendadas" [digitsInfo]="'1.0-0'" i18n-title
+                                [value]="monthlyData.vacationDays"
+                                [hidePercent]="true"></app-kpi-line-block>
+          </div>
+          <div class="flex-elastic mrg10L">
+            <app-kpi-line-block title="Dias de afastamento" [digitsInfo]="'1.0-0'" i18n-title
+                                [value]="monthlyData.leaveDays"
+                                [hidePercent]="true"></app-kpi-line-block>
+          </div>
+          <div class="flex-elastic flex-row mrg10L">
+
+            <app-kpi-line-block title="Total de ausências" [digitsInfo]="'1.0-0'" i18n-title
+                                [value]="monthlyData.totalAbsences"
+                                [hidePercent]="true"></app-kpi-line-block>
+
+            <div class="s12 mrg15L">
+              <ngx-gauge [type]="'full'" [value]="monthlyData.absencePercent" [append]="'%'" [min]="0"
+                         [max]="100"
+                         [foregroundColor]="'#ff3b3b'" [thick]="4" [size]="60"></ngx-gauge>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="grid-line-block flex-row">
+
+          <app-kpi-line-block title="Produtividade" [digitsInfo]="'1.0-0'" i18n-title
+                              [value]="monthlyData.productivityScore"
+                              [hidePercent]="true"></app-kpi-line-block>
+
+          <div class="s12 mrg15L">
+            <ngx-gauge [type]="'full'" [value]="monthlyData.productivityPercent" [append]="'%'" [min]="0"
+                       [max]="100"
+                       [foregroundColor]="'#29bdff'" [thick]="4" [size]="60"></ngx-gauge>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card mrg0A h100 pad10A flex-column" style="grid-area: card1; position:relative;">
+        <div class="full-width flex-row">
+          <app-option-toggle option1Text="Presença por semana" i18n-option1Text i18n-option2Text [option1Value]="0"
+                             [(value)]="card5Toogle" [option1BgColor]="status.primaryColor"
+                             [option2BgColor]="status.primaryColor" [color]="status.primaryColor"
+                             [bgColor]="status.primaryBgColor" [fontSize]="12"
+                             [height]="32" [width]="368"
+                             option2Text="Produtividade por semana" [option2Value]="1"></app-option-toggle>
+          <div class="chart-legend font-medium" style="margin-left: auto;">
+            <div class="chart-legend-color bg-primary-color"></div>
+            <div class="mrg4L" i18n>
+              Presentes
+            </div>
+            <div class="chart-legend-color mrg12L bg-success"></div>
+            <div class="mrg4L" i18n>
+              Home Office
+            </div>
+            <div class="chart-legend-color mrg12L bg-danger"></div>
+            <div class="mrg4L" i18n>
+              Ausências
+            </div>
+          </div>
+        </div>
+        <div class="full-width mrg10T flex-elastic" style="z-index: 1; overflow: hidden;" #chart5Container>
+          <dx-chart [palette]="[status.primaryColor, '#06c270', '#ff3b3b']" [dataSource]="weeklyAttendanceData"
+                    *ngIf="card5Toogle === 0">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxi-series valueField="present" name="Presentes"
+                        i18n-name></dxi-series>
+            <dxi-series valueField="homeOffice" name="Home Office"
+                        i18n-name></dxi-series>
+            <dxi-series valueField="absent" name="Ausências"
+                        i18n-name></dxi-series>
+            <dxo-size [width]="chart5Container.offsetWidth"
+                      [height]="chart5Container.offsetHeight"></dxo-size>
+            <dxo-common-series-settings cornerRadius="4" argumentField="caption"
+                                        type="bar"></dxo-common-series-settings>
+            <dxi-value-axis [visible]="false">
+              <dxo-grid [visible]="false"></dxo-grid>
+            </dxi-value-axis>
+            <dxo-legend verticalAlignment="top" horizontalAlignment="left" backgroundColor="#fafafa"
+                        [border]="{cornerRadius: 3}" itemTextPosition="right" [font]="{size: 10}" [visible]="false"
+                        position="inside"></dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-chart>
+          <dx-chart [palette]="[status.primaryColor, '#06c270', '#ff3b3b']" [dataSource]="weeklyProductivityData"
+                    *ngIf="card5Toogle === 1">
+            <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+            <dxi-series valueField="productivity" name="Produtividade"
+                        i18n-name></dxi-series>
+            <dxi-series valueField="target" name="Meta"
+                        i18n-name></dxi-series>
+            <dxo-size [width]="chart5Container.offsetWidth"
+                      [height]="chart5Container.offsetHeight"></dxo-size>
+            <dxo-common-series-settings cornerRadius="4" argumentField="caption"
+                                        type="bar"></dxo-common-series-settings>
+            <dxi-value-axis [visible]="false">
+              <dxo-grid [visible]="false"></dxo-grid>
+            </dxi-value-axis>
+            <dxo-legend verticalAlignment="top" horizontalAlignment="left" backgroundColor="#fafafa"
+                        [border]="{cornerRadius: 3}" itemTextPosition="right" [font]="{size: 10}" [visible]="false"
+                        position="inside"></dxo-legend>
+            <dxo-export [enabled]="false"></dxo-export>
+          </dx-chart>
+        </div>
+      </div>
+
+      <div class="card mrg0A pad10A h100" style="grid-area: card2;">
+        <div class="h100 full-width" style="overflow:hidden;" #chart6Container>
+          <dx-data-grid [columns]="departmentColumns" [dataSource]="departmentPerformanceData" [height]="chart6Container.offsetHeight">
+            <dxo-search-panel [visible]="false"></dxo-search-panel>
+            <dxo-paging [enabled]="false"></dxo-paging> -->

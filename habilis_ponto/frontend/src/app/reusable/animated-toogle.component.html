@@ -1,0 +1,8 @@
+<div class="toogle-base" [class.toogle-base-checked]="value" (click)="toggle()">
+  <div class="base checked" [@backState]="value ? 'enabled' : 'disabled'">
+    <fa-icon [icon]="['fas', 'check']"></fa-icon>
+  </div>
+  <div class="base not-checked" [@backState2]="!value ? 'enabled' : 'disabled'">
+    <fa-icon [icon]="['fas', 'times']"></fa-icon>
+  </div>
+</div>

@@ -1,0 +1,304 @@
+<audio #msgReceived src="https://statics.atenderbem.com/assets/audio/msg_received.mp3" hidden preload="auto"
+       class="hidden"></audio>
+<audio #msgNotification src="https://statics.atenderbem.com/assets/audio/msg_notification.mp3" hidden preload="auto"
+       class="hidden"></audio>
+<audio #ringingAlert src="https://statics.atenderbem.com/assets/audio/phone_ringing.mp3" hidden preload="auto"
+       class="hidden"></audio>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
+<div class="content-wrapper" [@.disabled]="status.disableAnimations"
+     (window:keydown)="altDown($event)" (window:keyup)="altUp($event)" (click)="baseClick()">
+    <div class="content-wrapper flex-column">
+        <div class="header-base header-bg header-fg">
+            <div class="header-logo" *ngIf="!status.isMobile">
+                <img *ngIf="status.iconPrefix"
+                     src="https://static-styles.atenderbem.com/{{status.iconPrefix}}/{{status.isMobile ? 'mobile' : 'header'}}.svg"/>
+            </div>
+            <div class="header-splitter"></div>
+            <div class="header-menu">
+
+                <div *ngIf="status.user && [2, 4].includes(status.user?.type) && status.isMobile" class="mrg10R"
+                     matTooltip="Painel" i18n-matTooltip [routerLink]="['/base', 'agentdashboard']">
+                    <ca-header-menu-item [selectedMenu]="status.selectedMenu" title="Painel"
+                                         section="agentdashboard" icon="tachometer" i18n-title></ca-header-menu-item>
+                </div>
+
+                <div *ngIf="status.user && [2, 4].includes(status.user?.type) && !status.isMobile" class="mrg10R"
+                     matTooltip="Painel" i18n-matTooltip [matMenuTriggerFor]="panelMenu">
+                    <ca-header-menu-item [selectedMenu]="status.selectedMenu" title="Painel"
+                                         section="agentdashboard" icon="tachometer" i18n-title></ca-header-menu-item>
+                </div>
+                <mat-menu #panelMenu="matMenu" xPosition="before">
+                    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" title="Painel de filas"
+                            [routerLink]="['/base', 'agentdashboard']">
+                        Filas
+                    </button>
+                    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" title="Minhas tarefas"
+                            [routerLink]="['/base', 'agenttasksdashboard']" *ngIf="!status.disableCRM">
+                        Minhas tarefas
+                    </button>
+                </mat-menu>
+
+            
+                <div *ngIf="status.user && status.adminTypes.includes(status.user?.type)" class="mrg10R"
+                     matTooltip="Gestão de ponto" [matMenuTriggerFor]="dashboards" i18n-matTooltip>
+                    <ca-header-menu-item [selectedMenu]="status.selectedMenu" title="Gestão de ponto" section="clockindashboard"
+                                         icon="clock" i18n-title></ca-header-menu-item>
+                </div>
+                <mat-menu #dashboards="matMenu" xPosition="before">
+                    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" title="Atendimentos"
+                            [routerLink]="['/base', 'clockindashboard']" i18n
+                            *ngIf="status.chatCenterEnabled">
+                        Gestão de pontos
+                    </button>
+                    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" title="CRM Geral"
+                            [routerLink]="['/base', 'reports', 'clockinreports']"
+                            *ngIf="!status.disableCRM">
+                        Emitir relatórios
+                    </button>
+                </mat-menu>
+
+
+          
+                <div class="mrg10R" matTooltip="Tarefas" (click)="toogleTasks()" i18n-matTooltip
+                     *ngIf="status.taskManagerEnabled && !status.gatewayMode && status.user.tasksenabled && !status.disableCRM">
+                    <ca-header-menu-item title="Tarefas" section="tasks" i18n-title icon="tasks"></ca-header-menu-item>
+                </div>
+
+
+                <div *ngIf="status.user && !status.isMobile" i18n-matTooltip
+                     class="mrg10R" matTooltip="Notificações" #notificationsBtnDiv>
+                    <ca-header-menu-item [selectedMenu]="status.selectedMenu" title="Notificações"
+                                         section="notifications"
+                                         (click)="showNotifications(notificationsBtnDiv)" [smallBadge]="true"
+                                         icon="bell" i18n-title
+                                         [badge]="status.notifications.length"></ca-header-menu-item>
+                </div>
+
+                <div class="mrg10R" matTooltip="Ajuda" (click)="toogleSupportChat()" i18n-matTooltip
+                     *ngIf="status.supportChatEnabled && status.supportChatDomain && status.supportChatQueueId && !status.isMobile">
+                    <ca-header-menu-item title="Ajuda" section="help" i18n-title [disabled]="!status.supportChatLoaded"
+                                         [smallBadge]="true"
+                                         [badge]="status.supportChatNewMessages ? 10 : 0"
+                                         icon="question"></ca-header-menu-item>
+                </div>
+
+                <div *ngIf="status.user && status.adminTypes.includes(status.user?.type)" i18n-matTooltip
+                     class="mrg10R" matTooltip="Configurações" [matMenuTriggerFor]="configMenu">
+                    <ca-header-menu-item [selectedMenu]="status.selectedMenu" title="Configurações" section="config"
+                                         icon="cog"
+                                         i18n-title></ca-header-menu-item>
+                </div>
+                <mat-menu #configMenu="matMenu" xPosition="before">
+
+                  
+                    <button mat-menu-item title="Usuários" [routerLink]="['/base', 'config', 'userslist']"
+                            *ngIf="status.adminTypesNoSup.includes(status.user?.type)" i18n-title i18n>
+                        Usuários
+                    </button>
+                    <button mat-menu-item [matMenuTriggerFor]="grupos" title="Grupos"
+                            *ngIf="status.adminTypesNoSup.includes(status.user?.type)" i18n-title i18n>
+                        Grupos
+                    </button>
+                    <mat-menu #grupos="matMenu" xPosition="before">
+                        <button mat-menu-item [routerLink]="['/base', 'config', 'internalgroupslist']" i18n>
+                            Grupos de Chat Interno
+                        </button>
+                        <button mat-menu-item [routerLink]="['/base', 'config', 'contactgroupslist']" i18n>
+                            Grupos de Acesso
+                        </button>
+                    </mat-menu>
+                    <button mat-menu-item title="Log de Auditoria" [routerLink]="['/base', 'config', 'auditlog']"
+                            *ngIf="status.adminTypesNoSup.includes(status.user?.type)" i18n-title i18n>
+                        Log de Auditoria
+                    </button>
+                    <button mat-menu-item title="Geral" [routerLink]="['/base', 'config', 'generalconfig']"
+                            *ngIf="status.adminTypesNoSup.includes(status.user?.type)" i18n-title i18n>
+                        Geral
+                    </button>
+
+                </mat-menu>
+
+                <div class="mrg10R" matTooltip="Sair" (click)="logout()" i18n-matTooltip *ngIf="!status.isMobile">
+                    <ca-header-menu-item [selectedMenu]="status.selectedMenu" title="Sair" section="poweroff" i18n-title
+                                         icon="power-off"></ca-header-menu-item>
+                </div>
+
+                <div *ngIf="status.isMobile" i18n-matTooltip
+                     class="mrg10R" matTooltip="Opções" [matMenuTriggerFor]="mobileMenu">
+                    <ca-header-menu-item [selectedMenu]="status.selectedMenu" title="Opções" section="mobileOptions"
+                                         [smallBadge]="true"
+                                         icon="ellipsis-v" i18n-title
+                                         [badge]="status.notifications.length"></ca-header-menu-item>
+                </div>
+
+                <mat-menu #mobileMenu="matMenu" xPosition="before">
+                    <div class="full-width flex-row flex-center" style="height: 48px;">
+                        <img style="max-height: 100%;" *ngIf="status.iconPrefix"
+                             src="https://static-styles.atenderbem.com/{{status.iconPrefix}}/login.svg"/>
+                    </div>
+                    <button class="mat-menu-min-width" title="Ajuda" mat-menu-item i18n-title i18n
+                            (click)="toogleSupportChat()"
+                            *ngIf="status.supportChatEnabled && status.supportChatDomain && status.supportChatQueueId">
+                        Ajuda
+                    </button>
+                    <button class="full-width" mat-menu-item title="Notificações" (click)="showNotifications()" i18n-title>
+                        <div class="full-width flex-row align-items-center">
+                            <div class="flex-elastic" i18n>
+                                Notificações
+                            </div>
+                            <div class="notification-button-badge header-alert-bg" *ngIf="status.notifications.length">
+                                <div>{{ status.notifications.length }}</div>
+                            </div>
+                        </div>
+                    </button>
+                    <button mat-menu-item title="Sair" (click)="logout()" i18n-title i18n
+                            *ngIf="!status.hideLogoutButton">
+                        Sair
+                    </button>
+                </mat-menu>
+
+
+
+                <div class="mrg-left-auto mrg12R" *ngIf="screen.recording" [@callVisibilityState]="'visible'">
+                    <ca-header-recording [now]="status.now"></ca-header-recording>
+                </div>
+
+                <div class="mrg-left-auto flex-row mrg12R">
+                    <div class="header-menu-alert animated flash duration-2000 infinite bg-danger"
+                         *ngIf="status.adminDefaultPassword"
+                         matTooltip="O usuário admin ainda está configurado com a senha padrão. Realize a troca o mais rápido possível." i18n-matTooltip>
+                        <fa-icon [icon]="['fas', 'key']"></fa-icon>
+                    </div>
+                    <div class="header-menu-alert animated flash duration-2000 infinite bg-warning"
+                         *ngIf="status.socketUnstable"
+                         matTooltip="Conexão com o servidor instável" i18n-matTooltip>
+                        <fa-icon [icon]="['fas', 'handshake-alt-slash']"></fa-icon>
+                    </div>
+                    <div class="header-menu-alert animated flash duration-2000 bg-blue-darken-1 pointer"
+                         *ngIf="status.multipleConnections && !status.socketUnstable" matRipple
+                            (click)="logoutAllOtherDevices()"
+                         matTooltip="Você está conectado em múltiplos dispositivos. Clique aqui para deslogar dos demais dispositivos." i18n-matTooltip>
+                        <fa-icon [icon]="['fas', 'phone-laptop']"></fa-icon>
+                    </div>
+                    <div class="header-menu-alert animated flash duration-2000 bg-danger"
+                         *ngIf="status.offLineChatQueues"
+                         i18n-matTooltip
+                         matTooltip="Uma ou mais filas perderam a autenticação com o servidor. Caso a situação não se resolva em alguns instantes comunique o supervisor / administrador. Será necessário reautenticar a fila relendo o qrcode a partir do smartphone ou reintroduzir os dados de autenticação. Filas com problema: {{status.offLineChatQueuesNames.join(',')}}">
+                        <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                    </div>
+                    <div class="header-menu-alert animated flash duration-2000 bg-info"
+                         *ngIf="(status.user && [0, 1, 98, 99].includes(status.user?.type) && status.config?.markforsweep)"
+                         i18n-matTooltip
+                         matTooltip="A cota de armazenamento foi excedida. Uma limpeza automática foi agendada para {{status.config?.cutdate}}. Nesta data, atendimentos antigos serão apagados e não poderão ser recuperados. Para saber mais, acesse Configurações -> Geral.">
+                        <fa-icon [icon]="['fad', 'hdd']"></fa-icon>
+                    </div>
+                </div>
+
+            </div>
+            <div class="header-splitter"></div>
+            <div class="header-user" *ngIf="!status.isMobile">
+                <ca-userdropdown [headerFontColor]="status.headerFontColor"></ca-userdropdown>
+            </div>
+        </div>
+        <div class="header-mobile-alert" *ngIf="status.isMobile && (status.socketUnstable || status.offLineChatQueues)"
+             [class.bg-warning]="status.socketUnstable"
+             [class.bg-danger]="!status.socketUnstable && status.offLineChatQueues">
+            <div class="flex-rigid animated flash duration-2000">
+                <fa-icon *ngIf="status.socketUnstable" [icon]="['fas', 'handshake-alt-slash']"></fa-icon>
+                <fa-icon *ngIf="!status.socketUnstable && status.offLineChatQueues"
+                         [icon]="['fas', 'times-circle']"></fa-icon>
+            </div>
+            <div class="flex-elastic overflow-hidden no-break-with-ellipses mrg10L">
+                <span i18n *ngIf="status.socketUnstable">Conexão com o servidor instável</span>
+                <span i18n *ngIf="!status.socketUnstable && status.offLineChatQueues">Uma ou mais filas perderam a autenticação com o servidor. Caso a situação não se resolva em alguns instantes comunique o supervisor / administrador. Será necessário reautenticar a fila relendo o qrcode a partir do smartphone ou reintroduzir os dados de autenticação. Filas com problema: {{ status.offLineChatQueuesNames.join(',') }}</span>
+            </div>
+        </div>
+        <div class="content-base">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="status.getExten && status.user?.type === 2" class="overlay">
+    <div class="card pad0A overflow-hidden" style="width: 350px;">
+        <div class="dialog-content">
+            <div class="mrg10T s12 fg-black-lighten-1">
+                Por favor, informe em qual ramal você está.
+            </div>
+            <div class="mrg10T">
+                <mat-form-field class="full-width" style="color: #222;">
+                    <mat-label i18n="Formulário para digitação de um ramal telefônico">Digite o ramal</mat-label>
+                    <input matInput type="number" step="1" [(ngModel)]="exten" name="exten" placeholder="Digite o ramal"
+                           i18n-placeholder="Formulário para digitação de um ramal telefônico"
+                           required class="full-width" (keypress)="keyp($event)" tabindex="1" #extenInput/>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="dialog-buttons">
+            <button type="button" class="btn btn-black-lighten-5" matRipple (click)="closeExtenDialog()" tabindex="3"
+                    i18n>
+                Cancelar
+            </button>
+            <button type="button" class="btn btn-success mrg10L" [disabled]="!exten" matRipple (click)="sendExten()"
+                    tabindex="2" i18n>
+                Salvar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="status.showNotifications" class="notifications-base" [@callVisibilityState]="'visible'"
+     (click)="status.showNotifications = false">
+    <div class="notifications-dialog"
+         [style.left.px]="status.notificationsDialogOffset ? status.notificationsDialogOffset : null">
+        <div class="full-width flex-rigid flex-center flex-row pad12A">
+            <div class="flex-elastic font-semi-bold s14" i18n>
+                Notificações
+            </div>
+            <div class="pointer fg-blue flex-rigid s12 pad4A" style="border-radius: 4px;" matRipple
+                 (click)="markAllNotificationsAsReaded($event)" i18n>
+                Limpar tudo
+            </div>
+        </div>
+        <div class="full-width pad8R pad12L pad8B flex-elastic scroll1 scroll-y">
+            <div class="notification-item" *ngFor="let n of status.notifications; let i = index;" matRipple
+                 [@callVisibilityState]="'visible'" (click)="markNotificationAsReaded(n.id, $event)">
+                <div class="notification-item-icon" [class.notification-warning]="n.type === 2"
+                     [class.notification-success]="n.type === 1" [class.notification-info]="n.type === 0"
+                     [class.notification-danger]="n.type === 3">
+                    <fa-icon
+                            [icon]="['far', n.type === 1 ? 'check' : n.type === 0 ? 'info' : 'exclamation-triangle']"></fa-icon>
+                </div>
+                <div class="flex-elastic flex-column mrg8L">
+                    <div class="full-width s12 font-regular">
+                        {{ n.text }}
+                    </div>
+                    <div class="full-width s10 font-light text-right mrg4T">
+                        {{ n.date | date: 'short' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-close-btn" matRipple (click)="status.showNotifications = false" i18n>
+            Fechar
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Não usou .class para que a animação fique correta -->
+<div *ngIf="status.showTasks" class="tasks-base {{phone.showPhone ? 'tasks-with-phone-opened' : ''}}"
+     [@openContentState]="'opened'">
+    <ca-tasks class="full-size"></ca-tasks>
+</div>
+
+<dx-tooltip *ngIf="status.advToolTipElement && (status.advToolTipHelpData.img || status.advToolTipHelpData.text)"
+            [target]="status.advToolTipElement" position="right"
+            [(visible)]="status.showDetailedTooltip" [hideOnOutsideClick]="true">
+    <div style="max-width: 250px; text-align: left; text-wrap: wrap;" class="overflow-hidden"
+         [innerHTML]="status.advToolTipHelpData.text">
+    </div>
+</dx-tooltip>

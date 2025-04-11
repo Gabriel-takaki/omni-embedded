@@ -1,0 +1,11 @@
+<div class="full-width h100 flex-row overflow-hidden align-items-center justify-content-start">
+  <div class="flex-rigid">
+    <img *ngIf="icon" [src]="sanitizer.bypassSecurityTrustResourceUrl(icon)" alt="Ícone" i18n-alt
+         style="height: 16px; border-radius: 4px;"/>
+  </div>
+  <div class="flex-column mrg10L font-medium overflow-hidden flex-elastic">
+    <div class="full-width no-break-with-ellipses">
+      {{title}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="full-width s14">
+      Por favor, selecione um intervalo de datas.
+    </div>
+    <mat-form-field class="full-width mrg6T">
+      <mat-label i18n>Selecione um intervalo</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Data inicial" i18n-placeholder [(ngModel)]="startDate">
+        <input matEndDate placeholder="Data final" i18n-placeholder [(ngModel)]="endDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" i18n
+            class="btn btn-transparent" (click)="result(false)">
+      Cancelar
+    </button>
+    <button matRipple type="button" id="yesButton" i18n [disabled]="!startDate || !endDate" tabindex="0"
+            [matRippleDisabled]="!startDate || !endDate" class="mrg15L btn btn-success" (click)="result(true)">
+      Selecionar
+    </button>
+  </div>
+</div>

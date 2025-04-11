@@ -1,0 +1,118 @@
+.font-light {
+  font-weight: 300;
+}
+
+.font-regular {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semi-bold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+.s44 {
+  font-size: 44px;
+}
+
+.s40 {
+  font-size: 40px;
+}
+
+.s36 {
+  font-size: 36px;
+}
+
+.p1, .s32 {
+  font-size: 32px;
+}
+
+.t4, .s24 {
+  font-size: 24px;
+}
+
+.t4, .s20 {
+  font-size: 20px;
+}
+
+.s18 {
+  font-size: 18px;
+}
+
+.t5, .p2, .s16 {
+  font-size: 16px;
+}
+
+.t6, .p3, .s14 {
+  font-size: 14px;
+}
+
+.t7, .p4, .s12 {
+  font-size: 12px;
+}
+
+.p5, .s10 {
+  font-size: 10px;
+}
+
+.s8 {
+  font-size: 8px;
+}
+
+.s6 {
+  font-size: 6px;
+}
+
+.s4 {
+  font-size: 4px;
+}
+
+.h4 {
+  @extend .s20;
+  @extend .font-semi-bold;
+}
+
+.h5 {
+  @extend .s16;
+  @extend .font-semi-bold;
+}
+
+.h6 {
+  @extend .s14;
+  @extend .font-semi-bold;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.line-1 {
+  line-height: 1;
+}
+
+.white-space-initial {
+  white-space: initial;
+}
+
+.editor-bold {
+  font-weight: 600;
+}
+
+.editor-italic {
+  font-style: italic;
+}
+
+.editor-underline {
+  text-decoration: underline;
+}

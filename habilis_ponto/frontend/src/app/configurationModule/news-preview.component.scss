@@ -1,0 +1,19 @@
+@import "scss/newtypography";
+@import "scss/newcolors";
+
+.news-card-area {
+  background-color: $black-lighten-4;
+  width: 300px;
+  max-width: 300px;
+  height: 100%;
+  padding: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.news-content-area {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}

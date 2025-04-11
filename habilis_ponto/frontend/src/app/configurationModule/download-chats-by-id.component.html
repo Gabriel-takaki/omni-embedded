@@ -1,0 +1,53 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Descarregar atendimentos</div>
+    <div class="full-width s10 mrg10T">
+      Ao prosseguir, os atendimentos no intervalo de IDs informados serão baixados. Essa operação pode levar várias horas, a
+      depender da quantidade de IDs selecionados e do tamanho dos atendimentos.
+      Cada atendimento será baixado em um arquivo compactado individual, é necessário dar permissão para múltiplos
+      downloads do navegador. A permissão será solicitada após os primeiros atendimentos serem baixados, fique atento
+      para não interromper o processo.
+    </div>
+    <div class="full-width small mrg10T flex-row flex-align-center">
+      <mat-form-field>
+        <mat-label i18n>Iniciar do ID (Inclusive)</mat-label>
+        <input matInput type="number" [(ngModel)]="startAt" name="startAt" required (change)="recalc()"
+               [disabled]="processStarted"/>
+      </mat-form-field>
+      <mat-form-field class="mrg6L">
+        <mat-label i18n>Até o ID (Inclusive)</mat-label>
+        <input matInput type="number" [(ngModel)]="endAt" name="endAt" required (change)="recalc()"
+               [disabled]="processStarted"/>
+      </mat-form-field>
+      <div class="mrg5L">
+        <button matRipple type="button" tabindex="3" class="btn-slim btn btn-info small" (click)="downloadCsv()">
+          Relação de atendimentos (CSV)
+        </button>
+      </div>
+    </div>
+    <div class="full-width small mrg5T mrg5B">
+      <span i18n *ngIf="processing">
+        <fa-icon [icon]="['fas', 'spinner-third']" [spin]="true"></fa-icon>
+      </span>
+      <span class="bold" i18n>
+        Processados: {{downloaded}} de {{total}}
+      </span>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+
+    <button matRipple type="button" id="noButton" [disabled]="processing" [matRippleDisabled]="processing"
+            class="btn btn-transparent" (click)="result(false)">
+      <span i18n>Cancelar</span>
+    </button>
+    <button matRipple type="button" id="stopButton" class="mrg10L btn btn-danger" (click)="stop()"
+            *ngIf="processStarted">
+      <span i18n>Parar</span>
+    </button>
+    <button matRipple type="button" id="startButton" [disabled]="processing" [matRippleDisabled]="processing"
+            class="mrg10L btn btn-success" (click)="process()" *ngIf="!processStarted">
+      <span i18n>Iniciar</span>
+    </button>
+
+  </div>
+</div>

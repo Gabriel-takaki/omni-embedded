@@ -1,0 +1,75 @@
+<div class="flex-row font-semi-bold s14 flex-center">
+  <div class="flex-elastic">
+    {{caption}}
+  </div>
+  <div class="pointer fg-info flex-rigid mrg4L s12" i18n (click)="clearList()" *ngIf="editable">
+    Limpar lista
+  </div>
+  <div class="mrg12L flex-rigid">
+
+    <app-dialog-close-button [white]="false" [size]="status.isMobile ? 32 : 26" [rotateOnMouseOver]="false"
+                             (click)="openFileDialog()"
+                             *ngIf="list?.length < maxFiles && editable"
+                             [icon]="'plus'" toolTip="Adicionar anexo" i18n-toolTip></app-dialog-close-button>
+
+    <input type="file" hidden (change)="fileSelected($event)" #filesDialog
+           style="visibility: hidden; height: 0;" accept=".jpg,.png,.gif,.svg,.jpeg,.webp" [multiple]="true"/>
+
+    <canvas #canvasEl hidden></canvas>
+    <canvas #canvasThumbEl hidden></canvas>
+
+  </div>
+</div>
+<div class="items-list-base scroll1" [style.max-height.%]="noMaxHeight ? 1000 : null"
+     cdkDropList (cdkDropListDropped)="drop($event)">
+  <div class="mrg8T" *ngIf="!list?.length" i18n style="align-self: center; justify-self: center">
+    Nenhum item para exibir
+  </div>
+  <div class="list-item" [class.mrg4T]="i > 0" [class.first-item]="!i"
+       *ngFor="let item of list; let i = index;" cdkDrag>
+    <div class="full-size flex-row flex-center">
+      <div style="width: 46px;" class="flex-rigid flex-row flex-center h100 s16">
+        <div class="move-cursor pad4A flex-row flex-center" cdkDragHandle>
+          <div>
+            <fa-icon [icon]="['far', 'ellipsis-v']"></fa-icon>
+          </div>
+          <div class="mrg2L">
+            <fa-icon [icon]="['far', 'ellipsis-v']"></fa-icon>
+          </div>
+        </div>
+      </div>
+      <div style="width: 64px; height: 64px;" class="flex-rigid flex-row flex-center">
+        <img class="img-preview" [src]="item.preview" *ngIf="!item.id"/>
+        <img class="img-preview" [src]="baseUrl + '/static/downloadMedia?id=' + item.id + '&download=true&auth=' + item.auth" *ngIf="item.id"/>
+      </div>
+      <div class="flex-elastic mrg8L pad4T pad4B flex-column overflow-hidden s12">
+        <div class="full-width no-break-with-ellipses font-medium s12">
+          {{item.name}}
+        </div>
+        <!--        <div class="full-width font-light editable-div no-break-with-ellipses mrg2T"-->
+        <!--             data-text="Insira uma descrição para o arquivo" i18n-data-text [innerText]="item.description"-->
+        <!--             (focusout)="updateDescription($event.target.innerHTML, item)" contentEditable="true"-->
+        <!--             (keydown.enter)="removeFocus($event)" (keydown.escape)="removeFocus($event)">-->
+        <!--        </div>-->
+      </div>
+      <div class="flex-rigid flex-center flex-row mrg8L pad4T pad4B pad8R">
+        <div class="item-btn" matTooltip="Visualizar" i18n-matTooltip
+             *ngIf="item.id && item.auth && (item.mimetype?.includes('image/') || item.mimetype?.includes('video/') ||
+                    item.mimetype?.includes('application/pdf'))"
+             (click)="viewFile(item)" matRipple>
+          <fa-icon [icon]="['fas', 'eye']"></fa-icon>
+        </div>
+        <div class="item-btn" [class.mrg8L]="item.mimetype?.includes('image/') || item.mimetype?.includes('video/') ||
+                    item.mimetype?.includes('application/pdf')" matTooltip="Baixar arquivo"
+             i18n-matTooltip *ngIf="item.id && item.auth"
+             (click)="downloadFile(item)" matRipple>
+          <fa-icon [icon]="['fas', 'download']"></fa-icon>
+        </div>
+        <div class="item-btn mrg8L" matTooltip="Remover" i18n-matTooltip [class.disabled]="!editable"
+             (click)="removeListItem(item)" matRipple [matRippleDisabled]="!editable">
+          <fa-icon [icon]="['fas', 'times']"></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

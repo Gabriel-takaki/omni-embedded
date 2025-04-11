@@ -1,0 +1,6 @@
+<div (mouseenter)="rotate = true;" (mouseleave)="rotate = false;" [matTooltip]="toolTip"
+     [style.width.px]="size" [style.height.px]="size" [style.font-size.px]="size - 12"
+     [class.dialog-close-btn]="!white" [class.dialog-close-white-btn]="white"
+     [class.rotate]="rotate && rotateOnMouseOver">
+  <fa-icon [icon]="['fal', icon]" [style.color]="color ? color : null"></fa-icon>
+</div>

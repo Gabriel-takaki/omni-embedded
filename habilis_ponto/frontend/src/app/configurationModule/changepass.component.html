@@ -1,0 +1,49 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Trocar senha</div>
+    <div class="s12 font-light mrg10T" i18n>Campos marcados com * são obrigatórios</div>
+    <div class="s12 font-light mrg5T"><span i18n>Alterando senha para:</span>&nbsp;<b>{{data.fullname}}</b></div>
+    <form #thisForm="ngForm" class="mrg20T" autocomplete="new-password">
+      <div *ngIf="self">
+        <mat-form-field class="full-width">
+          <input matInput type="{{passVisible ? 'text' : 'password'}}" [(ngModel)]="password" name="firstInput"
+                 placeholder="Senha atual" #firstInput="ngModel" required autocomplete="new-password"
+                 i18n-placeholder/>
+          <button class="btn btn-square-slim mrg8R" (click)="passVisible = !passVisible"
+                  matSuffix matTooltip="Mostrar / Ocultar senha" matRipple i18n-matTooltip>
+            <fa-icon [icon]="['far', passVisible ? 'eye-slash' : 'eye']"></fa-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="full-width">
+          <input matInput type="{{newPassVisible ? 'text' : 'password'}}" [(ngModel)]="newpassword" name="newpassword"
+                 placeholder="Nova Senha" #passInput="ngModel" required autocomplete="new-password" i18n-placeholder/>
+          <button class="btn btn-square-slim mrg8R" (click)="newPassVisible = !newPassVisible"
+                  matSuffix matTooltip="Mostrar / Ocultar senha" matRipple i18n-matTooltip>
+            <fa-icon [icon]="['far', newPassVisible ? 'eye-slash' : 'eye']"></fa-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div style="margin-top: -10px;" class="mrg15B">
+        <app-password-strength [password]="newpassword" (scoreChanged)="newPassScore = $event"></app-password-strength>
+      </div>
+      <div class="full-width mrg6T" *ngIf="!self">
+        <mat-checkbox [(ngModel)]="changepass" class="mat-primary" name="changepass"
+                      style="font-weight: normal;" i18n> Forçar trocar senha
+        </mat-checkbox>
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n
+            *ngIf="data ? !data.disableCancelButton : true">
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            [matRippleDisabled]="!thisForm.valid || (status.config.passwordpolicy && newPassScore < 3)"
+            (click)="save()" [disabled]="!thisForm.valid || (status.config.passwordpolicy && newPassScore < 3)" i18n>
+      Trocar senha
+    </button>
+  </div>
+</div>

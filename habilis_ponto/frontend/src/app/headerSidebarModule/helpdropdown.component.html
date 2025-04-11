@@ -1,0 +1,42 @@
+<div class="header-btn-block">
+  <div class="header-btn"
+       [style.color]="headerFontColor" [style.color:hover]="headerFontColor">
+    <a class="pointer-cursor header-btn-icon" title="Ajuda" (click)="dropDown()"
+       [style.color]="headerFontColor" [style.color:hover]="headerFontColor">
+      <fa-icon [icon]="['far', 'question-square']"></fa-icon>
+    </a>
+    <div class="dropdown-menu float-right" [@visibilityChanged]="visibility" style="display: block;">
+      <div class="header-box-sm">
+        <div class="full-width fg-white flex-column pad10A"
+             style="background-color: #5b6467;
+background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);">
+          <div style="font-size: 130%; font-weight: bold; align-self: center;" i18n>Olá 👋, precisa de ajuda?
+          </div>
+          <div class="small mrg5T"
+               style="line-height: 1.05; text-align: center; align-self: center; color: #f8f8f8;">{{status.supportMsg}}</div>
+          <div class="bold mrg10T mrg5B pointer" style="align-self: center; font-size: 150%;"
+               (click)="copyPhone()">{{status.supportPhone}}
+            <fa-icon [icon]="['far', 'copy']"></fa-icon>
+          </div>
+        </div>
+        <div class="pad5T pad5B pad10L pad10R clearfix flex-column fg-grey-darken-3">
+          <div class="full-width mrg10T small" style="line-height: 1.1; text-align: center" i18n>Você também pode
+            oferecer feedback,
+            informar bug ou
+            sugerir novas funcionalidades.
+          </div>
+          <!--        <div class="full-width mrg10T small" style="line-height: 1.1; text-align: center">Se deseja oferecer feedback,-->
+          <!--          informar bug ou-->
+          <!--          sugerir novas funcionalidades, você também pode fazê-lo clicando no botão abaixo.-->
+          <!--        </div>-->
+          <!--        <div class="mrg10T" style="align-self: center;">-->
+          <!--          <button type="button" class="btn-slim small" matRipple (click)="openUserback()" style="border: none;">-->
+          <!--            <fa-icon [icon]="['fas', 'sparkles']"></fa-icon>-->
+          <!--            Feedback-->
+          <!--          </button>-->
+          <!--        </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

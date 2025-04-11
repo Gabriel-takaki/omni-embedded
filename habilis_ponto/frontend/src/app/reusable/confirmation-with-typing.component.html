@@ -1,0 +1,32 @@
+<div class="dialog-small">
+  <div class="dialog-content flex-column">
+    <div class="full-width h5">
+        {{ confirmationTitle }}
+    </div>
+    <div class="full-width mrg10T s14">
+        {{confirmationText}}}
+    </div>
+      <div class="mrg12T" i18n>
+          Se deseja continuar, escreva <b>{{confirmationKeyWord}}</b> no campo abaixo e em seguida clique no botão "Confirmar"
+      </div>
+    <mat-form-field class="full-width mrg16T">
+      <mat-label i18n>Palavra de segurança</mat-label>
+      <input matInput type="text" [(ngModel)]="confirmationInput" name="confirmationInput" placeholder="Palavra de segurança"
+             i18n-placeholder required maxlength="20" #confirmationInputElement/>
+    </mat-form-field>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" #noButton i18n
+            [tabIndex]="2" (keydown)="handleArrows($event, 'noButton')"
+            class="btn btn-transparent" (click)="result(false, $event)">
+      Cancelar
+    </button>
+    <button matRipple type="button" id="yesButton" #yesButton [disabled]="confirmationInput !== confirmationKeyWord"
+            [matRippleDisabled]="confirmationInput !== confirmationKeyWord" i18n
+            [tabIndex]="1" (keydown)="handleArrows($event, 'yesButton')"
+            class="mrg15L btn btn-warning" (click)="result(true, $event)">
+      Confirmar
+    </button>
+  </div>
+
+</div>

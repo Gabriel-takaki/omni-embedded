@@ -1,0 +1,42 @@
+<audio [playbackRate]="playBackSpeed" style="visibility: hidden;" #player preload="auto">
+  <source [src]="src">
+</audio>
+<div class="custom-audio-base">
+  <div class="flex-row flex-center full-width">
+    <div class="control-button" (click)="playing ? pause() : play()">
+      <fa-icon [icon]="['fas', playing ? 'pause' : 'play']"></fa-icon>
+    </div>
+    <div class="flex-rigid mrg6L">
+      <div class="seek-bar" [class.seek-bar-bg-transparent]="!resampledWaveform?.length"
+           [style.width.px]="(resampledWaveform?.length * 4) || fallBackWidth">
+        <div class="progress-color-div" [style.width.%]="(player.currentTime / duration) * 100"
+             *ngIf="resampledWaveform?.length"></div>
+        <div class="waveform-base" *ngIf="resampledWaveform?.length"
+             [style.width.px]="(resampledWaveform?.length * 4) || fallBackWidth">
+          <app-waveform-bars [waveform]="resampledWaveform" [bgColorClass]="bgColorClass"></app-waveform-bars>
+        </div>
+        <div class="range-input-base" [style.width.px]="(resampledWaveform?.length * 4) || fallBackWidth">
+          <input class="range-input" [class.range-bg]="!resampledWaveform?.length" type="range" min="0" step="0.05"
+                 [max]="duration" [value]="player.currentTime" (input)="changeEvent($event)"/>
+        </div>
+      </div>
+    </div>
+    <div class="mrg6L flex-elastic flex-row">
+      <div class="speed-button flex-rigid mrg5L" i18n-matTooltip="Reprodução de áudio" *ngIf="!compact"
+           matTooltip="Alterar velocidade de reprodução" (click)="changePlaybackRate()" matRipple>
+        {{playBackSpeed}}x
+      </div>
+      <div class="s10 mrg8L flex-elastic" *ngIf="compact">
+        {{player.currentTime | formatTime:'short'}} / {{this.duration | formatTime:'short'}}
+      </div>
+    </div>
+  </div>
+  <div class="full-width flex-row align-items-center mrg3T" style="justify-content: flex-end" *ngIf="!compact">
+    <div class="download-button" matTooltip="Baixar áudio" i18n-matTooltip (click)="downloadFile()">
+      <fa-icon [icon]="['far', 'arrow-circle-down']"></fa-icon>
+    </div>
+    <div class="s8 mrg16L">
+      {{player.currentTime | formatTime:'short'}} / {{this.duration | formatTime:'short'}}
+    </div>
+  </div>
+</div>

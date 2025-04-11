@@ -1,0 +1,32 @@
+@import "scss/newtypography";
+@import "scss/newbgcolors";
+
+.number-display {
+  margin-top: 4px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.number-data {
+  @extend .s32;
+  @extend .font-light;
+  justify-self: flex-end;
+  line-height: 1;
+}
+
+.percent-data {
+  @extend .s12;
+  @extend .font-regular;
+  justify-self: flex-start;
+  margin-left: 5px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+.percent-icon {
+  font-size: 120%;
+  margin-right: 2px;
+}

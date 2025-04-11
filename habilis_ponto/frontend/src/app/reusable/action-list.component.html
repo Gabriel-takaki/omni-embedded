@@ -1,0 +1,107 @@
+<div class="item-base" [class.base-border]="showBaseBorder" (clickOutside)="clearButton()"
+     [style.background-color]="baseColor">
+  <div class="item-cover" matRipple [class.left-border]="showBorder" [class.open-left-25]="openButton1"
+       [class.open-left-50]="openButton2" [class.open-right-25]="openButton4" [class.open-right-50]="openButton3"
+       [class.no-transition]="noTransition" [class.selected]="selected && selectionMode"
+       (panstart)="panStart($event)" (panmove)="panMove($event)" (panend)="panEnd($event)" (press)="press()"
+       (touchend)="touchEnd($event)" (swiperight)="swipeRight($event)" (swipeleft)="swipeLeft($event)"
+       (click)="click($event)" [matRippleDisabled]="true"
+       [ngStyle]="{'transform': 'translateX(' + transform + 'px)', 'border-color': borderColor, 'background-color': backgroundColor, 'color': fontColor}">
+    <div class="content-base">
+      <div class="item-picture flex-align-center flex-container-row" *ngIf="showImage && !isEvent">
+        <div class="icon z50" *ngIf="imageType === 'icon'" [style.opacity]="selectionMode ? 0 : 1"
+             [style.font-size]="imageFS.toString() + 'rem'">
+          <fa-icon [icon]="imageData"></fa-icon>
+        </div>
+        <div class="picture z50" *ngIf="imageType === 'url'" [style.opacity]="selectionMode ? 0 : 1"
+             [style.background-image]="'url(' + imageData + ')'">
+        </div>
+        <div class="icon z100" [style.opacity]="!selectionMode ? 0 : 1">
+          <fa-icon [icon]="['fal', 'circle']" class="fg-grey-lighten-2"></fa-icon>
+        </div>
+        <div class="icon z200" [style.opacity]="!selected || !selectionMode ? 0 : 1">
+          <fa-icon [icon]="['fad', 'check-circle']" class="fg-purple"></fa-icon>
+        </div>
+      </div>
+      <div class="item-title" [class.with-picture]="showImage && !isEvent">
+        <ng-container *ngIf="Array.isArray(title)">
+          <div class="flex-row">
+            <div *ngFor="let s of title; let i = index" [class.mrg10L]="i > 0 && !s.align"
+                 [style.margin-left]="s.align === 'end' ? 'auto' : null"
+                 [style.margin-right]="s.align === 'start' ? 'auto' : null">
+              <fa-icon *ngIf="s.type === 'icon'" [style.color]="s.color" [icon]="[s.group, s.icon]"></fa-icon>
+              <span *ngIf="s.type === 'text' || s.type === 'bold'" [style.color]="s.color" [style.font-weight]="s.type === 'text' ? 'normal' : 'bold'">
+                {{s.text}}
+              </span>
+              <div *ngIf="s.type === 'badge'" [style.background-color]="s.bgColor" [style.color]="s.color"
+                   class="badge pad6A" style="font-size: 80%; border-radius: 4px;">
+                {{s.text}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!Array.isArray(title)">
+          {{title}}
+        </ng-container>
+      </div>
+      <div class="item-content" [class.with-picture]="showImage && !isEvent" [class.with-time]="isEvent">
+        <ng-container *ngIf="Array.isArray(subtitle)">
+          <div class="flex-row">
+            <div *ngFor="let s of subtitle; let i = index" [class.mrg10L]="i > 0 && !s.align"
+                 [style.margin-left]="s.align === 'end' ? 'auto' : null"
+                 [style.margin-right]="s.align === 'start' ? 'auto' : null">
+              <fa-icon *ngIf="s.type === 'icon'" [style.color]="s.color" [icon]="[s.group, s.icon]"></fa-icon>
+              <span *ngIf="s.type === 'text' || s.type === 'bold'" [style.color]="s.color" [style.font-weight]="s.type === 'text' ? 'normal' : 'bold'">
+                {{s.text}}
+              </span>
+              <div *ngIf="s.type === 'badge'" [style.background-color]="s.bgColor" [style.color]="s.color"
+                   class="badge pad6A" style="font-size: 80%; border-radius: 4px;">
+                {{s.text}}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!Array.isArray(subtitle)">
+          {{subtitle}}
+        </ng-container>
+      </div>
+      <div class="item-time" *ngIf="isEvent">{{beginTime}} - {{endTime}}</div>
+    </div>
+  </div>
+  <a matRipple class="item-button-1" *ngIf="button1Enabled" (click)="buttonClick('1')"
+     [ngStyle]="{'background-color': baseColor && direction && direction !== 'right' ? baseColor : button1BgColor, 'color': button1FgColor}">
+    <div class="button-icon animated" [class.fadeIn]="popButton1" [class.popOut]="!popButton1">
+      <fa-icon [icon]="button1Icon"></fa-icon>
+    </div>
+    <div class="button-text animated" [class.fadeIn]="popButton1" [class.popOut]="!popButton1">
+      {{button1Text}}
+    </div>
+  </a>
+  <a matRipple class="item-button-2" *ngIf="button2Enabled" (click)="buttonClick('2')"
+     [ngStyle]="{'background-color': baseColor && direction && direction !== 'right' ? baseColor : button2BgColor, 'color': button2FgColor}">
+    <div class="button-icon animated" [class.fadeIn]="popButton2" [class.transparent]="!popButton2">
+      <fa-icon [icon]="button2Icon"></fa-icon>
+    </div>
+    <div class="button-text animated" [class.fadeIn]="popButton2" [class.transparent]="!popButton2">
+      {{button2Text}}
+    </div>
+  </a>
+  <a matRipple class="item-button-3" *ngIf="button3Enabled" (click)="buttonClick('3')"
+     [ngStyle]="{'background-color': baseColor && direction && direction !== 'left' ? baseColor : button3BgColor, 'color': button3FgColor}">
+    <div class="button-icon animated" [class.fadeIn]="popButton3" [class.transparent]="!popButton3">
+      <fa-icon [icon]="button3Icon"></fa-icon>
+    </div>
+    <div class="button-text animated" [class.fadeIn]="popButton3" [class.transparent]="!popButton3">
+      {{button3Text}}
+    </div>
+  </a>
+  <a matRipple class="item-button-4" *ngIf="button4Enabled" (click)="buttonClick('4')"
+     [ngStyle]="{'background-color': baseColor && direction && direction !== 'left' ? baseColor : button4BgColor, 'color': button4FgColor}">
+    <div class="button-icon animated" [class.fadeIn]="popButton4" [class.popOut]="!popButton4">
+      <fa-icon [icon]="button4Icon"></fa-icon>
+    </div>
+    <div class="button-text animated" [class.fadeIn]="popButton4" [class.popOut]="!popButton4">
+      {{button4Text}}
+    </div>
+  </a>
+</div>

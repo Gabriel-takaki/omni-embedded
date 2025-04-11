@@ -1,0 +1,12 @@
+<div class="flex-container-row pointer" (click)="toggle()">
+  <div class="checker" [class.checked]="value">
+    <div class="checkmark" [@checkmarkState]="{value: value ? 'markchecked' : 'markclear', params: {color: selectedColor}}">
+      <div class="checkicon" [@checkiconState]="value ? 'checked' : 'clear'">
+        <fa-icon [icon]="['fas', 'check']" class="fg-white"></fa-icon>
+      </div>
+    </div>
+  </div>
+  <div class="togglelabel">
+    {{label}}
+  </div>
+</div>

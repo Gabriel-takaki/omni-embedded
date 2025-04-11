@@ -1,0 +1,81 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Novo usuário</div>
+    <div class="s12 font-light mrg5T" i18n>Campos marcados com * são obrigatórios</div>
+    <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T" autocomplete="new-password">
+      <mat-form-field class="full-width">
+        <mat-label i18n>Usuário</mat-label>
+        <input matInput type="text" [(ngModel)]="username" name="usernameInput" placeholder="Usuário" i18n-placeholder
+          required #usernameInput maxlength="32" />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label i18n>Nome</mat-label>
+        <input matInput type="text" [(ngModel)]="fullname" name="fullname" placeholder="Nome" i18n-placeholder required
+          #fullnameInput="ngModel" maxlength="128" minlength="5" />
+      </mat-form-field>
+      <mat-form-field *ngIf="type === 5" class="full-width">
+        <mat-label i18n>Número de whatsapp</mat-label>
+        <input matInput type="text" [(ngModel)]="clockNum" name="clockNum" placeholder="Nome" i18n-placeholder required
+          #clockNumInput="ngModel" maxlength="128" minlength="5" />
+      </mat-form-field>
+      <mat-form-field class="full-width" *ngIf="(type === 0 || type === 1) && !status.disableTelephony">
+        <mat-label i18n>Ramal</mat-label>
+        <input matInput type="number" step="1" [(ngModel)]="sipuser" name="sipuser" placeholder="Ramal" i18n-placeholder
+          required #sipuserInput="ngModel" />
+      </mat-form-field>
+      <div *ngIf="type !== 3">
+        <mat-form-field class="full-width">
+          <mat-label i18n>Senha</mat-label>
+          <input matInput type="{{passVisible ? 'text' : 'password'}}" [(ngModel)]="password" name="password"
+            i18n-placeholder placeholder="Senha" #passInput="ngModel" required autocomplete="new-password" />
+          <button class="btn btn-square-slim mrg8R" (click)="passVisible = !passVisible" type="button" matSuffix
+            matTooltip="Mostrar / Ocultar senha" matRipple i18n-matTooltip>
+            <fa-icon [icon]="['far', passVisible ? 'eye-slash' : 'eye']"></fa-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div style="margin-top: -10px;" class="mrg15B" *ngIf="type !== 3">
+        <app-password-strength [password]="password"></app-password-strength>
+      </div>
+      <mat-form-field class="full-width">
+        <mat-label i18n>Tipo</mat-label>
+        <mat-select [(value)]="type" name="type">
+          <mat-option [value]="0" i18n *ngIf="!status.hideAdminUser">
+            Administrador
+          </mat-option>
+          <mat-option [value]="1" i18n *ngIf="!status.hideSupervisorUser">
+            Supervisor
+          </mat-option>
+          <mat-option [value]="2" i18n>
+            Agente
+          </mat-option>
+          <mat-option [value]="5" il8n *ngIf="!status.hideClockInUser">
+            Usuário de ponto
+          </mat-option>
+          <!--          <mat-option [value]="3" i18n *ngIf="!status.hideExternalBotUser && status.chatCenterEnabled">-->
+          <!--            Chatbot Externo-->
+          <!--          </mat-option>-->
+          <!--          <mat-option [value]="4" i18n *ngIf="!status.hideMobileUser">-->
+          <!--            Agente Mobile-->
+          <!--          </mat-option>-->
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="type === 3">
+        <mat-form-field class="full-width">
+          <mat-label i18n>Chave de acesso</mat-label>
+          <input matInput type="text" [(ngModel)]="botkey" name="botkey" placeholder="Chave de acesso" i18n-placeholder
+            required #botkeyInput="ngModel" maxlength="128" />
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success" (click)="save()"
+      [disabled]="!thisForm.valid" i18n>
+      Adicionar
+    </button>
+  </div>
+</div>

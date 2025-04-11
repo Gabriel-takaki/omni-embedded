@@ -1,0 +1,596 @@
+<div class="h100 scroll1" style="overflow: auto;">
+    <mat-tab-group>
+
+        <mat-tab label="Geral" i18n-label>
+            <div class="pad8A full-size">
+                <div class="card">
+                    <div class="flex-row">
+                        <div class="flex-elastic">
+                            <div class="h5" i18n>
+                                Licenciamento
+                            </div>
+                            <div class="full-width mrg5T flex-row align-items-center">
+                                <div>
+                                    <span class="font-medium line-1"
+                                          i18n>Versão servidor:</span> {{ localItem.kentro_version }}
+                                    <br/>
+                                    <span class="font-medium line-1" i18n>Versão visão:</span> {{ items.version }} <br/>
+                                    <span class="font-medium line-1" i18n>Licença: </span>
+                                    <span class="line-1">{{ localItem.license ? texts.ok : texts.problema }}</span>
+                                    - <span class="font-medium line-1" i18n>Agentes:</span> {{ localItem.maxAgents }}
+                                    - <span class="font-medium line-1" i18n>Sup/Adms:</span> {{ localItem.maxAdms }}
+                                </div>
+                                <button class="btn btn mrg20L" (click)="requestLicenseUpdate()" i18n>Atualizar licença
+                                </button>
+                                <button class="btn btn-warning btn mrg20L" (click)="clearCaches()" i18n>Apagar caches
+                                    locais
+                                </button>
+                                <button class="btn btn-danger btn mrg20L" (click)="restartServer()" i18n>Reiniciar
+                                    servidor
+                                </button>
+                                <button class="btn btn-danger btn mrg20L" (click)="memoryDump()"
+                                        *ngIf="items.user?.type === 99">
+                                    Memory Dump
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mrg16L">
+                            <div class="h5" i18n>
+                                Chave global de API
+                            </div>
+                            <div class="full-width mrg5T">
+                                <mat-form-field>
+                                    <mat-label i18n>Chave global de API</mat-label>
+                                    <input matInput type="password" maxlength="40" [(ngModel)]="localItem.apikey"
+                                           name="apikey"/>
+                                    <div matSuffix class="flex-row mrg8R">
+                                        <button class="btn btn-square-slim mrg8R" (click)="copyApiKey()"
+                                                matSuffix matTooltip="Copiar chave" matRipple i18n-matTooltip>
+                                            <fa-icon [icon]="['far', 'copy']"></fa-icon>
+                                        </button>
+                                        <button class="btn btn-square-slim" (click)="genApiKey()"
+                                                matSuffix matTooltip="Gerar chave" matRipple i18n-matTooltip>
+                                            <fa-icon [icon]="['far', 'sync']"></fa-icon>
+                                        </button>
+                                    </div>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="full-width mrg15T flex-row">
+                        <div class="flex-grow-1" style="min-width: 40%;">
+                            <div class="h5 mrg10T" i18n>
+                                Espaço
+                            </div>
+                            <div class="full-width mrg5T">
+                                <div>
+                                    <span class="font-medium" i18n>Cota:</span> {{ diskData?.quota }}
+                                </div>
+                                <div>
+                                    <span class="font-medium"
+                                          i18n>Total de espaço utilizado: </span> {{ diskData?.size }}
+                                </div>
+                                <div class="s10 mrg10L">
+                                    <span class="font-medium" i18n>Galeria:</span> {{ diskData?.gallerySize }} <br>
+                                    <span class="font-medium" i18n>Arquivos:</span> {{ diskData?.filesSize }} <br>
+                                    <span class="font-medium" i18n>Atendimentos:</span> {{ diskData?.chatsCount }}
+                                </div>
+                                <button class="btn btn-slim mrg12T" (click)="downloadChatsByIdInterval()" i18n
+                                        matTooltip="Você pode por aqui realizar backup dos atendimentos com base em um intervalo de IDs">
+                                    Backup de atendimentos
+                                </button>
+                                <button *ngIf="items.user.type === 99" class="btn btn-slim mrg20T"
+                                        (click)="updateDBSize()">
+                                    <span *ngIf="!updateLoading" i18n>Atualizar dados</span>
+                                    <span *ngIf="updateLoading"><fa-icon [icon]="['far', 'spinner']"
+                                                                         [spin]="true"></fa-icon></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="h5 mrg10T" i18n>
+                                Limpeza
+                            </div>
+                            <div class="full-width mrg5T">
+                                <div>
+                        <span class="font-medium"
+                              i18n>Marcado para limpar:</span> {{ diskData?.markForSweep ? 'Sim' : 'Não' }}
+                                </div>
+                                <div *ngIf="diskData?.markForSweep">
+                                    <span class="font-medium" i18n>Próxima limpeza:</span> {{ diskData?.cutDate }}
+                                </div>
+                                <div *ngIf="diskData?.markForSweep">
+                        <span class="font-medium"
+                              i18n>Limpar atendimentos anteriores ao ID: </span> {{ diskData?.cutId }}
+                                    ({{ diskData?.cutIdDate }})
+                                </div>
+                                <div class="full-width flex-row mrg10T" *ngIf="diskData?.markForSweep">
+                                    <button class="btn btn-primary btn-slim" (click)="downloadMarkedChats()" i18n>
+                                        <span>Baixar marcados para exclusão</span>
+                                    </button>
+                                </div>
+                                <div class="full-width flex-row mrg10T" *ngIf="items.user.type === 99">
+                                    <button class="btn btn-secondary btn-slim" *ngIf="diskData?.markForSweep"
+                                            (click)="sweepNow()">
+                                        <span *ngIf="!sweepLoading" i18n>Limpar agora</span>
+                                        <span *ngIf="sweepLoading"><fa-icon [icon]="['far', 'spinner']"
+                                                                            [spin]="true"></fa-icon></span>
+                                    </button>
+                                    <button class="btn btn-info btn-slim mrg5L" (click)="optimizeNow()">
+                                        <span *ngIf="!optimizeLoading" i18n>Otimizar agora</span>
+                                        <span *ngIf="optimizeLoading"><fa-icon [icon]="['far', 'spinner']"
+                                                                               [spin]="true"></fa-icon></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="full-width mrg10T s10 font-medium" *ngIf="diskData?.markForSweep">
+                                Se desejar manter os atendimentos que serão excluídos, você pode baixá-los para sua
+                                máquina local em
+                                Relatórios -> Histórico de chats ou contratar mais espaço para sua instância. Se desejar
+                                contratar
+                                mais
+                                espaço, por favor contate o suporte. A limpeza acontecerá na madrugada da data
+                                especificada acima
+                                (entre meia
+                                noite e 6hrs da manhã).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h5 mrg20T" i18n>Configuração Geral</div>
+                    <form #thisForm="ngForm" class="mrg20T" name="generalForm">
+                        <div class="flex-row">
+                            <mat-form-field>
+                                <mat-label i18n>Tamanho máximo para arquivos</mat-label>
+                                <input matInput type="number" [(ngModel)]="localItem.maxfilesize" name="maxfilesize"
+                                       required/>
+                                <span matSuffix class="pad5R">KB</span>
+                            </mat-form-field>
+                            <mat-form-field class="mrg12L">
+                                <mat-label i18n="Fila de atendimentos">Fila para notificações</mat-label>
+                                <mat-select [(ngModel)]="localItem.notificationqueueid" tabindex="1"
+                                            name="notificationqueueid">
+                                    <mat-option [value]="0" i18n>Nenhuma</mat-option>
+                                    <ng-container *ngFor="let q of items.allQueues">
+                                        <mat-option [value]="q.id" *ngIf="q.type === 5">{{ q.name }}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="mrg12L">
+                                <mat-label i18n="Fila de atendimentos">Fila para automações de contato</mat-label>
+                                <mat-select [(ngModel)]="localItem.contactautomationqueueid" tabindex="1"
+                                            name="contactautomationqueueid">
+                                    <mat-option [value]="0" i18n>Nenhuma</mat-option>
+                                    <ng-container *ngFor="let q of items.allQueues">
+                                        <mat-option [value]="q.id"
+                                                    *ngIf="[1, 5, 10, 16, 17, 18].includes(q.type)">{{ q.name }}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="mrg12L">
+                                <mat-label i18n>País</mat-label>
+                                <mat-select [(ngModel)]="localItem.defaultcountry" name="country">
+                                    <mat-option>
+                                        <ngx-mat-select-search ngModel (ngModelChange)="filterCountryOptions($event)"
+                                                               placeholderLabel="Buscar..." i18n-placeholderLabel
+                                                               name="languagesFilter"
+                                                               noEntriesFoundLabel="'Nenhuma correspondência encontrada'"
+                                                               i18n-noEntriesFoundLabel="Correspondência à busca efetuada"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="l.sigla2" *ngFor="let l of filteredCountrys">{{ l.nome }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="mrg12L">
+                                <mat-label i18n>Idioma</mat-label>
+                                <mat-select [(ngModel)]="languageSelected" name="language">
+                                    <mat-option>
+                                        <ngx-mat-select-search ngModel (ngModelChange)="filterLanguageOptions($event)"
+                                                               placeholderLabel="Buscar..." i18n-placeholderLabel
+                                                               name="languagesFilter"
+                                                               noEntriesFoundLabel="'Nenhuma correspondência encontrada'"
+                                                               i18n-noEntriesFoundLabel="Correspondência à busca efetuada"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="l" *ngFor="let l of filteredLanguages">{{ l.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex-row align-items-center">
+
+                            <mat-form-field>
+                                <mat-label i18n>Fuso horário</mat-label>
+                                <mat-select [(ngModel)]="selectedTimezone" name="timezone">
+                                    <mat-option>
+                                        <ngx-mat-select-search ngModel (ngModelChange)="filterOptions($event)"
+                                                               [closeSvgIcon]="'a'"
+                                                               placeholderLabel="Buscar..." i18n-placeholderLabel
+                                                               name="timezonefilter"
+                                                               noEntriesFoundLabel="'Nenhuma correspondência encontrada'"
+                                                               i18n-noEntriesFoundLabel="Correspondência à busca efetuada"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="q" *ngFor="let q of filteredTimezones">{{ q }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button class="btn btn-info btn-slim mrg5L" (click)="setTimezone()" i18n type="button">
+                                <span>Salvar fuso horário</span>
+                            </button>
+                        </div>
+
+                        <div class="full-width flex-row">
+                            <div class="ext-checker">
+                                <mat-checkbox [checked]="localItem.disablequotes ? true : false" class="mat-primary"
+                                              [name]="'disablequotes'"
+                                              (change)="toggleQuotes()">Desabilitar citações
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="full-width flex-row">
+                            <div class="ext-checker">
+                                <mat-checkbox [checked]="localItem.passwordpolicy ? true : false" class="mat-primary"
+                                              [name]="'passwordpolicy'"
+                                              (change)="togglePasswordPolicy()">Habilitar política de senhas fortes
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="full-width flex-row">
+                            <div class="ext-checker">
+                                <mat-checkbox [checked]="localItem.reduceimgquality ? true : false" class="mat-primary"
+                                              [name]="'reduceimgquality'"
+                                              matTooltip="Se selecionado, imagens enviadas pelo sistema serão automaticamente redimensionadas e recomprimidas para reduzir o uso de espaço. A maior dimensão da imagem terá no máximo 1280 pixels."
+                                              (change)="toogleReduceImgQuality()">Reduzir qualidade das imagens enviadas
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="full-width flex-row">
+                            <div class="ext-checker">
+                                <mat-checkbox [checked]="localItem.blockduplicatecontact ? true : false"
+                                              class="mat-primary"
+                                              [name]="'blockduplicatecontact'"
+                                              (change)="toggleblockduplicatecontact()">Bloquear criar contatos com mesmo
+                                    número
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="full-width flex-row" *ngIf="false">
+                            <div class="ext-checker">
+                                <mat-checkbox [checked]="localItem.enablecommission ? true : false" class="mat-primary"
+                                              [name]="'enablecommission'"
+                                              matTooltip="Se selecionado, o módulode cálculo de comissões será habilitado."
+                                              (change)="toogleReduceImgQuality()">Habilir cálculo de comissões
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="full-width flex-row" *ngIf="items.user.type === 99">
+                            <div class="ext-checker">
+                                <mat-checkbox [checked]="localItem.debug ? true : false" class="mat-primary"
+                                              [name]="'debug'"
+                                              (change)="toogleGlobalDebug()">Debug global
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="h5 mrg20T" i18n>Integração BigQuery</div>
+                        <div class="flex-row align-items-center mrg8T">
+                            <mat-form-field style="width: 600px;">
+                                <mat-label i18n>Auth Key</mat-label>
+                                <textarea style="height: 120px;" matInput type="text"
+                                          [(ngModel)]="localItem.bgapikey" name="bgapikey"></textarea>
+                            </mat-form-field>
+                            <div class="flex-elastic mrg12L">
+                                <mat-form-field>
+                                    <mat-label i18n>ProjectID do BigQuery</mat-label>
+                                    <input matInput type="text" maxlength="250" [(ngModel)]="localItem.bgprojectid"
+                                           name="bgprojectid"/>
+                                </mat-form-field>
+                                <div class="flex-row align-items-center">
+                                    <app-animated-toogle [(value)]="localItem.bgdeleteold"></app-animated-toogle>
+                                    <span class="mrg10L" i18n i18n-matTooltip
+                                          matTooltip="Registros atualizados são reinseridos no BigQuery. Se habilitado, os registros antigos inseridos anteriormente, que se tornaram obsoletos, serão deletados do BigQuery, se desabilitado, não serão. Isso só vale para registros atualizados, registros removidos da instância local nunca são removidos do BigQuery pela integração.">
+                        Excluir registros atualizados
+                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mrg2T flex-row align-items-center">
+                            <div>
+                                Dataset: {{ localItem.bgdataset }}
+                            </div>
+                            <button class="btn btn-warning btn-slim mrg12L" (click)="startBiSync()" type="button"
+                                    i18n-matTooltip
+                                    matTooltip="Inicia a sincronização agora."
+                                    *ngIf="[98,99].includes(items.user?.type)">
+                                <span i18n>Sincronizar agora</span>
+                            </button>
+                            <button class="btn btn-danger btn-slim mrg6L" (click)="clearBiSync()" type="button"
+                                    *ngIf="[98,99].includes(items.user?.type)" i18n-matTooltip
+                                    matTooltip="Limpa todos os dados locais da sincronização. Assim, na próxima execução da sincronização um novo dataset será criado e tudo será resincronizado.">
+                                <span i18n>Limpar sincronização</span>
+                            </button>
+                        </div>
+                        <div class="mrg10T flex-row">
+                            <div>
+                                <span i18n>Estado atual: </span>
+                                <span i18n *ngIf="localItem.bgstatus === 1">Sincronizando</span>
+                                <span i18n *ngIf="!localItem.bgstatus">Parado</span>
+                            </div>
+                            <div class="mrg12L">
+                                <span i18n>Última sincronização:</span> {{ localItem.bglastsync ? (localItem.bglastsync | date:'short') : texts.naoHa }}
+                            </div>
+                            <div class="mrg12L">
+                                <span i18n>Resultado última sincronização:</span>&nbsp;
+                                <span i18n *ngIf="localItem.bglastsyncresult === 1">Sucesso</span>
+                                <span i18n *ngIf="localItem.bglastsyncresult === 2">Erro</span>
+                                <span i18n="Abreviação para Não Disponível"
+                                      *ngIf="![1,2].includes(localItem.bglastsyncresult)">N/D</span>
+                            </div>
+                        </div>
+                        <div class="h5 mrg24T" i18n>
+                            Extensões bloqueadas
+                        </div>
+                        <div class="flex-row flex-wrap mrg10T">
+                            <div class="ext-checker" *ngFor="let ext of extensions">
+                                <mat-checkbox [checked]="localItem.blockedextensions.includes(ext)" class="mat-primary"
+                                              [name]="ext"
+                                              (change)="toggleOption(ext)">{{ ext }}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="mrg20T full-width" *ngIf="items.user?.masteruser && items.enableManagerPanel">
+                            <div class="h5" i18n>Painel de instâncias</div>
+                            <div class="full-width mrg20T">
+                                <div class="full-width flex-row">
+                                    <mat-form-field class="flex-elastic">
+                                        <mat-label i18n>Fila para automações</mat-label>
+                                        <mat-select [(ngModel)]="localItem.instanceautomationqueue"
+                                                    name="instanceautomationqueue">
+                                            <mat-option [value]="0" i18n>Não selecionado</mat-option>
+                                            <ng-container *ngFor="let q of items.allQueues">
+                                                <mat-option [value]="q.id"
+                                                            *ngIf="q.type === 5 || q.type === 10 || q.type === 16">
+                                                    <div class="full-width flex-row flex-center">
+                                                        <div class="flex-rigid">
+                                                            <queue-type-label [type]="q.type"
+                                                                              [small]="true"></queue-type-label>
+                                                        </div>
+                                                        <div class="mrg4L flex-elastic">
+                                                            {{ q.name }}
+                                                        </div>
+                                                    </div>
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="flex-elastic mrg8L">
+                                        <app-ivr-selection [showType]="2"
+                                                           [(value)]="localItem.instanceofflineautomation"
+                                                           caption="Automação quando offline" i18n-caption
+                                                           i18n-matTooltip
+                                                           matTooltip="Automação que será executada quando uma instância que estava online ficar offline">
+                                        </app-ivr-selection>
+                                    </div>
+                                    <div class="flex-elastic mrg8L">
+                                        <app-ivr-selection [showType]="2"
+                                                           [(value)]="localItem.instancecreatedautomation"
+                                                           caption="Automação quando criada" i18n-caption
+                                                           i18n-matTooltip
+                                                           matTooltip="Automação que será executada quando uma nova instância for criada">
+                                        </app-ivr-selection>
+                                    </div>
+                                </div>
+                                <div class="full-width flex-row">
+                                    <div class="flex-elastic">
+                                        <app-ivr-selection [showType]="2"
+                                                           [(value)]="localItem.instancedeletionrequestedautomation"
+                                                           caption="Automação quando solicitada exclusão" i18n-caption
+                                                           i18n-matTooltip
+                                                           matTooltip="Automação que será executada quando for solicitada a exclusão de uma instância">
+                                        </app-ivr-selection>
+                                    </div>
+                                    <div class="flex-elastic mrg8L">
+                                        <app-ivr-selection [showType]="2"
+                                                           [(value)]="localItem.instanceupdatedautomation"
+                                                           caption="Automação quando solicitada atualização"
+                                                           i18n-caption
+                                                           i18n-matTooltip
+                                                           matTooltip="Automação que será executada quando uma instância for atualizada">
+                                        </app-ivr-selection>
+                                    </div>
+                                    <div class="flex-elastic mrg8L">
+                                        <app-ivr-selection [showType]="2"
+                                                           [(value)]="localItem.instancereactivationautomation"
+                                                           caption="Automação quando solicitada reativação" i18n-caption
+                                                           i18n-matTooltip
+                                                           matTooltip="Automação que será executada quando uma instância marcada para exclusão for reativada">
+                                        </app-ivr-selection>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mrg20T flex-center full-width">
+                            <button class="btn btn-success" (click)="save()"
+                                    matTooltip="Salvar configurações" i18n-matTooltip>
+                                <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;<span i18n>Salvar</span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="IA" i18n-label>
+
+            <div class="pad8A full-size">
+                <div class="card">
+                    <div class="flex-row mrg16B">
+                        <div class="flex-row align-items-center mrg6T" *ngIf="false"
+                             matTooltip="Para habilitar o copiloto é requerida a contratação do pacote de recursos avançados de IA. Caso o pacote não esteja disponível nessa instância, essa configuração será ignorada.">
+                            <app-animated-toogle [(value)]="localItem.enablecopilot"></app-animated-toogle>
+                            <span class="mrg10L" i18n>Habilitar Copiloto</span>
+                        </div>
+                        <div class="mrg16L" *ngIf="false">
+                            <mat-form-field class="mrg12L" i18n-matTooltip
+                                            matTooltip="O assistente selecionado aqui será utilizado como base para inicialização do Copiloto. Suas funções e base de conhecimento serão incorporadas ao Copiloto.">
+                                <mat-label i18n>Assistente Base para Copiloto</mat-label>
+                                <mat-select [(ngModel)]="localItem.copilotmodel" tabindex="1" name="copilotmodel">
+                                    <mat-option [value]="0">Nenhum</mat-option>
+                                    <mat-option *ngFor="let a of assistants" [value]="a.id">{{ a.name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="mrg2T">
+                            <div>
+                                <span class="font-medium" i18n>Limite de tokens: </span> {{ localItem.tokenslimit }}
+                            </div>
+                            <div class="mrg2T">
+                                <span class="font-medium" i18n>Tokens utilizados: </span> {{ localItem.monthlyusedtokens }} ({{ localItem.monthlyusedtokens / localItem.tokenslimit * 100 | number:'1.2-2' }}%)
+                            </div>
+                            <div class="mrg2T">
+                                <span class="font-medium" i18n>Último reinício do contador: </span> {{ localItem.lasttokensresetdate | date:'short' }}
+                            </div>
+                            <div class="mrg2T">
+                                <span class="font-medium" i18n>Recursos avançados: </span> <span *ngIf="items.enableAIPremium" i18n>Sim</span><span *ngIf="!items.enableAIPremium" i18n>Não</span>
+                            </div>
+                        </div>
+                        <div class="mrg12L" *ngIf="items.user?.type === 99">
+                            <button class="btn btn-warning" (click)="clearTokensLimit()" i18n>
+                                Resetar limite
+                            </button>
+                        </div>
+                    </div>
+                    <div class="full-width flex-row">
+                        <mat-form-field>
+                            <mat-label i18n>Chave de API (OpenAI)</mat-label>
+                            <input matInput type="password" maxlength="512" [(ngModel)]="localItem.openaikey"
+                                   name="openaikey"/>
+                        </mat-form-field>
+                        <button class="btn btn-info mrg16L" (click)="testOpenAIKey()">
+                            Testar chave
+                        </button>
+                    </div>
+                    <div class="full-width flex-row">
+                        <mat-form-field>
+                            <mat-label i18n>Chave de API (Google AI Studio)</mat-label>
+                            <input matInput type="password" maxlength="512" [(ngModel)]="localItem.aistudiokey"
+                                   name="aistudiokey"/>
+                        </mat-form-field>
+                        <button class="btn btn-info mrg16L" (click)="testGeminiKey()">
+                            Testar chave
+                        </button>
+                    </div>
+                    <div class="full-width flex-row">
+                        <mat-form-field>
+                            <mat-label i18n>Chave de API (Amazon Bed Rock)</mat-label>
+                            <input matInput type="password" maxlength="512" [(ngModel)]="localItem.bedrockkey"
+                                   name="bedrockkey"/>
+                        </mat-form-field>
+                        <button class="btn btn-info mrg16L" (click)="testGeminiKey()" [disabled]="true">
+                            Testar chave
+                        </button>
+                    </div>
+                    <div class="full-width flex-row">
+                        <mat-form-field>
+                            <mat-label i18n>Chave de API (Anthropic)</mat-label>
+                            <input matInput type="password" maxlength="512" [(ngModel)]="localItem.anthropickey"
+                                   name="anthropickey"/>
+                        </mat-form-field>
+                        <button class="btn btn-info mrg16L" (click)="testGeminiKey()" [disabled]="true">
+                            Testar chave
+                        </button>
+                    </div>
+                    <div class="full-width flex-row">
+                        <mat-form-field>
+                            <mat-label i18n>Chave de API (DeepInfra)</mat-label>
+                            <input matInput type="password" maxlength="512" [(ngModel)]="localItem.deepinfrakey"
+                                   name="deepinfrakey"/>
+                        </mat-form-field>
+                        <button class="btn btn-info mrg16L" (click)="testGeminiKey()" [disabled]="true">
+                            Testar chave
+                        </button>
+                    </div>
+                    <div class="mrg20T full-width flex-center">
+                        <button class="btn btn-success" (click)="save()">
+                            <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;<span i18n>Salvar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="Telefonia" i18n-label>
+
+            <div class="pad8A full-size">
+                <div class="card">
+                    <div class="flex-row align-items-center" style="padding-bottom: 20px; padding-top: 12px;">
+                        <app-animated-toogle [(value)]="localItem.enabletelephony"></app-animated-toogle>
+                        <span class="mrg10L" i18n>Habilitar telefonia PABX</span>
+                    </div>
+                    <div class="flex-row align-items-center" style="padding-bottom: 20px;;">
+                        <app-animated-toogle [(value)]="localItem.altwssphoneregister"></app-animated-toogle>
+                        <span class="mrg10L" i18n>Enviar registro alternativo</span>
+                    </div>
+                    <div class="flex-row" style="flex-wrap: wrap;">
+                        <mat-form-field style="margin-right: 20px;">
+                            <mat-label i18n>Porta do asterisk WSS</mat-label>
+                            <input matInput type="text" maxlength="250" [(ngModel)]="localItem.asteriskwssport"
+                                   name="asteriskwssport"/>
+                        </mat-form-field>
+
+                        <mat-form-field style="margin-right: 20px;">
+                            <mat-label i18n>Host do asterisk WSS</mat-label>
+                            <input matInput type="text" maxlength="250" [(ngModel)]="localItem.asteriskwsshost"
+                                   name="asteriskwsshost"/>
+                        </mat-form-field>
+
+                        <mat-form-field style="margin-right: 20px;">
+                            <mat-label i18n>Host asterisk AMI</mat-label>
+                            <input matInput type="text" maxlength="250" [(ngModel)]="localItem.asteriskamihost"
+                                   name="asteriskamihost"/>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex-row" style="flex-wrap: wrap;">
+
+                        <mat-form-field style="margin-right: 20px;">
+                            <mat-label i18n>Porta do asterisk AMI</mat-label>
+                            <input matInput type="text" maxlength="250" [(ngModel)]="localItem.asteriskamiport"
+                                   name="asteriskamiport"/>
+                        </mat-form-field>
+
+                        <mat-form-field style="margin-right: 20px;">
+                            <mat-label i18n>Usuário do asterisk AMI</mat-label>
+                            <input matInput type="text" maxlength="250" [(ngModel)]="localItem.asteriskamiuser"
+                                   name="asteriskamiuser"/>
+                        </mat-form-field>
+
+                        <mat-form-field style="margin-right: 20px;">
+                            <mat-label i18n>Senha do asterisk AMI</mat-label>
+                            <input matInput type="text" maxlength="250" [(ngModel)]="localItem.asteriskamipass"
+                                   name="asteriskamipass"/>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="mrg20T full-width flex-center">
+                        <button class="btn btn-success" (click)="save()"
+                                matTooltip="Salvar configurações de telefonia" i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;<span i18n>Salvar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </mat-tab>
+
+
+    </mat-tab-group>
+
+</div>
+
+
+
+

@@ -1,0 +1,37 @@
+<div class="dialog-no-margins-sm">
+  <div class="pad15A fg-grey-darken-3 flex-row">
+    <mat-form-field style="flex-grow: 1;">
+      <mat-label>CEP</mat-label>
+      <input matInput placeholder="CEP" type="text" [(ngModel)]="cep" (keypress)="keyp($event)"
+             class="form-input" tabindex="1" name="cep" id="cep" mask="00.000-000">
+      <a *ngIf="cep" mat-button matSuffix mat-icon-button aria-label="Limpar" (click)="cep=''">
+        <fa-icon [icon]="['fal', 'times']"></fa-icon>
+      </a>
+    </mat-form-field>
+    <div class="mrg15L mrg10T">
+      <button style="padding: 0.5rem 1.2rem; font-size: 0.95rem;" matRipple type="button" id="yesButton"
+              class="bold mrg15L btn btn-info" (click)="query()" tabindex="2">
+        <span>Consultar</span>
+      </button>
+    </div>
+  </div>
+  <div class="text-center">
+    <fa-icon [icon]="['far', 'spinner-third']" [pulse]="true" *ngIf="loading" style="font-size: 2rem;" class="fg-info"></fa-icon>
+    <div class="mrg10T">{{result}}</div>
+    <div class="mrg10T fg-danger" *ngIf="error">Erro ao consultar endereço. Por favor, verifique o CEP informado e tente novamente.</div>
+    <div class="mrg10T" *ngIf="result">
+      <button style="padding: 0.5rem 1.2rem; font-size: 0.95rem;" matRipple type="button" id="copyButton"
+              class="bold mrg15L btn btn-warning small" (click)="copyToClipboard()" tabindex="3">
+        <span>Copiar</span>
+      </button>
+    </div>
+  </div>
+  <div class="pad8A full-width bg-grey-lighten-4 mrg10T">
+    <div class="flex-row" style="justify-content: flex-end;">
+      <button style="padding: 0.5rem 1.2rem; font-size: 0.95rem;" matRipple type="button" id="noButton"
+              class="btn btn-transparent bold no-outline" (click)="close()">
+        <span>Fechar</span>
+      </button>
+    </div>
+  </div>
+</div>

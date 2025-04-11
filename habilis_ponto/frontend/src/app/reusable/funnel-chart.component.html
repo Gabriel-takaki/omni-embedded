@@ -1,0 +1,39 @@
+<div class="full-size funnel svg-funnel-js">
+    <div class="svg-funnel-js__container" #svgFunnel>
+
+    </div>
+    <div class="svg-funnel-js__labels">
+        <div class="svg-funnel-js__label overflow-hidden flex-column label-{{i}}"
+             *ngFor="let stage of data; let i = index;">
+            <div class="full-width overflow-hidden flex-row flex-center">
+                <div class="s12 font-light no-break-with-ellipses flex-elastic"
+                     matTooltip="{{stage.name}}">{{stage.name}}</div>
+                <div class="mrg12L s12 mrg8R flex-rigid" matTooltip="Tempo médio que uma oportunidade fica na etapa"
+                     i18n-matTooltip>
+                    {{stage.mtc | formatTime:'full':true:false}}
+                </div>
+            </div>
+
+            <div class="flex-row align-items-center overflow-hidden mrg6T">
+                <div class="font-regular fg-black-lighten-1 s24" i18n-matTooltip
+                     matTooltip="Total de oportunidades que passaram por essa etapa.">
+                    {{stage.total}}
+                </div>
+                <div class="mrg12L label-big label-default" i18n-matTooltip
+                     matTooltip="Percentual do total de oportunidades que passaram por essa etapa.">
+                    {{calculatePercentage(stage.total)}}%
+                </div>
+                <div class="mrg6L flex-column">
+                    <div class="label label-success" i18n-matTooltip
+                         matTooltip="Das oportunidades encerradas nessa etapa, o percentual de ganhas. [{{stage.won}}]">
+                        {{calculateWonPercentage(stage)}}%
+                    </div>
+                    <div class="mrg2T label label-danger" i18n-matTooltip
+                         matTooltip="Das oportunidades encerradas nessa etapa, o percentual de perdidas. [{{stage.lost}}]">
+                        {{calculateLostPercentage(stage)}}%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<div style="border: 1px solid lightgrey;" [style.width.px]="mini ? 16 : big ? 30 : 24" [style.height.px]="mini ? 16 : big ? 30 : 24"
+     [style.background-color]="_color" [style.cursor]="_disabled ? '' : 'pointer'" [matTooltip]="label"></div>
+<chrome-picker style="z-index: 101; position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);"
+               *ngIf="isVisible" [control]="colorControl" (click)="$event.stopPropagation()"></chrome-picker>
+<div *ngIf="isVisible" class="overlay" (click)="overlayClick($event)"></div>

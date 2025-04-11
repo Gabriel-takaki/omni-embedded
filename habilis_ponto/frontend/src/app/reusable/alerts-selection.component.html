@@ -1,0 +1,55 @@
+<div [matMenuTriggerFor]="editable ? alertsMenu : null" [class.pointer]="editable">
+  <div class="label-big label-default" *ngIf="selected?.length === 1"
+       [style.font-size.px]="fontSize">
+      <fa-icon [icon]="['fal', 'bell']"></fa-icon> {{selected?.length}} <span i18n>alerta</span>
+  </div>
+  <div class="label-big label-default" *ngIf="selected?.length > 1"
+       [style.font-size.px]="fontSize">
+      <fa-icon [icon]="['fal', 'bell']"></fa-icon> {{selected?.length}} <span i18n>alertas</span>
+  </div>
+  <div class="label-big label-default" *ngIf="!selected?.length" [style.font-size.px]="fontSize" i18n>
+    Nenhum alerta
+  </div>
+</div>
+<mat-menu #alertsMenu="matMenu" xPosition="before">
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="5 minutos antes" (click)="toogleSelection(300, $event)">
+    <mat-checkbox [checked]="selected?.includes(300)" class="mat-primary"></mat-checkbox>
+    5 minutos antes
+  </button>
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="15 minutos antes" (click)="toogleSelection(900, $event)">
+    <mat-checkbox [checked]="selected?.includes(900)" class="mat-primary"></mat-checkbox>
+    15 minutos antes
+  </button>
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="30 minutos antes" (click)="toogleSelection(1800, $event)">
+    <mat-checkbox [checked]="selected?.includes(1800)" class="mat-primary"></mat-checkbox>
+    30 minutos antes
+  </button>
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="1 hora antes" (click)="toogleSelection(3600, $event)">
+    <mat-checkbox [checked]="selected?.includes(3600)" class="mat-primary"></mat-checkbox>
+    1 hora antes
+  </button>
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="1 hora antes" (click)="toogleSelection(7200, $event)">
+    <mat-checkbox [checked]="selected?.includes(7200)" class="mat-primary"></mat-checkbox>
+    2 horas antes
+  </button>
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="4 horas antes" (click)="toogleSelection(14400, $event)">
+    <mat-checkbox [checked]="selected?.includes(14400)" class="mat-primary"></mat-checkbox>
+    4 horas antes
+  </button>
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="1 dia antes" (click)="toogleSelection(86400, $event)">
+    <mat-checkbox [checked]="selected?.includes(86400)" class="mat-primary"></mat-checkbox>
+    1 dia antes
+  </button>
+  <button mat-menu-item i18n-title i18n class="mat-menu-min-width"
+          title="2 dias antes" (click)="toogleSelection(172800, $event)">
+    <mat-checkbox [checked]="selected?.includes(172800)" class="mat-primary"></mat-checkbox>
+    2 dias antes
+  </button>
+</mat-menu>

@@ -1,0 +1,126 @@
+@import "scss/newcolors";
+@import "scss/newtypography";
+@import "scss/newhelpers";
+
+.selectFileArea {
+  @extend .flex-center;
+  @extend .flex-row;
+  width: 100%;
+}
+
+.selectFileElement {
+  @extend .s32;
+  @extend .flex-center;
+  @extend .flex-column;
+  width: 66%;
+  cursor: pointer;
+  background-color: $black-lighten-5;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.text-area-button {
+  flex-shrink: 0;
+  flex-grow: 0;
+  font-size: 20px;
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 12px;
+  color: $black-lighten-1;
+
+  @include phone() {
+    margin-left: 6px;
+  }
+
+}
+
+.text-area-button:hover:not(.text-area-button-disabled) {
+  color: var(--primary-color);
+}
+
+.text-area-button-disabled {
+  color: $black-lighten-3;
+}
+
+.chat-control-area {
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  height: 100%;
+}
+
+.selectFileElement:hover {
+  background-color: $black-lighten-4;
+}
+
+.mediaArea {
+  max-height: 300px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mediaElementMaxSize {
+  max-width: 350px;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.mediaElement {
+  max-width: 350px;
+  max-height: 300px;
+}
+
+.text-area-action-button {
+  margin-left: 0;
+  margin-right: 12px;
+  @include phone() {
+    margin-right: 6px;
+  }
+}
+
+.text-area-action-button:not(.text-area-button-disabled) {
+  color: var(--primary-color);
+}
+
+.text-area-action-button:hover:not(.text-area-button-disabled) {
+  color: var(--primary-color);
+  filter: brightness(1.1);
+}
+
+.text-area-action-button-stop {
+  margin-left: 0;
+  margin-right: 12px;
+  @include phone() {
+    margin-right: 6px;
+  }
+}
+
+.text-area-action-button-stop:not(.text-area-button-disabled) {
+  color: $red-base;
+}
+
+.text-area-action-button-stop:hover:not(.text-area-button-disabled) {
+  color: $red-base;
+  filter: brightness(0.9);
+}
+
+.audio-recording-area {
+  padding: 6px 18px;
+  background-color: $black-lighten-5;
+  border-radius: 25px;
+  font-weight: 300;
+  font-size: 14px;
+}

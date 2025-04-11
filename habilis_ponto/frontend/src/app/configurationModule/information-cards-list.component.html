@@ -1,0 +1,99 @@
+<div class="full-width h100 overflow-hidden flex-column">
+    <div class="default-buttons-area">
+        <div class="h5 mrg-right-auto" i18n>
+            Cartões de informação
+        </div>
+        <button matRipple class="btn btn-secondary" (click)="import()" matTooltip="Importar" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'file-import']"></fa-icon>&nbsp;&nbsp;<span i18n="Importar um novo item">Importar</span>
+        </button>
+        <button class="mrg10L btn btn-primary" matRipple (click)="add()">
+            <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+        </button>
+    </div>
+    <input type="file" hidden (change)="fileSelected($event)" #importDialog accept=".infocard"
+           style="visibility: hidden; height: 0px;" [multiple]="true"/>
+    <div class="flex-elastic card mrg15T full-width">
+        <div class="full-width h100" #gridContainer>
+            <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'cardDetailTemplate'}"
+                          [hoverStateEnabled]="true" [dataSource]="cards" [height]="gridContainer.clientHeight"
+                          (onRowExpanded)="copyData($event)">
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-filter-row [visible]="false"></dxo-filter-row>
+                <dxo-paging [enabled]="true"></dxo-paging>
+                <div *dxTemplate="let id of 'functionsTemplate'">
+                    <div class="grid-function-btn-area">
+                        <button class="grid-function-btn" (click)="edit(id.data)" matTooltip="Editar cartão" matRipple
+                                i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'edit']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn" (click)="copyStructure(id.data)"
+                                matTooltip="Copiar estrutura" i18n-matTooltip matRipple>
+                            <fa-icon [icon]="['far', 'copy']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn" (click)="cloneItem(id.data)"
+                                matTooltip="Clonar cartão" i18n-matTooltip matRipple>
+                            <fa-icon [icon]="['far', 'clone']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn" (click)="exportItem(id.data)" matTooltip="Exportar cartão"
+                                i18n-matTooltip matRipple>
+                            <fa-icon [icon]="['far', 'download']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn" (click)="removeItem(id.data)" matTooltip="Excluir cartão"
+                                matRipple i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'times']"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+                <div *dxTemplate="let ivr of 'cardDetailTemplate'">
+                    <div class="full-width pad10A overflow-hidden">
+                        <div class="full-width flex-row mrg10T overflow-hidden">
+                            <div class="overflow-hidden">
+                                <div class="flex-row overflow-hidden">
+                                    <mat-form-field style="width: 190px;" *ngIf="ivr.data.copy">
+                                        <mat-label i18n>Nome</mat-label>
+                                        <input matInput type="text" [(ngModel)]="ivr.data.copy.name" name="name"
+                                               i18n-placeholder placeholder="Nome" maxlength="255"/>
+                                    </mat-form-field>
+                                    <mat-form-field class="mrg8L" i18n-matTooltip *ngIf="ivr.data.copy"
+                                                    matTooltip="Mensagens trocadas pelo atendimento enquanto dentro dessa URA serão marcadas como visíveis apenas para esse grupo de visualização caso selecionado, isso significa que somente supervisores, administradores e agentes nesse mesmo grupo de visualização verão as mensagens enviadas e recebidas durante a execução dessa URA.">
+                                        <mat-label i18n>Grupo de visualização</mat-label>
+                                        <mat-select [(ngModel)]="ivr.data.copy.fk_visualgroup">
+                                            <mat-option [value]="0" i18n>Sem grupo</mat-option>
+                                            <mat-option [value]="t.id" i18n
+                                                        *ngFor="let t of this.visualgroups">{{ t.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="label label-warning label-big flex-row flex-center mrg4L" style="height: 32px;"
+                                         matTooltip="Caso um grupo de visualização seja selecionado, embora o card não seja exibido
+                                            para usuários sem a devida permissão, ainda assim, os dados das variáveis dos
+                                            cards são enviados ao dispositivo do agente. Considere que um agente com
+                                            conhecimento técnico suficiente conseguirá visualizar as informações do card,
+                                            ainda que ele não pertença ao grupo de visualização." i18n-matTooltip
+                                         *ngIf="ivr?.data?.copy?.fk_visualgroup">
+                                            <fa-icon [icon]="['far', 'exclamation-triangle']"></fa-icon>
+                                    </div>
+                                </div>
+                                <div>
+                                    <mat-form-field class="full-width" *ngIf="ivr.data.copy">
+                                        <mat-label i18n>Descrição</mat-label>
+                                        <textarea matInput type="text" [(ngModel)]="ivr.data.copy.description"
+                                                  name="text"
+                                                  style="height: 80px;" placeholder="Descrição"
+                                                  i18n-placeholder></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row flex-center mrg15T">
+                            <button class="btn btn-success" (click)="saveConfig(ivr.data)" matRipple
+                                    matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                                <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </dx-data-grid>
+        </div>
+    </div>
+</div>

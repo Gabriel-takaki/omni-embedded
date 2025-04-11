@@ -1,0 +1,138 @@
+@import "../../scss/newcolors";
+
+.menu-base-div {
+  position: absolute;
+  left: 2px;
+  bottom: 2px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.menu-button {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 8px;
+  box-shadow: none;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.menu-button:hover {
+  box-shadow: $black-lighten-2 0 0 4px;
+}
+
+.emoji-button {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  color: $black-lighten-1;
+}
+
+.emoji-button:hover {
+  background-color: $black-lighten-4;
+}
+
+.text-menu-button {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: $black-lighten-1;
+}
+
+.selected {
+  background-color: $black-base;
+  color: $white-base;
+}
+
+.text-menu-button:hover {
+  background-color: $black-lighten-5;
+}
+
+.selected:hover {
+  background-color: $black-lighten-1;
+  color: $white-base;
+}
+
+.editable-div {
+  cursor: text;
+  outline: 2px solid transparent;
+  transition: outline 0.2s ease-in-out;
+  padding-top: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 38px;
+  border-radius: 4px;
+  transition-delay: 0.2s;
+}
+
+.editable-div:focus {
+  outline: 2px solid $black-lighten-4;
+}
+
+[contentEditable=true]:empty:before {
+  content: attr(data-text);
+  color: $black-lighten-2;
+}
+
+.text-menu-base {
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 1px 2px;
+  border-radius: 4px;
+  background-color: $white-base;
+}
+
+.marker-yellow {
+  background-color: $yellow-base;
+  border: 1px solid darken($yellow-base, 2%);
+  color: $white-base;
+}
+
+.marker-orange {
+  background-color: $orange-base;
+  border: 1px solid darken($orange-base, 2%);
+  color: $white-base;
+}
+
+.marker-red {
+  background-color: $red-base;
+  border: 1px solid darken($red-base, 2%);
+  color: $white-base;
+}
+
+.marker-blue {
+  background-color: $blue-base;
+  border: 1px solid darken($blue-base, 2%);
+  color: $white-base;
+}
+
+.marker-green {
+  background-color: $green-base;
+  border: 1px solid darken($green-base, 2%);
+  color: $white-base;
+}
+
+.marker-purple {
+  background-color: $purple-base;
+  border: 1px solid darken($purple-base, 2%);
+  color: $white-base;
+}

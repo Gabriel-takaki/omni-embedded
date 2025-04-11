@@ -1,0 +1,45 @@
+@import "../../scss/newcolors";
+
+.button-base {
+  padding: 5px;
+  width: 70px;
+  height: 90px;
+  border: 2px solid #ddd;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  transition: border 0.4s ease-in-out;
+  cursor: pointer;
+}
+
+.selection-button-middle-icon {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  font-size: 110%;
+  color: #999;
+}
+
+.check-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ddd;
+  transition: background-color 0.4s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fafafa;
+  font-size: 40%;
+  line-height: 1;
+}
+
+.selection-button-text {
+  width: 100%;
+  line-height: 1;
+  font-size: 65%;
+  font-weight: 600;
+  text-align: center;
+}

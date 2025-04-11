@@ -1,0 +1,69 @@
+<div class="dialog-small">
+    <div class="dialog-content">
+        <div class="full-width" *ngIf="message.userId || message.fk_ivr">
+            <div i18n class="font-bold">
+                Enviado por:
+            </div>
+            <div class="mrg6T flex-row" *ngIf="!message.fk_ivr && message.userId">
+                <div class="full-width overflow-hidden flex-row mrg6B flex-center">
+                    <div class="flex-rigid" style="width: 38px; height: 38px;">
+                        <user-profile-pic [id]="message.userId" [transparentBorder]="true" [fontSize]="9"
+                                          [picVersion]="status.allUsersMap[message.userId]?.userPicVersion"
+                                          [alertRing]="false"
+                                          [auth]="status.allUsersMap[message.userId]?.userPicAuth"
+                                          [initials]="status.allUsersMap[message.userId]?.fullName?.slice(0, 2).toUpperCase()"></user-profile-pic>
+                    </div>
+                    <div class="mrg8L h100 flex-elastic s12 overflow-hidden flex-column justify-content-center">
+                        <div class="no-break-with-ellipses font-medium">
+                            {{ status.allUsersMap[message.userId]?.fullName }}
+                        </div>
+                        <div class="no-break-with-ellipses mrg2T font-light">
+                            {{ status.allUsersMap[message.userId]?.userName }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mrg6T flex-row" *ngIf="message.fk_ivr">
+                <div class="full-width overflow-hidden flex-row mrg6B flex-center">
+                    <div class="flex-rigid robot-icon" style="width: 36px; height: 36px;">
+                        <fa-icon [icon]="['fas', message.fk_assistant ? 'stars' : 'robot']"></fa-icon>
+                    </div>
+                    <div class="mrg8L h100 flex-elastic s12 overflow-hidden align-items-center flex-row">
+                        <div class="no-break-with-ellipses font-medium" *ngIf="message.fk_assistant">
+                            {{ status.allAssistantsMap[message.fk_assistant]?.name }}
+                        </div>
+                        <div class="no-break-with-ellipses font-medium" *ngIf="!message.fk_assistant">
+                            {{ status.allIvrsMap[message.fk_ivr]?.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mrg16T full-width s10">
+            <div class="full-width flex-row">
+                <div class="font-medium" i18n>
+                    Recebido pelo servidor em:
+                </div>
+                <div class="mrg4L font-light">
+                    {{ this.serverRcvd | date:'short' }}
+                </div>
+            </div>
+            <div class="full-width flex-row mrg4T">
+                <div class="font-medium" i18n>
+                    Recebido pelo cliente em:
+                </div>
+                <div class="mrg4L font-light">
+                    {{ this.clientRcvd | date:'short' }}
+                </div>
+            </div>
+            <div class="full-width flex-row mrg4T">
+                <div class="font-medium" i18n>
+                    Lida pelo cliente em:
+                </div>
+                <div class="mrg4L font-light">
+                    {{ this.clientReaded | date:'short' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

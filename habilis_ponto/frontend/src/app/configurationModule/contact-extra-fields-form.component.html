@@ -1,0 +1,76 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Criar campo de contato personalizado</div>
+    <div class="s12 font-light">
+      Esse registro não poderá ser alterado após criado. Por favor, revise os dados antes de salvar.
+    </div>
+    <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T">
+      <div class="full-width flex-row">
+        <mat-form-field>
+          <mat-label i18n>Nome</mat-label>
+          <input matInput type="text" [(ngModel)]="name" name="name" maxlength="150" i18n-placeholder
+                 placeholder="Nome" required #nameInput="ngModel"/>
+        </mat-form-field>
+        <mat-form-field class="mrg6L">
+          <mat-label i18n>Descrição</mat-label>
+          <input matInput type="text" [(ngModel)]="description" name="description"
+                 maxlength="255" i18n-placeholder placeholder="Descrição"/>
+        </mat-form-field>
+        <mat-form-field class="mrg6L">
+          <mat-label i18n>Tipo</mat-label>
+          <mat-select [(value)]="type">
+            <mat-option [value]="0" i18n>
+              Texto
+            </mat-option>
+            <mat-option [value]="1" i18n>
+              Inteiro
+            </mat-option>
+            <mat-option [value]="2" i18n>
+              Decimal
+            </mat-option>
+            <mat-option [value]="3" i18n>
+              Data
+            </mat-option>
+            <mat-option [value]="4" i18n>
+              Múltipla escolha
+            </mat-option>
+            <mat-option [value]="5" i18n>
+              Área de texto
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <mat-checkbox [(ngModel)]="lock" class="mat-primary" name="required"
+                    style="font-weight: normal;" i18n> Impedir edição manual
+      </mat-checkbox>
+      <div class="full-width">
+        <mat-form-field class="full-width" *ngIf="type === 4">
+          <mat-label i18n>Opções</mat-label>
+          <mat-chip-grid #chipList aria-label="Opções">
+            <mat-chip-row *ngFor="let tag of options"
+                          [removable]="true" (removed)="removeTag(tag, options)">
+              {{tag}}&nbsp;&nbsp;
+              <fa-icon class="pointer" [icon]="['fal', 'times']" matChipRemove
+                       matTooltip="Remover tag"
+                       i18n-matTooltip></fa-icon>
+            </mat-chip-row>
+            <input placeholder="Opções" i18n-placeholder
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="true"
+                   (matChipInputTokenEnd)="addTag($event, options)">
+          </mat-chip-grid>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!thisForm.valid" i18n>
+      Adicionar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="full-size flex-column overflow-hidden" (drop)="onDrop($event)" (dragover)="preventDefault($event)">
+  <div id="header" class="chat-header" style="height: 60px;">
+
+    <div matTooltip="Voltar" class="chat-header-button" matRipple
+         i18n-matTooltip (click)="back()" *ngIf="status.isMobile">
+      <fa-icon [icon]="['fal', 'chevron-left']"></fa-icon>
+    </div>
+
+    <div class="contact-display contact-disabled">
+      <div style="width: 48px;" class="mrg5L" *ngIf="[1,2].includes(chat?.type)">
+        <user-profile-pic [id]="chat?.type == 1 ? chat?.id?.split('-')[0] : 0"
+                          [picVersion]="status.allUsersMap[chat?.id?.split('-')[0]]?.userPicVersion"
+                          [auth]="status.allUsersMap[chat?.id?.split('-')[0]]?.userPicAuth"
+                          [initials]="(chat?.name || status.allUsersMap[chat?.id?.split('-')[0]]?.fullName || '').slice(0, 2).toUpperCase()"
+                          [alertRing]="true" [dark]="chat?.type == 2"></user-profile-pic>
+      </div>
+      <div style="width: 48px;" class="mrg5L" *ngIf="[3].includes(chat?.type)">
+        <app-client-list-item-photo [type]="chat?.queueType" [queueName]="chat?.queueName" [new]="false"
+                                    [fontSize]="24" [picHash]="chat?.groupPicHash" [picId]="chat?.id"
+                                    [queueId]="chat?.queueId" [group]="true"></app-client-list-item-photo>
+      </div>
+      <div class="mrg10L overflow-hidden flex-elastic s10" [class.fg-black-lighten-3]="!chat">
+        <div class="no-break-with-ellipses font-medium overflow-hidden s12">
+          {{chat ? (chat?.name || status.allUsersMap[chat?.id?.split('-')[0]]?.fullName || '') : texts.noChatSelected}}
+        </div>
+        <div class="no-break-with-ellipses overflow-hidden full-width"
+             *ngIf="chat?.type === 1" [class.fg-green]="status.allLoggedMap[chat?.id?.split('-')[0]]?.socketConnected"
+             [class.fg-danger]="!status.allLoggedMap[chat?.id?.split('-')[0]]?.socketConnected">
+          {{status.allLoggedMap[chat?.id?.split('-')[0]]?.socketConnected ? texts.online : texts.offline}}
+        </div>
+        <div class="no-break-with-ellipses fg-black-lighten-1 full-width overflow-hidden"
+             *ngIf="chat?.type === 2" i18n>
+          Grupo
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="messages">
+    <ca-messages *ngIf="chat" [messages]="chat.messages" [oldMessages]="chat.oldMessages" [clientId]="chat.id"
+                 [chatId]="chat.id" [uploads]="chat.uploads" [uploadsCounter]="chat.uploadsCounter"
+                 [scrollNewMsgs]="chat.scrollNewMsgCount" (scrollButtonHidden)="resetScrollNewMsgCount()"
+                 [showReplyTo]="true" (requestMoreMsgs)="requestMoreMsgs()" [chatType]="chat?.type"
+                 [lastViewedId]="chat?.lastViewedId" [newMsgs]="chat?.oldMsgCount" [queueId]="chat?.queueId"
+                 [msgChangeCounter]="chat?.msgChangeCounter || 0" [internal]="true"
+                 (replyTo)="replyTo = $event;"></ca-messages>
+  </div>
+  <div id="textarea" style="flex-shrink: 0;" (paste)="onPaste($event)">
+    <app-emoji-text-area (textSubmitted)="sendMsg($event)" (audioSubmitted)="sendAudio($event)"
+                         [enterToSend]="!status.isMobile || status.isEmbedded"
+                         [texts]="status.allPredefinedTexts" [isMobile]="status.isMobile" [queueType]="1"
+                         [replyTo]="replyTo" [gallery]="status.allGallerys" [showOperationShortcuts]="false"
+                         [substitutionTable]="substitutionTable" (mediaButtonClicked)="openFileDialog($event)"
+                         [disabled]="!chat ? true : false"></app-emoji-text-area>
+  </div>
+</div>
+

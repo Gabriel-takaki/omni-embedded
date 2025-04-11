@@ -1,0 +1,80 @@
+<div class="full-width flex-row position-relative" (mouseleave)="showTooltip = false">
+  <div class="flex-row flex-center" [class.pointer]="editable" #picsArea (mouseover)="showTooltip = true"
+       (click)="openSelectionDialog()">
+    <ng-container *ngIf="!single">
+      <ng-container *ngFor="let agent of (selected | idstoobjects:items:counter); let i = index;">
+        <div [style.width.px]="size" [style.height.px]="size" [style.margin-left.px]="i > 0 ? size * -0.33 : null"
+             *ngIf="selected?.length <= itemsToShow || i <= itemsToShow - 2" [matTooltip]="tooltipText">
+          <user-profile-pic [id]="agent.id" [transparentBorder]="true" [fontSize]="9"
+                            [picVersion]="status.allUsersMap[agent.id]?.userPicVersion" [alertRing]="false"
+                            [auth]="status.allUsersMap[agent.id]?.userPicAuth"
+                            [initials]="status.allUsersMap[agent.id]?.fullName?.slice(0, 2).toUpperCase()"></user-profile-pic>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="single">
+      <div [style.width.px]="size" [style.height.px]="size" [matTooltip]="tooltipText">
+        <user-profile-pic [id]="status.allUsersMap[singleSelected]?.id" [transparentBorder]="true" [fontSize]="9"
+                          [picVersion]="status.allUsersMap[singleSelected]?.userPicVersion"
+                          [alertRing]="false"
+                          [auth]="status.allUsersMap[singleSelected]?.userPicAuth"
+                          [initials]="status.allUsersMap[singleSelected]?.fullName?.slice(0, 2).toUpperCase()"></user-profile-pic>
+      </div>
+    </ng-container>
+    <div [style.width.px]="size" [style.height.px]="size" [style.margin-left.px]="size * -0.33"
+         *ngIf="selected?.length > itemsToShow">
+      <user-profile-pic [id]="0" [transparentBorder]="true" [picVersion]="0" [alertRing]="false" [fontSize]="9"
+                        [initials]="'+' + (selected.length - itemsToShow + 1)" [grayLevel]="4"></user-profile-pic>
+    </div>
+    <div [style.width.px]="size - 10" [style.height.px]="size - 10" *ngIf="editable" class="mrg2L"
+         matTooltip="Selecionar"
+         i18n-matTooltip matRipple [matRippleDisabled]="!editable">
+      <div class="full-size bg-black-lighten-4 flex-row flex-center s8" style="border-radius: 50%">
+        <fa-icon [icon]="['fas','plus']" *ngIf="!transfer"></fa-icon>
+        <fa-icon [icon]="['fas','exchange']" *ngIf="transfer"></fa-icon>
+      </div>
+    </div>
+  </div>
+  <div class="users-tooltip" *ngIf="showTooltip && !hideDetailTooltip && (!editable || transfer)" [@toolTipVisibilityState]="'visible'"
+       [style.left.px]="picsArea.clientWidth + 10" [style.height.px]="single ? 52 : null">
+    <div class="scroll1 scroll-y full-width h100">
+      <ng-container *ngIf="!single">
+        <div *ngFor="let agent of selected | idstoobjects:items"
+             class="full-width overflow-hidden flex-row mrg6B flex-center">
+          <div class="flex-rigid" style="width: 36px; height: 36px;">
+            <user-profile-pic [id]="agent.id" [transparentBorder]="true" [fontSize]="9"
+                              [picVersion]="status.allUsersMap[agent.id]?.userPicVersion" [alertRing]="false"
+                              [auth]="status.allUsersMap[agent.id]?.userPicAuth"
+                              [initials]="status.allUsersMap[agent.id]?.fullName?.slice(0, 2).toUpperCase()"></user-profile-pic>
+          </div>
+          <div class="mrg4L h100 flex-elastic s12 overflow-hidden">
+            <div class="no-break-with-ellipses font-medium">
+              {{status.allUsersMap[agent.id]?.fullName}}
+            </div>
+            <div class="no-break-with-ellipses mrg2T font-light">
+              {{status.allUsersMap[agent.id]?.userName}}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="single">
+        <div class="full-width overflow-hidden flex-row flex-center">
+          <div class="flex-rigid" style="width: 36px; height: 36px;">
+            <user-profile-pic [id]="singleSelected" [transparentBorder]="true" [fontSize]="9"
+                              [picVersion]="status.allUsersMap[singleSelected]?.userPicVersion"
+                              [alertRing]="false" [auth]="status.allUsersMap[singleSelected]?.userPicAuth"
+                              [initials]="status.allUsersMap[singleSelected]?.fullName?.slice(0, 2).toUpperCase()"></user-profile-pic>
+          </div>
+          <div class="mrg4L h100 flex-elastic s12 overflow-hidden">
+            <div class="no-break-with-ellipses font-medium">
+              {{status.allUsersMap[singleSelected]?.fullName}}
+            </div>
+            <div class="no-break-with-ellipses mrg2T font-light">
+              {{status.allUsersMap[singleSelected]?.userName}}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

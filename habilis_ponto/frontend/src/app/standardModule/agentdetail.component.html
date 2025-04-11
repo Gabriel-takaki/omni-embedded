@@ -1,0 +1,243 @@
+<div class="dialog-medium" style="max-height: 95vh;">
+  <div class="dialog-content">
+    <div class="full-width flex-column overflow-hidden">
+      <div class="full-width flex-row flex-center s16">
+        <div class="font-semi-bold flex-elastic" i18n>
+          Detalhes do Agente
+        </div>
+        <div class="flex-rigid">
+          <app-dialog-close-button (click)="result(false)" [size]="28"></app-dialog-close-button>
+        </div>
+      </div>
+      <div class="agent-area mrg15T">
+        <div class="flex-rigid" style="width: 28px;">
+          <user-profile-pic [id]="agent.id" [picVersion]="status.allUsersMap[agent.id]?.userPicVersion"
+                            [alertRing]="false" [fontSize]="10" [initials]="status.allUsersMap[agent.id]?.fullName?.slice(0, 2).toUpperCase()"
+                            [auth]="status.allUsersMap[agent.id]?.userPicAuth"></user-profile-pic>
+        </div>
+        <div class="flex-elastic mrg10L overflow-hidden no-break-with-ellipses">
+          {{status.allUsersMap[agent.id]?.fullName}}<span *ngIf="agent.mobileConnected || agent.desktopConnected"> -
+      <fa-icon [icon]="['fal', 'mobile']" *ngIf="agent.mobileConnected"></fa-icon>&nbsp;&nbsp;<fa-icon
+            [icon]="['fal', 'desktop']" *ngIf="agent.desktopConnected"></fa-icon>
+      </span>
+        </div>
+        <div class="flex-rigid flex-row">
+          <div matRipple class="agent-detail-button" (click)="changeUserPass(agent)"
+               matTooltip="Trocar senha do agente" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'key']"></fa-icon>
+          </div>
+          <div class="agent-detail-button mrg10L" (click)="logoutUser(agent)"
+               matTooltip="Deslogar agente do aplicativo" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'power-off']"></fa-icon>
+          </div>
+        </div>
+      </div>
+      <div class="full-width s10 flex-row mrg10T align-items-center">
+        <div class="font-semi-bold" i18n>Filtros do agente:</div>
+        <div class="mrg10L" *ngIf="!agent.tags.length" i18n>Nenhum filtro cadastrado para esse agente</div>
+        <div *ngFor="let t of agent.tags" class="mrg5L tag-badge">{{t}}</div>
+      </div>
+      <div class="full-width flex-row mrg20T">
+        <mat-form-field class="mrg-left-auto">
+          <mat-label i18n>Buscar</mat-label>
+          <input matInput type="text" [(ngModel)]="filter" placeholder="Buscar..." i18n-placeholder>
+          <button class="btn btn-square-slim mrg8R" [matRippleDisabled]="!filter" [disabled]="!filter"
+                  (click)="filter = ''"
+                  matSuffix matTooltip="Limpar" matRipple i18n-matTooltip>
+            <fa-icon [icon]="['far', 'times']"></fa-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="full-width flex-row overflow-hidden" style="height: 350px;">
+        <div class="flex-rigid h100 agent-detail-table overflow-hidden" style="width: 255px;">
+          <div class="flex-row full-width flex-rigid">
+            <div class="header-div flex-elastic align-items-center" i18n="Filas de atendimento">Filas</div>
+            <div class="header-div flex-center flex-rigid" style="width: 75px;" matTooltip="Tempo logado hoje"
+                 i18n-matTooltip>
+              <fa-icon [icon]="['far', 'clock']"></fa-icon>
+            </div>
+          </div>
+          <div class="table-content flex-elastic full-width overflow-hidden">
+            <div class="full-width h100 scroll1 scroll-y flex-column">
+              <ng-container *ngFor="let q of agent.queues">
+                <div class="agent-queue-content" *ngIf="status.allQueuesMap[q.id]"
+                     [class.bg-custom-color]="q.id === selectedChatQueueId">
+                  <div class="overflow-hidden flex-row align-items-center no-break-with-ellipses flex-elastic h100">
+                    <div style="width:36px; height: 100%;" class="flex-rigid">
+                      <user-queue-state [logged]="q.logged" [fontSize]="18" [paused]="q.paused"></user-queue-state>
+                    </div>
+                    <div class="mrg5L overflow-hidden no-break-with-ellipses flex-elastic">
+                      {{status.allQueuesMap[q.id]?.name}}
+                    </div>
+                  </div>
+                  <div style="width: 75px;"
+                       class="h100 flex-row flex-center flex-rigid">{{q.loggedTimeCount | formatTime}}</div>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+        </div>
+        <div class="flex-elastic h100 agent-detail-table overflow-hidden mrg10L">
+          <div class="flex-row full-width flex-rigid bg-black-lighten-5">
+            <div class="header-div flex-elastic align-items-center" i18n>Atendimentos</div>
+            <div class="header-div flex-center flex-rigid" style="width: 45px;" matTooltip="Já respondido"
+                 i18n-matTooltip>
+              Resp.
+            </div>
+            <div class="header-div flex-center flex-rigid flex-row" style="width: 80px;" matTooltip="Tempo atribuído"
+                 i18n-matTooltip>
+              <fa-icon [icon]="['far', 'clock']"></fa-icon>
+            </div>
+            <div class="header-div flex-center flex-rigid" style="width: 165px;" matTooltip="Tempo logado hoje"
+                 i18n-matTooltip>
+              Funções
+            </div>
+          </div>
+          <div class="table-content flex-elastic full-width overflow-hidden">
+            <div class="full-width h100 scroll1 scroll-y flex-column">
+              <div class="agent-chat-content"
+                   *ngFor="let c of ((agent.chats | idstoobjects:status.allChatsMap) | filterPanelChats:filter:1:agent.chats?.length)"
+                   (mouseenter)="selectedChatQueueId = c.queueId" (mouseleave)="selectedChatQueueId = null">
+                <div class="overflow-hidden flex-row align-items-center no-break-with-ellipses flex-elastic h100">
+                  <div class="flex-elastic overflow-hidden no-break-with-ellipses pad5A pad10L">
+                    {{c?.clientName || c?.clientEmail || c?.clientNumber}}
+                  </div>
+                  <div style="width: 45px; min-width: 45px" class="flex-rigid h100">
+                    <chat-response-state [sessionLocked]="c?.sessionClosed" [agentResponse]="c?.userResponded"
+                                         [id]="c?.id" [anyResponse]="c?.responded"
+                                         [fontSize]="18"></chat-response-state>
+                  </div>
+                  <div style="width: 80px;"
+                       class="h100 flex-row flex-center flex-rigid pad5T pad5B">{{(status.now - c.desigBeginTime) | formatTime}}</div>
+                  <div class="flex-row flex-center h100 pad5A" style="width: 165px;">
+                    <button class="function-btn" matRipple [matRippleDisabled]="!c.contactId" [disabled]="!c.contactId"
+                            (click)="openContact(c.contactId)"
+                            matTooltip="Abrir contato" i18n-matTooltip>
+                      <fa-icon [icon]="['far', 'address-book']"></fa-icon>
+                    </button>
+                    <button class="function-btn" matRipple
+                            (click)="openChat(c.id, c?.clientName || c?.clientEmail || c?.clientNumber, agent, c.queueId, c.clientId, c.pageId)"
+                            matTooltip="Visualizar conversa" i18n-matTooltip>
+                      <fa-icon [icon]="['fal', 'comments']"></fa-icon>
+                    </button>
+                    <button class="function-btn mrg5L" matRipple (click)="openTransferDialog(c)"
+                            matTooltip="Transferir chat" i18n-matTooltip>
+                      <fa-icon [icon]="['fal', 'exchange']"></fa-icon>
+                    </button>
+                    <button class="function-btn mrg5L fg-danger" matRipple (click)="endChat(c)"
+                            matTooltip="Encerrar chat" i18n-matTooltip>
+                      <fa-icon [icon]="['far', 'comment-alt-times']"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--        <div class="mrg5L" style="flex-grow: 0; flex-shrink: 1;" *ngIf="!status.disableTelephony">-->
+        <!--          <table class="table detail-table">-->
+        <!--            <thead>-->
+        <!--            <tr>-->
+        <!--              <td colspan="4" class="border b1r" i18n>Ligações</td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--              <td class="border b1r b0t" style="width: 110px;" i18n="Número telefônico">Número</td>-->
+        <!--              <td class="border b1r text-center" style="width: 50px;" matTooltip="Tempo logado da chamada"-->
+        <!--                  i18n-matTooltip>-->
+        <!--                <fa-icon [icon]="['far', 'clock']"></fa-icon>-->
+        <!--              </td>-->
+        <!--              <td class="border b1r text-center" style="width: 110px;"-->
+        <!--                  i18n="Seção com botões de funções da tabela. ex apagar, expandir, etc.">-->
+        <!--                Funções-->
+        <!--              </td>-->
+        <!--            </tr>-->
+        <!--            </thead>-->
+        <!--            <tbody>-->
+        <!--            <tr *ngFor="let c of agent.calls">-->
+        <!--              <td>-->
+        <!--                <fa-icon matTooltip="{{c.direction === 'in' ? texts.receivingCall : texts.makingCall}}"-->
+        <!--                         [icon]="['far', c.hold ? 'pause' : c.direction === 'out' ? 'arrow-left' : 'arrow-right']"-->
+        <!--                         class="animated infinite" [class.flash]="c.ringing" [class.fg-info]="c.direction === 'in'"-->
+        <!--                         [class.fg-success]="c.direction === 'out'"></fa-icon>-->
+        <!--                <fa-icon [icon]="['far', 'phone']" class="animated infinite" [class.flash]="c.ringing"></fa-icon>-->
+        <!--                {{c.number}}-->
+        <!--              </td>-->
+        <!--              <td class="text-center">{{c.counter | formatTime}}</td>-->
+        <!--              <td class="text-center">-->
+        <!--                <button class="btn-light-gray-alt btn-rounded btn-30 mrg5L" [disabled]="!c.answered || c.hold"-->
+        <!--                        (click)="spyUser(agent, c.channel, false)" matTooltip="Escutar chamada" i18n-matTooltip>-->
+        <!--                  <fa-icon [icon]="['far', 'headphones']"></fa-icon>-->
+        <!--                </button>-->
+        <!--                <button class="btn-light-gray-alt btn-rounded btn-30 mrg5L" [disabled]="!c.answered || c.hold"-->
+        <!--                        (click)="spyUser(agent, c.channel, true)" matTooltip="Sussurrar" i18n-matTooltip>-->
+        <!--                  <fa-icon [icon]="['far', 'microphone-alt']"></fa-icon>-->
+        <!--                </button>-->
+        <!--              </td>-->
+        <!--            </tr>-->
+        <!--            </tbody>-->
+        <!--          </table>-->
+        <!--        </div>-->
+        <!--        <div class="mrg5L" style="flex-grow: 1; flex-shrink: 1;">-->
+        <!--          <table class="table detail-table">-->
+        <!--            <thead>-->
+        <!--            <tr>-->
+        <!--              <td colspan="4" class="border b1r" i18n>Chats</td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--              <td class="border b1r b0t" style="width: 50px;" i18n="Fila de origem do atendimento">Origem</td>-->
+        <!--              <td class="border b1r" style="width: 180px;" i18n>-->
+        <!--                Cliente-->
+        <!--              </td>-->
+        <!--              <td class="border b1r text-center" style="width: 60px;"-->
+        <!--                  i18n="Abreviação de 'respondido', marca se um atendimento já foi respondido ou não">-->
+        <!--                Resp.-->
+        <!--              </td>-->
+        <!--              <td class="border b1r text-center" style="width: 50px;" matTooltip="Tempo logado hoje" i18n-matTooltip>-->
+        <!--                <fa-icon [icon]="['far', 'clock']"></fa-icon>-->
+        <!--              </td>-->
+        <!--              <td class="border b1r text-center" style="width: 110px;"-->
+        <!--                  i18n="Seção com botões de funções da tabela. ex apagar, expandir, etc.">-->
+        <!--                Funções-->
+        <!--              </td>-->
+        <!--            </tr>-->
+        <!--            </thead>-->
+        <!--            <tbody>-->
+        <!--            <tr *ngFor="let c of agent.chats">-->
+        <!--              <td class="text-center">-->
+        <!--                <fa-icon [icon]="['far', 'circle']" [class.fg-wa]="[1,5,9,10].includes(c.queueType)"-->
+        <!--                         [matTooltip]="'Fila: ' + c.queueName"-->
+        <!--                         [class.fg-fb]="c.queueType === 2" [class.fg-tg]="c.queueType === 3"-->
+        <!--                         [class.fg-ig]="c.queueType === 4" [class.fg-ol]="c.queueType === 6"-->
+        <!--                         [class.fg-ml]="c.queueType === 7" [class.fg-sg]="c.queueType === 8"></fa-icon>-->
+        <!--              </td>-->
+        <!--              <td class="no-break-with-ellipses" style="overflow: hidden;">-->
+        <!--                {{(c?.clientName || c?.clientEmail || c?.clientNumber) | limitTextSize:40}}-->
+        <!--              </td>-->
+        <!--              <td class="text-center">-->
+        <!--                <fa-icon [icon]="['far', 'check']" class="fg-success" *ngIf="c.responded"></fa-icon>-->
+        <!--              </td>-->
+        <!--              <td class="text-center">{{(status.now - c.desigBeginTime) | formatTime}}</td>-->
+        <!--              <td class="text-center" style="display: flex; justify-content: center; align-items: center;">-->
+        <!--                <button class="btn-grid-function mrg5L" matRipple-->
+        <!--                        (click)="openChat(c.id, c?.clientName || c?.clientEmail || c?.clientNumber, agent.fullName, c.queueId, c.clientId, c.queueName, c.pageId)"-->
+        <!--                        matTooltip="Visualizar conversa" i18n-matTooltip>-->
+        <!--                  <fa-icon [icon]="['far', 'comments']"></fa-icon>-->
+        <!--                </button>-->
+        <!--                <button class="btn-grid-function mrg5L" matRipple (click)="openTransferDialog(c)"-->
+        <!--                        matTooltip="Transferir chat" i18n-matTooltip>-->
+        <!--                  <fa-icon [icon]="['far', 'exchange']"></fa-icon>-->
+        <!--                </button>-->
+        <!--                <button class="btn-grid-function mrg5L" matRipple (click)="endChat(c)"-->
+        <!--                        matTooltip="Encerrar chat" i18n-matTooltip>-->
+        <!--                  <fa-icon [icon]="['far', 'door-closed']"></fa-icon>-->
+        <!--                </button>-->
+        <!--              </td>-->
+        <!--            </tr>-->
+        <!--            </tbody>-->
+        <!--          </table>-->
+        <!--        </div>-->
+      </div>
+    </div>
+  </div>
+</div>

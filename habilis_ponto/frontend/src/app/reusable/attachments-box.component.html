@@ -1,0 +1,31 @@
+<mat-form-field class="full-width">
+  <mat-label>{{label}}</mat-label>
+  <mat-chip-grid #chipList cdkDropList cdkDropListOrientation="horizontal" [disabled]="disabled">
+    <mat-chip-row *ngFor="let item of valueClone; let i = index" cdkDrag
+                  [removable]="true" (removed)="remove(item)" style="background: white;">
+      <span>
+        <fa-duotone-icon
+          [icon]="['fad', item.mimetype === 'application/pdf' ? 'file-pdf' : status.documentsMimes.includes(item.mimetype) ? 'file-alt' : status.spreadSheetsMimes.includes(item.mimetype) ? 'file-spreadsheet' : status.presentationMimes.includes(item.mimetype) ? 'file-powerpoint' : status.compressMimes.includes(item.mimetype) ? 'file-archive' : status.imageMimes.includes(item.mimetype) ? 'file-image' : 'file']"
+          [primaryOpacity]="item.mimetype === 'application/pdf' ? 0.4 : status.documentsMimes.includes(item.mimetype) ? 0.4 : status.spreadSheetsMimes.includes(item.mimetype) ? 0.4 : status.presentationMimes.includes(item.mimetype) ? 0.4 : status.compressMimes.includes(item.mimetype) ? 1 : 1"
+          [secondaryOpacity]="item.mimetype === 'application/pdf' ? 1 : status.documentsMimes.includes(item.mimetype) ? 1 : status.spreadSheetsMimes.includes(item.mimetype) ? 1 : status.presentationMimes.includes(item.mimetype) ? 1 : status.compressMimes.includes(item.mimetype) ? 0.18 : 0.18"
+          [primaryColor]="item.mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(item.mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(item.mimetype) ? '#2e7d32' : status.presentationMimes.includes(item.mimetype) ? '#e65100' : status.compressMimes.includes(item.mimetype) ? '#2e3951' : '#2e3951'"
+          [secondaryColor]="item.mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(item.mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(item.mimetype) ? '#2e7d32' : status.presentationMimes.includes(item.mimetype) ? '#e65100' : status.compressMimes.includes(item.mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+        &nbsp;&nbsp;{{item.filename || item.title}}
+      </span>
+      <fa-icon [icon]="['fal', 'times']" matChipRemove></fa-icon>
+    </mat-chip-row>
+    <input [disabled]="disabled"
+           placeholder="{{placeholder}}" [formControl]="inputCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes" #itemInput>
+  </mat-chip-grid>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option [value]="{id: 'from-pc'}" i18n *ngIf="showFromComputer">
+      Buscar arquivo no computador
+    </mat-option>
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+      {{item.title}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<input type="file" hidden (change)="fileSelected($event)" #filesDialog [multiple]="true"
+       style="visibility: hidden"/>

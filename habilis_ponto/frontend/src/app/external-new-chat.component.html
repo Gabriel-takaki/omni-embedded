@@ -1,0 +1,12 @@
+<div class="full-size flex-center">
+  <div class="card flex-column" style="width: 480px;">
+    <div class="full-width flex-center flex-row" style="font-size: 64px;">
+      <fa-icon [icon]="['fal', 'times-circle']" class="fg-danger" *ngIf="erro"></fa-icon>
+      <fa-icon [icon]="['fal', 'check-circle']" class="fg-success" *ngIf="!erro && !loading"></fa-icon>
+      <fa-icon [icon]="['fal', 'spinner']" [spin]="true" *ngIf="!erro && loading"></fa-icon>
+    </div>
+    <div class="s14 mrg8T full-width flex-row flex-center">
+      {{resultMessage}}
+    </div>
+  </div>
+</div>

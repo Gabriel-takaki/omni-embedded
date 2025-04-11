@@ -1,0 +1,57 @@
+<div class="dialog-medium">
+  <div class="dialog-content">
+    <div class="full-width flex-row" style="font-size: 1rem; font-weight: bold;">
+      <div style="flex-grow: 1;">
+        {{title}}
+      </div>
+      <div style="max-width: 45%;" *ngIf="allowMulti">
+        <mat-checkbox [(ngModel)]="onlySelected" [color]="'primary'" style="font-weight: normal;" i18n>
+          Selecionados
+        </mat-checkbox>
+      </div>
+    </div>
+    <div class="full-width mrg10T" style="font-size: 0.9rem; font-weight: 300;">
+
+      <div class="flex-row pad6A pad10L" style="background-color: #f8f8f8; border-radius: 4px;">
+
+        <input #searchInput type="text" placeholder="Pesquisar" [(ngModel)]="searchText" tabIndex="5000"
+               style="background-color: transparent; border: none; outline: none; flex-grow: 1;">
+        <button matRipple (click)="searchText = ''; searchInput.focus()" [disabled]="searchText === ''"
+                [matRippleDisabled]="searchText === ''" [tabIndex]="(itens?.length + 6002) || 6002"
+                style="width: 1.4rem; height: 1.4rem; padding: 0; text-align: center; border: none; outline: none; background-color: transparent; border-radius: 50%;">
+          <fa-icon [icon]="['fal', 'times']"></fa-icon>
+        </button>
+
+      </div>
+
+    </div>
+    <div class="full-width mrg15T scroll1 scroll-y pad4A" style="height: 40vh;" (scroll)="scrolling($event)">
+      <div *ngFor="let i of itens | searchItens:true:searchText:[firstField, secondField]; let idx = index;">
+        <div matRipple *ngIf="(!onlySelected || selectedItens.includes(i)) && idx < showLimit"
+             (keyup)="keyPress($event, i)" [tabIndex]="idx + 5001"
+             class="selection-item" (click)="selectItem(i)">
+          <div class="s8" style="vertical-align: center;">
+            <fa-icon [icon]="['fas', 'circle']" [class.fg-primary]="selectedItem === i || selectedItens.includes(i)"
+                     [class.fg-black-lighten-3]="!(selectedItem === i) && !selectedItens.includes(i)"></fa-icon>
+          </div>
+          <div class="flex-elastic overflow-hidden no-break-with-ellipses pad10L s12 flex-column fg-black-lighten-1"
+               [class.selected-item]="selectedItem === i || selectedItens.includes(i)">
+            <div class="font-medium">{{i[firstField]}}</div>
+            <div class="mrg2T overflow-hidden no-break-with-ellipses" *ngIf="secondField">{{i[secondField]}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" [tabIndex]="(itens?.length + 6000) || 6000"
+            class="btn btn-transparent" (click)="result(false)">
+      <span i18n>Cancelar</span>
+    </button>
+    <button matRipple type="button" id="yesButton" [tabIndex]="(itens?.length + 6001) || 60001"
+            class="mrg15L btn btn-info" [disabled]="!selectedItem && !selectedItens.length"
+            (click)="result(true)" [matRippleDisabled]="!selectedItem && !selectedItens.length">
+      <span i18n>Selecionar</span>
+    </button>
+  </div>
+</div>

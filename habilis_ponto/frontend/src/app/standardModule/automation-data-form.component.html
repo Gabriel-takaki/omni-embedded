@@ -1,0 +1,127 @@
+<div class="dialog-small">
+  <div class="dialog-content flex-elastic flex-column" style="max-height: 50vh">
+    <div class="full-width h100 flex-column overflow-hidden">
+      <div class="s14 font-medium">{{name}}</div>
+      <div class="s12 font-light mrg4T">{{description}}</div>
+      <div class="flex-elastic mrg10T full-width scroll1 scroll-y">
+        <form #thisForm="ngForm" class="h100 full-width overflow-hidden">
+          <div class="full-width h100" *ngIf="!showType">
+            <ng-container *ngFor="let field of fields">
+              <mat-form-field class="full-width" *ngIf="[0,1,2].includes(field.type)">
+                <mat-label>{{ field.name }}</mat-label>
+                <input matInput type="{{field.type === 0 ? 'text' : 'number'}}"
+                       [step]="field.type === 1 ? 1 : 0.01" [required]="!!field.required"
+                       [(ngModel)]="formData[field.var]" name="{{field.var}}" placeholder="{{field.name}}"/>
+              </mat-form-field>
+              <mat-form-field class="full-width" *ngIf="[3].includes(field.type)">
+                <mat-label>{{ field.name }}</mat-label>
+                <input matInput [matDatepicker]="pickerStart" [(ngModel)]="formData[field.var]"
+                       [required]="!!field.required" name="{{field.var}}">
+                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #pickerStart></mat-datepicker>
+              </mat-form-field>
+              <div class="full-width" *ngIf="[4].includes(field.type)">
+                <app-list-selection [label]="field.name" [items]="field.options"
+                                    [(value)]="formData[field.var]"
+                                    [required]="!!field.required"></app-list-selection>
+              </div>
+            </ng-container>
+          </div>
+          <div class="pad5R mrg8T flex-row flex-wrap full-width" *ngIf="showType">
+            <div class="flex-row full-width flex-wrap">
+              <ng-container *ngFor="let field of fields; let i = index;">
+                <mat-form-field class="flex-elastic" style="min-width: 30%; margin-right: 6px;"
+                                *ngIf="[1,3,4,6].includes(field.type)">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <input matInput type="{{field.type === 1 ? 'text' : field.type === 6 ? 'email' : 'number'}}"
+                         [step]="field.type === 3 ? 1 : 0.01" [required]="!!field.required"
+                         [(ngModel)]="formData[field.id]" name="field-{{field.id}}"
+                         placeholder="{{field.name}}" [disabled]="field.lock"/>
+                </mat-form-field>
+
+                <mat-form-field class="flex-elastic" style="min-width: 30%; margin-right: 6px;"
+                                *ngIf="[5].includes(field.type)">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <input matInput type="number" [(ngModel)]="formData[field.id]"
+                         name="field-{{field.id}}" [required]="!!field.required"
+                         placeholder="{{field.label}}" maxlength="30"
+                         [disabled]="field.lock"/>
+                  <div matSuffix *ngIf="status.phoneRegistered">
+                    <button class="btn btn-slim btn-black-lighten-4 mrg8R" matRipple matTooltip="Ligar"
+                            i18n-matTooltip (click)="phone.initiateCall(formData[field.id])"
+                            [matRippleDisabled]="!formData[field.id]"
+                            [disabled]="!formData[field.id]">
+                      <fa-icon [icon]="['fas', 'phone']"></fa-icon>
+                    </button>
+                  </div>
+                </mat-form-field>
+
+                <mat-form-field class="flex-elastic" style="min-width: 30%; margin-right: 6px;"
+                                *ngIf="[7].includes(field.type)">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <input matInput [matDatepicker]="pickerStart" [(ngModel)]="formData[field.id]"
+                         [required]="!!field.required" name="field-{{field.id}}"
+                         [disabled]="field.lock">
+                  <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #pickerStart></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="flex-elastic" style="min-width: 30%; margin-right: 6px;"
+                                *ngIf="[9].includes(field.type)">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <input matInput [ngxMatDatetimePicker]="picker" [(ngModel)]="formData[field.id]"
+                         [required]="!!field.required" name="field-{{field.id}}" [disabled]="field.lock">
+                  <ngx-mat-datepicker-toggle matSuffix [for]="picker"></ngx-mat-datepicker-toggle>
+                  <ngx-mat-datetime-picker #picker [defaultTime]="[11, 0, 0]"
+                                           [showSeconds]="false" [stepHour]="1" [stepMinute]="5"
+                                           [touchUi]="status.isMobile">
+                    <ngx-mat-datepicker-actions>
+                      <button class="btn btn-slim" ngxMatDatepickerCancel i18n>Cancelar</button>
+                      <button class="btn btn-slim btn-success" i18n ngxMatDatepickerApply>Aplicar</button>
+                    </ngx-mat-datepicker-actions>
+                  </ngx-mat-datetime-picker>
+                </mat-form-field>
+
+                <div class="flex-elastic" style="min-width: 30%; margin-right: 6px;" *ngIf="[10].includes(field.type)">
+                  <app-list-selection [label]="field.label" [items]="field.options"
+                                      [(value)]="formData[field.id]" [editable]="!field.lock"
+                                      [required]="!!field.required"></app-list-selection>
+                </div>
+
+              </ng-container>
+            </div>
+            <div class="flex-row full-width flex-wrap">
+              <ng-container *ngFor="let field of fields; let i = index;">
+
+                <div class="flex-elastic mrg6R" style="min-width: 23%" *ngIf="[12].includes(field.type)">
+                  <mat-checkbox [(ngModel)]="formData[field.id]" [color]="'accent'"
+                                name="field-{{field.id}}" [disabled]="field.lock">
+                    {{ field.label }}
+                  </mat-checkbox>
+                </div>
+
+              </ng-container>
+            </div>
+
+            <ng-container *ngFor="let field of fields; let i = index;">
+              <mat-form-field class="full-width" *ngIf="[2].includes(field.type)">
+                <mat-label>{{ field.label }}</mat-label>
+                <textarea matInput type="text" [(ngModel)]="formData[field.id]" name="text" style="height: 120px;"
+                          placeholder="{{field.label}}" [disabled]="field.lock"></textarea>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-buttons flex-rigid">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!thisForm.valid">
+      <span i18n>Executar</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="full-width h100 overflow-hidden flex-column">
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Grupos de acesso
+    </div>
+    <button class="mrg10L btn btn-primary" matRipple (click)="add()">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: false}" [hoverStateEnabled]="true"
+                    [dataSource]="groups" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="true"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <div class="grid-function-btn-area">
+            <button class="grid-function-btn" (click)="showMembers(id.data.id)" matTooltip="Exibir membros"
+                    matRipple i18n-matTooltip>
+              <fa-icon [icon]="['far', 'users']"></fa-icon>
+            </button>
+            <button class="grid-function-btn mrg6L" (click)="edit(id.data)" matTooltip="Editar grupo"
+                    matRipple i18n-matTooltip>
+              <fa-icon [icon]="['far', 'edit']"></fa-icon>
+            </button>
+            <button class="grid-function-btn mrg6L" (click)="removeItem(id.data)" matRipple
+                    matTooltip="Excluir grupo" i18n-matTooltip *ngIf="id.data.username !== 'admin'">
+              <fa-icon [icon]="['far', 'times']"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div *dxTemplate="let t of 'textTemplate'" class="no-break-with-ellipses">
+          {{t.value}}
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

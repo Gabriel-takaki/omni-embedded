@@ -1,0 +1,13 @@
+@import "scss/newcolors";
+
+.users-tooltip {
+  position: absolute;
+  bottom: 0;
+  padding: 8px;
+  width: 190px;
+  height: 75px;
+  background-color: $white-base;
+  border-radius: 16px;
+  box-shadow: #00000029 0 3px 4px;
+  overflow: hidden;
+}

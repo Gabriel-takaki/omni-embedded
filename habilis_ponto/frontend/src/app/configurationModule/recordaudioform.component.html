@@ -1,0 +1,69 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Novo áudio</div>
+    <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T">
+
+      <div class="full-width flex-center flex-row" *ngIf="!recordingAudio && !recordingChunks.length">
+        <button class="btn btn-danger" [disabled]="!canRecord" matRipple [matRippleDisabled]="!canRecord"
+                (click)="startRecording($event)" i18n>
+          <fa-icon [icon]="['fas', 'circle']"></fa-icon>
+          Iniciar gravação
+        </button>
+      </div>
+
+      <div class="chat-control-area" [@textareaVisibilityChanged]="'shown'"
+           *ngIf="recordingAudio || recordingChunks.length">
+
+        <div class="h100 flex-center mrg12R">
+          <div class="audio-recording-area">
+            <div class="flex-row flex-center" *ngIf="recordingAudio">
+              <div class="mrg12R" style="width: 64px;">
+                {{recordTime | formatTime}}
+              </div>
+              <div style="height: 42px;">
+                <app-waveform-viewer [bars]="status.isMobile ? 32 : 48" [bgColorClass]="'outline-black-lighten-5'"
+                                     [waveform]="instantSamples"></app-waveform-viewer>
+              </div>
+            </div>
+            <div class="flex-row flex-center" *ngIf="!recordingAudio">
+              <div (click)="clearRecording()"
+                   class="text-area-button text-area-action-button-stop" matRipple>
+                <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+              </div>
+              <div class="flex-elastic">
+                <app-custom-audio [waveform]="waveform" [bgColorClass]="'outline-black-lighten-5'" [src]="audioUrl"
+                                  [bars]="status.isMobile ? 20 : 64" [fallBackWidth]="status.isMobile ? 80 : 240"
+                                  [compact]="true"
+                                  [type]="mp4Audio ? 'video/mp4' : 'audio/ogg; codecs=opus'"></app-custom-audio>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-area-button text-area-action-button-stop flash animated infinite duration-2000" i18n-matTooltip
+             *ngIf="recordingAudio" matRipple (click)="stopRecording($event)" matTooltip="Parar gravação">
+          <fa-icon [icon]="['far', 'stop-circle']" *ngIf="recordingAudio"></fa-icon>
+        </div>
+
+      </div>
+
+      <div class="full-width mrg10T">
+        <mat-form-field class="full-width mrg10T">
+          <mat-label i18n>Título</mat-label>
+          <input matInput type="text" [(ngModel)]="title" name="titleInput" placeholder="Título"
+                 required maxlength="128" class="full-width" #titleInput i18n-placeholder/>
+        </mat-form-field>
+      </div>
+
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!recording || !title || recordingAudio" i18n>
+      Adicionar
+    </button>
+  </div>
+</div>

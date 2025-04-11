@@ -1,0 +1,272 @@
+<div class="dialog-small" [class.dialog-large]="status.isMobile">
+    <div class="dialog-content">
+        <div class="full-width s14 font-medium" i18n>
+            Encerrar atendimento
+        </div>
+        <div class="full-width mrg10T s12 font-light" i18n>
+            Tem certeza que deseja encerrar esse atendimento?
+        </div>
+        <div class="full-width mrg10T scroll-y scroll1" style="max-height: 55vh;"
+             [class.pad5R]="status.isMobile">
+            <mat-form-field class="full-width">
+                <div matPrefix class="mrg12L mrg4R">
+                    <button class="btn btn-black-lighten-3 btn-square-slim s10" tabindex="100" (mouseover)="starMouseOver = true"
+                            (mouseleave)="starMouseOver = false" (click)="setFavoriteReason($event)" matRipple
+                            [class.fg-yellow-darken-1]="favoriteReason.toString() === reason?.split('|||')[0]"
+                            [class.fg-yellow-lighten-1]="favoriteReason.toString() !== reason?.split('|||')[0] && starMouseOver"
+                            matTooltip="Marcar como preferida" i18n-matTooltip>
+                      <fa-icon [icon]="['fas', 'star']"
+                               *ngIf="favoriteReason.toString() === reason?.split('|||')[0] || starMouseOver"></fa-icon>
+                      <fa-icon [icon]="['far', 'star']"
+                               *ngIf="favoriteReason.toString() !== reason?.split('|||')[0] && !starMouseOver"></fa-icon>
+                    </button>
+                  </div>
+                <mat-label i18n>Resultado do atendimento</mat-label>
+                <mat-select [(ngModel)]="reason" tabindex="1" id="reasonSelect" #reasonSelect>
+                    <mat-option>
+                        <ngx-mat-select-search ngModel (ngModelChange)="filterOptions($event)" [closeSvgIcon]="'a'"
+                        placeholderLabel="Buscar..." i18n-placeholderLabel
+                        name="favoriteEndReasonsFilter"
+                        noEntriesFoundLabel="'Nenhuma correspondência encontrada'"
+                        i18n-noEntriesFoundLabel="Correspondência à busca efetuada"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="noReason" i18n>Não especificado</mat-option>
+                    <mat-option [value]="r" *ngFor="let r of filteredEndReasons">{{ r }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label i18n="Observações com relação ao atendimento sendo encerrado">Observação</mat-label>
+                <input matInput placeholder="Observação" type="text" [(ngModel)]="reasonObs" class="form-input"
+                       i18n-placeholder="Observações com relação ao atendimento sendo encerrado"
+                       tabindex="2" name="obs" id="obs" (keypress)="keyp($event)">
+                <a *ngIf="reasonObs" mat-button matSuffix mat-icon-button aria-label="Limpar" (click)="reasonObs=''">
+                    <fa-icon [icon]="['fal', 'times']"></fa-icon>
+                </a>
+            </mat-form-field>
+            <div class="full-width mrg8T s12 font-medium" i18n *ngIf="opportunities.length">
+                Oportunidades:
+            </div>
+            <div class="full-width mrg8T" *ngFor="let opp of opportunities">
+                <app-opportunity-card [opportunity]="status.allOpportunitiesMap[opp]" [opportunityId]="opp"
+                                      [counter]="status.allOpportunitiesCounter" [showTags]="true" [showValue]="true"
+                                      [showBorder]="true" [showFooter]="false" [showWinLose]="false"
+                                      [showPipestages]="true"></app-opportunity-card>
+                <!--        <div class="full-width flex-row flex-center">-->
+                <!--          <div class="flex-elastic">-->
+                <!--            -->
+                <!--          </div>-->
+                <!--          <div class="mrg6L flex-rigid">-->
+                <!--            <button class="btn btn-super-slim" matRipple (click)="unlinkOpportunity(status.allOpportunitiesMap[opp])"-->
+                <!--                    [matRippleDisabled]="!status.allOpportunitiesMap[opp] || !oppServices.canEdit(status.allOpportunitiesMap[opp])"-->
+                <!--                    [disabled]="!status.allOpportunitiesMap[opp] || !oppServices.canEdit(status.allOpportunitiesMap[opp])"-->
+                <!--                    matTooltip="Desvincular oportunidade do atendimento">-->
+                <!--              <fa-icon [icon]="['far', 'times']"></fa-icon>-->
+                <!--            </button>-->
+                <!--          </div>-->
+                <!--        </div>-->
+            </div>
+            <div class="full-width flex-row mrg10B" [class.mrg24T]="opportunities.length">
+                <div class="flex-row mrg5T" style="align-items: center;">
+                    <app-animated-toogle [value]="!dontSendAutoMsg"
+                                         (changed)="toogle('dontSendAutoMsg')"></app-animated-toogle>
+                    <span class="mrg10L pointer" i18n
+                          (click)="toogle('dontSendAutoMsg')">Enviar mensagem de encerramento</span>
+                </div>
+                <div class="flex-row mrg5T mrg15L" style="align-items: center;"
+                     *ngIf="[5, 16, 10, 17].includes(queueType)">
+                    <app-animated-toogle [(value)]="reopen" (changed)="loadScheduleData()"></app-animated-toogle>
+                    <span class="mrg10L pointer" i18n (click)="toogle('reopen')">Agendar reabertura</span>
+                </div>
+            </div>
+            <div *ngIf="reopen && clientSchedules.length"
+                 class="label label-gray pad5T pad10L pad10R pad5B flex-row full-width mrg5B">
+                <div>
+                    <fa-icon [icon]="['far', 'calendar']"></fa-icon>
+                </div>
+                <div class="mrg5L" i18n>
+                    Esse cliente já possui reabertura agendada.
+                </div>
+                <div class="pointer mrg10L" style="text-decoration: underline;" [matTooltip]="clientSchedulesText" i18n>
+                    Saber mais
+                </div>
+            </div>
+            <div class="full-width flex-row mrg5T overflow-hidden" *ngIf="reopen" [class.flex-wrap]="status.isMobile">
+                <mat-form-field class="flex-elastic">
+                    <mat-label i18n>Data da reabertura</mat-label>
+                    <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="date" (dateInput)="checkSelectedDate()"
+                           [matDatepickerFilter]="dateFilter" name="data" tabindex="4">
+                    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #pickerEnd [dateClass]="highlightDate"></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="flex-elastic mrg5L" [class.mrg0L]="status.isMobile">
+                    <mat-label i18n>Hora</mat-label>
+                    <mat-select [(value)]="hour" class="full-width" name="type">
+                        <mat-option [value]="0">
+                            00
+                        </mat-option>
+                        <mat-option [value]="1">
+                            01
+                        </mat-option>
+                        <mat-option [value]="2">
+                            02
+                        </mat-option>
+                        <mat-option [value]="3">
+                            03
+                        </mat-option>
+                        <mat-option [value]="4">
+                            04
+                        </mat-option>
+                        <mat-option [value]="5">
+                            05
+                        </mat-option>
+                        <mat-option [value]="6">
+                            06
+                        </mat-option>
+                        <mat-option [value]="7">
+                            07
+                        </mat-option>
+                        <mat-option [value]="8">
+                            08
+                        </mat-option>
+                        <mat-option [value]="9">
+                            09
+                        </mat-option>
+                        <mat-option [value]="10">
+                            10
+                        </mat-option>
+                        <mat-option [value]="11">
+                            11
+                        </mat-option>
+                        <mat-option [value]="12">
+                            12
+                        </mat-option>
+                        <mat-option [value]="13">
+                            13
+                        </mat-option>
+                        <mat-option [value]="14">
+                            14
+                        </mat-option>
+                        <mat-option [value]="15">
+                            15
+                        </mat-option>
+                        <mat-option [value]="16">
+                            16
+                        </mat-option>
+                        <mat-option [value]="17">
+                            17
+                        </mat-option>
+                        <mat-option [value]="18">
+                            18
+                        </mat-option>
+                        <mat-option [value]="19">
+                            19
+                        </mat-option>
+                        <mat-option [value]="20">
+                            20
+                        </mat-option>
+                        <mat-option [value]="21">
+                            21
+                        </mat-option>
+                        <mat-option [value]="22">
+                            22
+                        </mat-option>
+                        <mat-option [value]="23">
+                            23
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="flex-elastic mrg5L" [class.mrg0L]="status.isMobile">
+                    <mat-label i18n>Minuto</mat-label>
+                    <mat-select [(value)]="minute" class="full-width" name="type">
+                        <mat-option [value]="0">
+                            00
+                        </mat-option>
+                        <mat-option [value]="15">
+                            15
+                        </mat-option>
+                        <mat-option [value]="30">
+                            30
+                        </mat-option>
+                        <mat-option [value]="45">
+                            45
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="reopen && agentSchedulesOnSelectedDate" style="align-items: flex-start; overflow: hidden;"
+                 class="label label-warning pad5T pad10R pad5B flex-column full-width mrg15B">
+                <div i18n>
+                    Você possui as seguintes reaberturas agendas para a data selecionada:
+                </div>
+                <div class="mrg5T no-break-with-ellipses">
+                    {{ agentSchedulesOnSelectedDate }}
+                </div>
+            </div>
+            <div class="full-width flex-row">
+                <mat-form-field class="flex-elastic" i18n-matTooltip *ngIf="reopen"
+                                matTooltip="Se selecionada, essa automação será executada no atendimento assim que reaberto.">
+                    <mat-label i18n>Automação de reabertura</mat-label>
+                    <mat-select [(ngModel)]="reopenAutomationId" tabindex="1">
+                        <mat-option>
+                            <ngx-mat-select-search [(ngModel)]="search" [closeSvgIcon]="'a'"
+                                                   placeholderLabel="Buscar..." i18n-placeholderLabel
+                                                   noEntriesFoundLabel="'Nenhuma correspondência encontrada'"
+                                                   i18n-noEntriesFoundLabel="Correspondência à busca efetuada"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option [value]="0" i18n>Sem automação</mat-option>
+                        <ng-container *ngFor="let ivr of (status.chatsAutomations | searchItens:true:search:['name'])">
+                            <mat-option [value]="ivr.id" matTooltip="{{ivr.description}}">
+                                {{ ivr.title }}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="flex-elastic mrg8L" *ngIf="reopen && [10,17,18,19].includes(queueType)">
+                    <mat-label i18n>Templates</mat-label>
+                    <mat-select [(ngModel)]="reopenTemplate" name="templateId">
+                        <ng-container *ngFor="let template of status.allTemplates">
+                            <mat-option *ngIf="(template.queueid === queueId) &&
+                  (template.type === 0 || template.status?.toLowerCase() === 'approved') &&
+                  !template.params.length && !template.headerparams.length" [value]="template.id">
+                                <div class="full-width flex-row overflow-hidden">
+                                    <div class="flex-elastic no-break-with-ellipses">
+                                        {{ template.name }} [{{ template.templatename }}]
+                                    </div>
+                                    <div class="mrg8L flex-rigid label label-big"
+                                         [class.label-warning]="template.category?.toLowerCase() === 'marketing'"
+                                         [class.label-info]="template.category?.toLowerCase() === 'utility'">
+                                        {{ template.category }}
+                                    </div>
+                                </div>
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <mat-form-field style="width: 100%;" *ngIf="reopen">
+                <mat-label i18n="Motivo de encerramento do atendimento">Motivo</mat-label>
+                <input matInput placeholder="Motivo" type="text" [(ngModel)]="reopenReason" class="form-input"
+                       i18n-placeholder="Motivo de encerramento do atendimento"
+                       tabindex="2" name="reopenreason" id="reopenreason" (keypress)="keyp($event)">
+                <a *ngIf="reopenReason" mat-button matSuffix mat-icon-button aria-label="Limpar"
+                   (click)="reopenReason=''">
+                    <fa-icon [icon]="['fal', 'times']"></fa-icon>
+                </a>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="dialog-buttons">
+        <button matRipple type="button" id="noButton" tabindex="4" #noButton
+                (keydown)="handleArrows($event, 'noButton')"
+                class="btn btn-transparent" (click)="result(false)">
+            <span i18n>Cancelar</span>
+        </button>
+        <button matRipple type="button" id="yesButton" tabindex="3" #yesButton
+                (keydown)="handleArrows($event, 'yesButton')"
+                [disabled]="data.queueRequireReason && (!reason || reason === noReason)"
+                [matRippleDisabled]="data.queueRequireReason && (!reason || reason === noReason)"
+                class="mrg15L btn btn-warning" (click)="result(true)">
+            <span i18n>Encerrar</span>
+        </button>
+    </div>
+</div>

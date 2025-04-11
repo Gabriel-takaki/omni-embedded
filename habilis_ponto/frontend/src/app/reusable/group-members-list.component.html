@@ -1,0 +1,53 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="full-width s16 font-bold" i18n>
+      Membros do grupo {{service.allAccessGroupsMap[groupId]?.name}}
+    </div>
+    <div class="full-width s14 font-light mrg8T">
+      Todos os administradores estão automaticamente incluídos.
+    </div>
+    <div class="full-width mrg10T s14 font-light">
+
+      <div class="flex-row pad6A pad10L bg-black-lighten-5" style="border-radius: 4px;">
+        <input #searchInput type="text" placeholder="Pesquisar" i18n-placeholder [(ngModel)]="searchText"
+               tabIndex="5000" style="background-color: transparent; border: none; outline: none; flex-grow: 1;">
+        <button matRipple (click)="searchText = ''; searchInput.focus()" [disabled]="searchText === ''"
+                [matRippleDisabled]="searchText === ''" [tabIndex]="(itens?.length + 6002) || 6002"
+                style="width: 1.4rem; height: 1.4rem; padding: 0; text-align: center; border: none; outline: none; background-color: transparent; border-radius: 50%;">
+          <fa-icon [icon]="['fal', 'times']"></fa-icon>
+        </button>
+
+      </div>
+
+    </div>
+    <div class="full-width mrg15T scroll1 pad6A" style="height: 40vh; overflow-y: scroll;" #usersList
+         (scroll)="scrollEvent()">
+      <ng-container *ngFor="let i of itens | searchItens:true:searchText:['fullName', 'userName']; let idx = index;">
+        <div class="full-width" [@visibilityState]="'visible'">
+          <div matRipple (keyup)="keyPress($event, i)" [tabIndex]="idx + 5001" class="selection-item">
+
+            <div style="height: 42px; width: 42px; overflow: hidden;" class="mrg12L">
+              <user-profile-pic [id]="i.id" [picVersion]="service.allUsersMap[i.id]?.userPicVersion"
+                                [alertRing]="false" [auth]="service.allUsersMap[i.id]?.userPicAuth"
+                                [initials]="i.fullName?.slice(0, 2).toUpperCase()"></user-profile-pic>
+            </div>
+            <div class="flex-elastic flex-column overflow-hidden pad10L s12 fg-black-lighten-1">
+              <div class="no-break-with-ellipses font-medium">
+                {{i.fullName}}
+              </div>
+              <div class="no-break-with-ellipses font-light">
+                {{i.userName}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" [tabIndex]="(itens?.length + 6000) || 6000"
+            class="btn btn-transparent" (click)="close()">
+      <span i18n>Fechar</span>
+    </button>
+  </div>
+</div>

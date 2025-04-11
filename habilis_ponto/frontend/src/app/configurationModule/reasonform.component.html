@@ -1,0 +1,21 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Novo motivo</div>
+    <div class="s12 font-light mrg5T" i18n>Campos marcados com * são obrigatórios</div>
+    <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg25T">
+      <mat-form-field class="full-width">
+        <mat-label i18n>Motivo</mat-label>
+        <input matInput type="text" [(ngModel)]="text" name="firstInput" placeholder="Nome do motivo de pausa"
+               required #firstInput maxlength="128" i18n-placeholder/>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button type="button" class="btn btn-transparent" (click)="close()" matRipple>
+      <span i18n>Cancelar</span>
+    </button>
+    <button type="button" (click)="save()" class="btn btn-success mrg15L" [disabled]="!thisForm.valid" matRipple>
+      <span i18n>Adicionar</span>
+    </button>
+  </div>
+</div>

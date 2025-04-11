@@ -1,0 +1,36 @@
+<div class="opportunities-box" [class.opportunities-box-disabled]="disabled" matRipple
+     [matRippleDisabled]="disabled" matTooltip="Live Session" i18n-matTooltip
+     [matMenuTriggerFor]="!disabled ? liveSessionMenu : null">
+  <fa-icon [icon]="['fal', 'laptop']"></fa-icon>
+</div>
+<mat-menu #liveSessionMenu="matMenu" xPosition="before">
+  <button class="full-width" mat-menu-item (click)="openLiveSession(chat?.tabs[0]?.tabId)"
+          *ngIf="status.enableWebChatLiveSessionView && chat?.webChat && chat?.tabs?.length === 1">
+    <div class="full-width flex-row flex-center">
+      <fa-icon [icon]="['far', 'eye']"></fa-icon>
+      <span class="mrg6L" i18n>Visualizar sessão</span>
+    </div>
+  </button>
+  <button class="full-width" mat-menu-item [matMenuTriggerFor]="liveSessionTabsMenu"
+          *ngIf="status.enableWebChatLiveSessionView && chat?.webChat && chat?.tabs?.length > 1">
+    <div class="full-width flex-row flex-center">
+      <fa-icon [icon]="['far', 'eye']"></fa-icon>
+      <span class="mrg6L" i18n>Visualizar sessão</span>
+    </div>
+  </button>
+  <button class="full-width" mat-menu-item (click)="openLiveSession(chat?.tabs[0]?.tabId, true)"
+          *ngIf="(status.enableWebChatDesktopRemoteAssistance && chat?.desktopChat) || (status.enableWebChatHTMLRemoteAssistance && chat?.webChat)">
+    <div class="full-width flex-row flex-center">
+      <fa-icon [icon]="['far', 'mouse-alt']"></fa-icon>
+      <span class="mrg6L" i18n>Solicitar controle remoto</span>
+    </div>
+  </button>
+</mat-menu>
+<mat-menu #liveSessionTabsMenu="matMenu" xPosition="before">
+  <button class="full-width" mat-menu-item *ngFor="let tab of chat?.tabs" (click)="openLiveSession(tab.tabId)">
+    <div class="full-width flex-row flex-center" [class.fg-info]="tab.tabActive">
+      <fa-icon [icon]="['far', 'eye']"></fa-icon>
+      <span class="mrg6L">{{tab.tabTitle}}</span>
+    </div>
+  </button>
+</mat-menu>

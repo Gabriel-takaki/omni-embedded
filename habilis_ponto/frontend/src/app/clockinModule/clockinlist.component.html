@@ -1,0 +1,78 @@
+<div class="full-width h100 overflow-hidden flex-column">
+  <div class="full-width h4 flex-rigid" i18n>
+      Relatório de ponto
+  </div>
+  <div class="flex-row mrg15T full-width flex-center flex-rigid">
+      <mat-form-field>
+          <mat-label i18n>Período</mat-label>
+          <mat-select [(ngModel)]="period" tabindex="1">
+              <mat-option [value]="1" i18n>Hoje</mat-option>
+              <mat-option [value]="2" i18n>Esta semana</mat-option>
+              <mat-option [value]="3" i18n>Este mês</mat-option>
+              <mat-option [value]="4" i18n="Período de datas personalizado">Personalizado</mat-option>
+          </mat-select>
+      </mat-form-field>
+      <mat-form-field class="mrg10L" *ngIf="period === 4">
+          <mat-label i18n>Data de início</mat-label>
+          <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate" name="data" tabindex="3">
+          <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #pickerStart></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="mrg10L" *ngIf="period === 4">
+          <mat-label i18n>Data de fim</mat-label>
+          <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate" name="data" tabindex="4">
+          <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #pickerEnd></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="mrg10L">
+        <mat-label  i18n>Usuário</mat-label>
+        <mat-select [(ngModel)]="userSelected" tabindex="1">
+            <mat-option [value]='0' i18n>Todos</mat-option>
+            <mat-option [value]="u.id" *ngFor="let u of users">{{u.fullname}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div class="mrg-left-auto flex-row flex-rigid align-self-start">
+
+    <button 
+    [matMenuTriggerFor]="menuExport"
+    matTooltip="Exportar documento" i18n-matTooltip
+    type="button" class="btn btn-secondary mrg5R" 
+    i18n matRipple>
+<fa-icon [icon]="['far', 'download']"></fa-icon>
+&nbsp;&nbsp;Exportar
+</button>
+
+        <mat-menu #menuExport="matMenu">
+            <button mat-menu-item (click)="exportData(0)" i18n>Excel</button>
+            <button mat-menu-item (click)="exportData(1)" i18n>PDF</button>
+            <button mat-menu-item (click)="exportData(2)" i18n>CSV</button>
+        </mat-menu>
+
+      <div class="mrg-left-auto">
+          <button type="button" class="btn btn-primary" (click)="loadData()" i18n>
+              <fa-icon [icon]="['far', 'sync']"></fa-icon>&nbsp;&nbsp;Atualizar
+          </button>
+      </div>
+    </div>
+   
+  </div>
+  <div class="card flex-elastic full-width">
+    <div #gridContainer class="full-width h100">
+      <dx-data-grid [columns]="columns" #dxgrid [repaintChangesOnly]="true"
+                    [dataSource]="localItems" [height]="gridContainer.clientHeight">
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <dxo-scrolling [rowRenderingMode]="'virtual'" [renderAsync]="false" [useNative]="true"></dxo-scrolling>
+        <dxo-export [enabled]="true" fileName="Tempo em pausa"></dxo-export>
+        <div *dxTemplate="let data of 'viewButtonTemplate'">
+            <button class="grid-function-btn mrg6L" matTooltip="Visualizar registro" i18n-matTooltip
+            >
+        <fa-icon [icon]="['far', 'eye']" ></fa-icon>
+    </button>
+          </div>
+      </dx-data-grid>
+    </div>
+  </div>

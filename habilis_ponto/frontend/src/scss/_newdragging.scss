@@ -1,0 +1,7 @@
+@import "scss/newcolors";
+
+.cdk-drop-list-dragging {
+  background-color: $black-lighten-5 !important;
+  border: 1px dashed $info-base !important;
+  border-radius: 4px !important;
+}

@@ -1,0 +1,22 @@
+<mat-form-field class="full-width">
+  <mat-label>{{label}}</mat-label>
+  <mat-chip-grid #chipList cdkDropList cdkDropListOrientation="horizontal"
+                 (cdkDropListDropped)="drop($event)" [disabled]="disabled">
+    <mat-chip-row *ngFor="let item of selectedItems; let i = index" cdkDrag
+                  [removable]="true" (removed)="remove(item)"
+                  [style.background-color]="item.bgcolor ? item.bgcolor || '#333' : 'transparent'">
+      <span [style.color]="item.fgcolor ? item.fgcolor || '#fff' : '#777'">
+        {{showPosition ? (i + 1) + 'º - ' : ''}}{{item[displayExpr]}}
+      </span>
+      <fa-icon [icon]="['fal', 'times']" matChipRemove></fa-icon>
+    </mat-chip-row>
+    <input [disabled]="disabled"
+           placeholder="{{placeholder}}" [formControl]="inputCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" #itemInput>
+  </mat-chip-grid>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+      {{item[displayExpr]}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

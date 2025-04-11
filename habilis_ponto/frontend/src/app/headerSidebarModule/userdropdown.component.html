@@ -1,0 +1,117 @@
+<div class="user-account-btn header-fg">
+
+    <div class="userpic-area pointer" (mouseover)="editPhoto = true" (mouseout)="editPhoto = false"
+         (click)="fileSelector.click()">
+        <div class="flex-center full-width h100 div-square position-relative">
+            <input type="file" accept="image/*" matTooltip="Trocar foto" i18n-matTooltip #fileSelector
+                   (change)="photoChange(status.user, $event)" class="photo-input"/>
+            <div class="userpic-element">
+                <user-profile-pic [id]="status.user?.id" [auth]="status.allUsersMap[status.user?.id]?.userPicAuth"
+                                  [picVersion]="status.allUsersMap[status.user?.id]?.userPicVersion" [fontSize]="12"
+                                  [initials]="status.user?.fullname.slice(0, 2).toUpperCase()"></user-profile-pic>
+            </div>
+            <div class="photo-change-mask" [class.photo-change-mask-visible]="editPhoto">
+                <fa-icon [icon]="['fas', 'spinner']" *ngIf="loading" [spin]="true"></fa-icon>
+                <fa-icon [icon]="['fas', 'edit']" class="pointer" *ngIf="!loading"></fa-icon>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-row usermenu-area" matRipple [matMenuTriggerFor]="profileMenu">
+        <div class="username-text-area">
+            <div class="font-bold no-break-with-ellipses"
+                 style="overflow: hidden; line-height: 1;">{{ status.user?.fullname }}
+            </div>
+            <div class="font-light">{{ status.user?.username }}</div>
+        </div>
+        <div class="mrg15L">
+            <fa-icon [icon]="['far', 'angle-down']"></fa-icon>
+        </div>
+    </div>
+</div>
+<mat-menu #profileMenu="matMenu" xPosition="before">
+    <div class="full-width flex-center flex-row pad8A">
+        <div class="userpic-area-big pointer" (mouseover)="editPhoto = true" (mouseout)="editPhoto = false"
+             (click)="fileSelector.click()">
+            <div class="flex-center full-width h100 div-square position-relative">
+                <input type="file" accept="image/*" matTooltip="Trocar foto" i18n-matTooltip #fileSelector
+                       (change)="photoChange(status.user, $event)" class="photo-input"/>
+                <div class="userpic-element">
+                    <user-profile-pic [id]="status.user?.id" [auth]="status.allUsersMap[status.user?.id]?.userPicAuth"
+                                      [alertRing]="true" [alertLevel]="-1"
+                                      [picVersion]="status.allUsersMap[status.user?.id]?.userPicVersion" [fontSize]="12"
+                                      [initials]="status.user?.fullname.slice(0, 2).toUpperCase()"></user-profile-pic>
+                </div>
+                <div class="photo-change-mask" [class.photo-change-mask-visible]="editPhoto">
+                    <fa-icon [icon]="['fas', 'spinner']" *ngIf="loading" [spin]="true"></fa-icon>
+                    <fa-icon [icon]="['fas', 'edit']" class="pointer" *ngIf="!loading"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="full-width align-items-center flex-row pad12L mrg8T" i18n-matTooltip
+         matTooltip="Essa configuração será compartilhada por todos os usuários que utilizarem esse mesmo navegador. É necessário recarregar a página para que essa configuração tenha efeito em alguns elementos do sistema.">
+        <app-animated-toogle (changed)="status.saveConfig()" (click)="$event.stopPropagation()"
+                [(value)]="status.disableAnimations"></app-animated-toogle>
+        <span class="mrg10L" i18n>Desabilitar animações</span>
+    </div>
+    <div class="full-width align-items-center flex-row pad12L mrg8T mrg12B" i18n-matTooltip
+         matTooltip="Essa configuração será compartilhada por todos os usuários que utilizarem esse mesmo navegador.">
+        <app-animated-toogle (changed)="status.saveConfig()" (click)="$event.stopPropagation()"
+                             [(value)]="status.disableWaveform"></app-animated-toogle>
+        <span class="mrg10L" i18n>Desabilitar waveform</span>
+    </div>
+    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" title="Trocar senha"
+            *ngIf="!status.hideChangePasswordButton"
+            (click)="changePass(status.user)">
+        Trocar senha
+    </button>
+    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" title="Atalhos do sistema"
+            *ngIf="!status.hideChangePasswordButton" (click)="systemShortcuts()">
+        Atalhos do sistema
+    </button>
+    <div class="full-width pad10L pad10R pad8T">
+        <button i18n-title i18n class="btn btn-primary full-width s12 pad8T pad8B" title="Sair" (click)="logout()" matRipple
+                *ngIf="!status.hideLogoutButton">
+            Sair
+        </button>
+    </div>
+</mat-menu>
+<!--  <div class="dropdown-menu float-left" [@visibilityChanged]="visibility" style="overflow-y: hidden; display: block;">-->
+<!--    <div class="box-sm flex-column pad10A">-->
+<!--      <div class="full-width flex-row-local" style="color: #333;">-->
+<!--        <div style="width: 65px;" class="mrg5L">-->
+<!--          <div class="flex-align-center full-width div-square" style="position: relative;">-->
+<!--            <input type="file" accept="image/*" (mouseover)="editPhoto = true"-->
+<!--                   (mouseout)="editPhoto = false" matTooltip="Trocar foto" i18n-matTooltip-->
+<!--                   (change)="photoChange(status.user, $event)" class="photo-input"/>-->
+<!--            <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;">-->
+<!--              <user-profile-pic [id]="status.user?.id" [picVersion]="status.user?.userPicVersion" [fontSize]="12"-->
+<!--                                [initials]="status.user?.fullname.slice(0, 2).toUpperCase()"></user-profile-pic>-->
+<!--            </div>-->
+<!--            <div class="photo-change-mask" [class.photo-change-mask-visible]="editPhoto">-->
+<!--              <fa-icon [icon]="['fas', 'spinner']" *ngIf="loading" [spin]="true"></fa-icon>-->
+<!--              <fa-icon [icon]="['fas', 'edit']" *ngIf="!loading"></fa-icon>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="mrg25L flex-grow-1 no-break-with-ellipses flex-column"-->
+<!--             style="font-size: 110%; max-width: 150px; overflow: hidden; margin-top: 3px; justify-content: center">-->
+<!--          <div class="bold no-break-with-ellipses"-->
+<!--               style="overflow: hidden; line-height: 1;">{{status.user?.fullname}}</div>-->
+<!--          <div>{{status.user?.username}}</div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="full-width flex-row-local mrg10T" style="justify-content: flex-end; align-items: center;">-->
+<!--        <div style="display: flex; justify-content: center; align-items: center;">-->
+<!--          <a class="pointer" (click)="changePass(status.user)" i18n>Trocar senha</a>-->
+<!--        </div>-->
+<!--        <div class="mrg15L">-->
+<!--          <a class="btn btn-slim btn-warning" (click)="logout()" i18n>-->
+<!--            Sair-->
+<!--          </a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

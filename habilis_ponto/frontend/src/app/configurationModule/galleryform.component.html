@@ -1,0 +1,68 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Novo arquivo</div>
+    <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T">
+
+      <div class="selectFileArea" *ngIf="!file">
+        <div class="selectFileElement" (click)="openFile()">
+          <fa-icon [icon]="['far', 'file']"></fa-icon>
+          <div class="s14 mrg10T" i18n>
+            Clique para selecionar o arquivo ...
+          </div>
+        </div>
+      </div>
+
+      <div class="mediaArea" *ngIf="file">
+
+        <div class="mediaElementMaxSize">
+
+          <img class="mediaElement" *ngIf="file.type.includes('image/')" [src]="fileSrc" crossorigin="Anonymous"/>
+
+          <video class="mediaElement" *ngIf="file.type.includes('video/')" (error)="showError=true"
+                 controls autoplay [src]="fileSrc"></video>
+
+          <audio class="mediaElement" *ngIf="file.type.includes('audio/')" (error)="showError=true"
+                 controls autoplay [src]="fileSrc"></audio>
+
+          <embed class="mediaElement" *ngIf="['application/pdf'].includes(file.type)" width="350" height="300"
+                 [src]="fileSrc" type="application/pdf"/>
+
+          <div *ngIf="showError" class="mrg10T">
+            <fa-icon [icon]="['far', 'exclamation-triangle']" class="fg-warning"></fa-icon>
+            &nbsp;&nbsp; <span i18n>Não é possível executar a mídia.</span>
+          </div>
+
+          <div *ngIf="!['application/pdf'].includes(file.type) && !file.type.includes('audio/') &&
+  !file.type.includes('video/') && !file.type.includes('image/')">
+            <span i18n="Formato de arquivo">Formato desconhecido.</span> {{file.name}}
+          </div>
+        </div>
+
+      </div>
+      <canvas #canvasEl hidden></canvas>
+      <canvas #canvasThumbEl hidden></canvas>
+      <video hidden #videoEl [src]="fileSrc" preload></video>
+      <input type="file" hidden (change)="fileSelected($event)" (cancel)="close()" #imagesDialog
+             style="visibility: hidden"/>
+
+      <mat-form-field class="full-width mrg10T">
+        <mat-label i18n>Título</mat-label>
+        <input matInput type="text" [(ngModel)]="title" name="titleInput" placeholder="Título"
+               required maxlength="128" class="full-width" #titleInput i18n-placeholder/>
+      </mat-form-field>
+      <div class="full-width no-break-with-ellipses flex-row mrg5B align-items-center" *ngIf="showSticker">
+        <app-animated-toogle [(value)]="saveAsSticker"></app-animated-toogle>
+        <span class="mrg10L" i18n>Salvar como sticker</span>
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!thisForm.valid || !file" i18n>
+      Adicionar
+    </button>
+  </div>
+</div>

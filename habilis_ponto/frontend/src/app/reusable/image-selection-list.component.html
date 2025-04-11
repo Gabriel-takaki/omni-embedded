@@ -1,0 +1,93 @@
+<div class="dialog-medium">
+  <div class="dialog-content">
+    <div class="full-width flex-row" style="font-size: 1rem; font-weight: bold;">
+      <div style="flex-grow: 1;">
+        {{title}}
+      </div>
+    </div>
+    <div class="full-width mrg10T" style="font-size: 0.9rem; font-weight: 300;">
+
+      <div class="flex-row pad6A pad10L" style="background-color: #f8f8f8; border-radius: 4px;">
+
+        <input #searchInput type="text" placeholder="Pesquisar" i18n-placeholder [(ngModel)]="searchText"
+               tabIndex="5000"
+               style="background-color: transparent; border: none; outline: none; flex-grow: 1;">
+        <button matRipple (click)="searchText = ''; searchInput.focus()" [disabled]="!searchText"
+                [matRippleDisabled]="!searchText" [tabIndex]="(itens?.length + 6002) || 6002"
+                style="width: 1.4rem; height: 1.4rem; padding: 0; text-align: center; border: none; outline: none; background-color: transparent; border-radius: 50%;">
+          <fa-icon [icon]="['fal', 'times']"></fa-icon>
+        </button>
+
+      </div>
+
+    </div>
+    <div class="full-width mrg15T scroll1 pad5A" #itensList style="height: 40vh; overflow-y: scroll;" (scroll)="scrollEvent()">
+      <ng-container *ngFor="let i of itens | searchItens:true:searchText:['title']; let idx = index;">
+        <div *ngIf="[1,2,3,5,8,9,10,13].includes(queueType) || service.imageMimes.includes(i.file_mimetype)" class="pad4A">
+          <div matRipple *ngIf="(!onlySelected || selectedItens.includes(i)) && idx < scrollMax" (keyup)="keyPress($event, i)"
+               [tabIndex]="idx + 5001" (click)="selectItem(i)" class="selection-item">
+            <div class="s8">
+              <fa-icon [icon]="['fas', 'circle']" [class.fg-primary]="selectedItem === i || selectedItens.includes(i)"
+                       [class.fg-black-lighten-3]="!(selectedItem === i) && !selectedItens.includes(i)"></fa-icon>
+            </div>
+
+            <div style="vertical-align: center; max-height: 90px; overflow: hidden;" class="mrg10L"
+                 *ngIf="['application/pdf'].includes(i.file_mimetype) && i.hasthumb">
+              <img style="max-width: 90px;"
+                   [src]="baseUrl + '/static/downloadThumbnail?id=' + i.fk_file + '&auth=' + i.file_auth"/>
+            </div>
+            <div style="vertical-align: center; max-height: 90px; overflow: hidden; max-width: 310px;"
+                 *ngIf="service.imageMimes.includes(i.file_mimetype)" class="mrg10L">
+              <img style="max-width: 90px;"
+                   [src]="baseUrl + '/static/downloadMedia?id=' + i.fk_file + '&download=true'+ '&auth=' + i.file_auth"/>
+            </div>
+            <div class="mrg10L"
+                 style="vertical-align: center; max-height: 90px; overflow: hidden; display: flex; justify-content: center; align-content: center;"
+                 *ngIf="service.audioMimes.includes(i.file_mimetype?.split(';')[0])">
+              <div style="flex-grow: 1; flex-shrink: 1;">
+                <audio controls [playbackRate]="service.playBackSpeed">
+                  <source [src]="baseUrl + '/static/downloadMedia?id=' + i.fk_file+ '&auth=' + i.file_auth"
+                          [type]="i.file_mimetype">
+                </audio>
+              </div>
+            </div>
+            <div style="vertical-align: center; max-height: 90px; overflow: hidden;" class="mrg10L"
+                 *ngIf="service.videoMimes.includes(i.file_mimetype?.split(';')[0])">
+              <video controls style="max-width: 200px; max-height: 90px;">
+                <source [src]="baseUrl + '/static/downloadMedia?id=' + i.fk_file + '&auth=' + i.file_auth"
+                        [type]="i.file_mimetype">
+              </video>
+            </div>
+            <div style="vertical-align: center; flex-shrink: 0; font-size: 1.6rem;" class="mrg10L"
+                 *ngIf="!service.videoMimes.includes(i.file_mimetype?.split(';')[0]) &&
+               !service.audioMimes.includes(i.file_mimetype?.split(';')[0]) &&
+               !service.imageMimes.includes(i.file_mimetype) &&
+               (!['application/pdf'].includes(i.file_mimetype) || !i.hasthumb)">
+              <fa-duotone-icon class="pointer" matTooltip="Baixar arquivo" i18n-matTooltip
+                               [icon]="['fad', i.file_mimetype === 'application/pdf' ? 'file-pdf' : service.documentsMimes.includes(i.file_mimetype) ? 'file-alt' : service.spreadSheetsMimes.includes(i.file_mimetype) ? 'file-spreadsheet' : service.presentationMimes.includes(i.file_mimetype) ? 'file-powerpoint' : service.compressMimes.includes(i.file_mimetype) ? 'file-archive' : service.imageMimes.includes(i.file_mimetype) ? 'file-image' : 'file']"
+                               [primaryOpacity]="i.file_mimetype === 'application/pdf' ? 0.4 : service.documentsMimes.includes(i.file_mimetype) ? 0.4 : service.spreadSheetsMimes.includes(i.file_mimetype) ? 0.4 : service.presentationMimes.includes(i.file_mimetype) ? 0.4 : service.compressMimes.includes(i.file_mimetype) ? 1 : 1"
+                               [secondaryOpacity]="i.file_mimetype === 'application/pdf' ? 1 : service.documentsMimes.includes(i.file_mimetype) ? 1 : service.spreadSheetsMimes.includes(i.file_mimetype) ? 1 : service.presentationMimes.includes(i.file_mimetype) ? 1 : service.compressMimes.includes(i.file_mimetype) ? 0.18 : 0.18"
+                               [primaryColor]="i.file_mimetype === 'application/pdf' ? '#c62828' : service.documentsMimes.includes(i.file_mimetype) ? '#0d47a1' : service.spreadSheetsMimes.includes(i.file_mimetype) ? '#2e7d32' : service.presentationMimes.includes(i.file_mimetype) ? '#e65100' : service.compressMimes.includes(i.file_mimetype) ? '#2e3951' : 'var(--primary-color)'"
+                               [secondaryColor]="i.file_mimetype === 'application/pdf' ? '#c62828' : service.documentsMimes.includes(i.file_mimetype) ? '#0d47a1' : service.spreadSheetsMimes.includes(i.file_mimetype) ? '#2e7d32' : service.presentationMimes.includes(i.file_mimetype) ? '#e65100' : service.compressMimes.includes(i.file_mimetype) ? '#222' : 'var(--primary-color)'"></fa-duotone-icon>
+            </div>
+
+            <div class="flex-grow-1 no-break-with-ellipses pad10L s12 fg-black-lighten-1">
+              {{i.title}}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" [tabIndex]="(itens?.length + 6000) || 6000"
+            class="btn btn-transparent" (click)="close()">
+      <span i18n>Cancelar</span>
+    </button>
+    <button matRipple type="button" id="yesButton" [tabIndex]="(itens?.length + 6001) || 6001"
+            class="mrg15L btn btn-success" [disabled]="!selectedItem && !selectedItens.length"
+            (click)="result(true)" [matRippleDisabled]="!selectedItem && !selectedItens.length">
+      <span i18n="Enviar imagem por mensagem">Enviar</span>
+    </button>
+  </div>
+</div>

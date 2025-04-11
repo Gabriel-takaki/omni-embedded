@@ -1,0 +1,23 @@
+<div class="dialog-medium">
+  <div class="dialog-content">
+    <div class="full-width flex-row" style="font-size: 1rem; font-weight: bold;">
+      <div style="flex-grow: 1;" i18n>
+        Digite a localização
+      </div>
+    </div>
+    <div class="mrg12T" style="height: 230px;">
+      <geoapify-geocoder-autocomplete (placeSelect)="placeSelected($event)" placeholder="Digite a localização"
+                                      i18n-placeholder limit="4" lang="br">
+      </geoapify-geocoder-autocomplete>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" class="btn btn-transparent" (click)="result(false)">
+      <span i18n>Cancelar</span>
+    </button>
+    <button matRipple type="button" id="yesButton" class="mrg15L btn btn-info" [disabled]="!selectedItem"
+            (click)="result(true)" [matRippleDisabled]="!selectedItem">
+      <span i18n>Selecionar</span>
+    </button>
+  </div>
+</div>

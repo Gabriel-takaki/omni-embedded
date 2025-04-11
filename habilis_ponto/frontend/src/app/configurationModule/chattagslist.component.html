@@ -1,0 +1,273 @@
+<div class="full-width h100 overflow-hidden flex-column">
+
+    <div class="default-buttons-area">
+        <div class="h5 mrg-right-auto" i18n>
+            Etiquetas de chat
+        </div>
+        <button matRipple class="btn btn-secondary" (click)="import()" matTooltip="Importar" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'file-import']"></fa-icon>&nbsp;&nbsp;<span i18n>Importar</span>
+        </button>
+        <button class="mrg10L btn btn-primary" matRipple (click)="addTag()">
+            <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+        </button>
+    </div>
+    <input type="file" hidden (change)="fileSelected($event)" #importDialog accept=".chattag"
+           style="visibility: hidden; height: 0px;" [multiple]="true"/>
+    <div class="flex-elastic card mrg15T full-width">
+        <div class="full-width h100" #gridContainer>
+            <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'tagDetailTemplate'}"
+                          [dataSource]="tags" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)"
+                          [hoverStateEnabled]="true">
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-paging [enabled]="false"></dxo-paging>
+                <div *dxTemplate="let id of 'functionsTemplate'" class="flex-row">
+                    <button class="grid-function-btn" (click)="exportItem(id.data)" matTooltip="Exportar"
+                            i18n-matTooltip
+                            matRipple>
+                        <fa-icon [icon]="['far', 'download']"></fa-icon>
+                    </button>
+                    <button class="grid-function-btn mrg5L" (click)="removeItem(id.data)" matRipple
+                            matTooltip="Excluir etiqueta" i18n-matTooltip>
+                        <fa-icon [icon]="['far', 'times']"></fa-icon>
+                    </button>
+                </div>
+                <div *dxTemplate="let id of 'nameTemplate'">
+                    <div class="full-width flex-column">
+                        <div class="full-width bold no-break-with-ellipses">
+                            {{ id.data.name }}
+                        </div>
+                        <div class="full-width no-break-with-ellipses small">
+                            {{ id.data.description }}
+                        </div>
+                    </div>
+                </div>
+                <div *dxTemplate="let id of 'priorityTemplate'">
+                    <div *ngIf="id.value === 0" i18n="Prioridade">
+                        Normal
+                    </div>
+                    <div *ngIf="id.value === 1" i18n="Prioridade">
+                        Alta
+                    </div>
+                    <div *ngIf="id.value === 2" i18n="Prioridade">
+                        Muito Alta
+                    </div>
+                    <div *ngIf="id.value === 3" i18n="Prioridade">
+                        Máxima
+                    </div>
+                </div>
+                <div *dxTemplate="let id of 'alertTemplate'">
+                    <div *ngIf="id.value === 0" i18n>
+                        Não
+                    </div>
+                    <div *ngIf="id.value === 1" i18n>
+                        Sucesso
+                    </div>
+                    <div *ngIf="id.value === 2" i18n>
+                        Informação
+                    </div>
+                    <div *ngIf="id.value === 3" i18n>
+                        Risco baixo
+                    </div>
+                    <div *ngIf="id.value === 4" i18n>
+                        Risco médio
+                    </div>
+                    <div *ngIf="id.value === 5" i18n>
+                        Risco alto
+                    </div>
+                </div>
+                <div *dxTemplate="let id of 'yesNoTemplate'">
+                    <div *ngIf="id.value === 0" i18n>
+                        Não
+                    </div>
+                    <div *ngIf="id.value === 1" i18n>
+                        Sim
+                    </div>
+                </div>
+                <div *dxTemplate="let id of 'markerTemplate'">
+                    <div class="markerBox" [style.background-color]="id.data.color?.split('-')[0]"
+                         [style.color]="id.data.color?.split('-')[1]"
+                         [style.border-color]="id.data.color?.split('-')[2]">
+                        <div class="flex-rigid s14">{{ id.data.marker }}</div>
+                        <div class="flex-elastic flex-column mrg10L overflow-hidden">
+                            <div class="full-width no-break-with-ellipses s12 font-medium line-1">
+                                {{ id.data.name }}
+                            </div>
+                            <div class="s12 line-1 font-light no-break-with-ellipses mrg3T"
+                                 matTooltip="{{id.data.description}}">
+                                {{ id.data.description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *dxTemplate="let item of 'tagDetailTemplate'" class="pad10A">
+                    <div class="pad10A full-width flex-column">
+                        <div class="h5">
+                            Configurações
+                        </div>
+                        <div class="full-width overflow-hidden" *ngIf="item.data.copy">
+                            <div class="flex-column full-width">
+                                <div class="flex full-width mrg10T">
+                                    <mat-form-field>
+                                        <mat-label i18n>Nome</mat-label>
+                                        <input matInput type="text" [(ngModel)]="item.data.copy.name" name="name"
+                                               maxlength="25" i18n-placeholder
+                                               placeholder="Nome" required #nameInput="ngModel"/>
+                                    </mat-form-field>
+                                    <mat-form-field class="mrg10L">
+                                        <mat-label i18n>Ícone</mat-label>
+                                        <mat-select [(value)]="item.data.copy.marker">
+                                            <mat-option [value]="e" *ngFor="let e of service.emojis">
+                                                {{ e }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="mrg10L">
+                                        <mat-label i18n>Cor</mat-label>
+                                        <div class="flex-row flex-center pad8A" matPrefix>
+                                            <fa-icon [icon]="['fas', 'square']"
+                                                     [style.color]="item.data.copy.color"></fa-icon>
+                                        </div>
+                                        <mat-select [(value)]="item.data.copy.color">
+                                            <mat-option [value]="color" *ngFor="let color of colors">
+                                                <div class="color-option" [style.background-color]="color.split('-')[0]"
+                                                     [style.color]="color.split('-')[1]"
+                                                     [style.border-color]="color.split('-')[2]"> {{ color.split('-')[0] }}
+                                                </div>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="mrg10L" i18n-matTooltip
+                                                    matTooltip="Altera a prioridade do atendimento etiquetado na fila. Atendimentos etiquetados com etiquetas de maior prioridade serão atribuídos antes dos atendimentos sem etiqueta ou com etiquetas de menor prioridade.">
+                                        <mat-label i18n>Prioridade para atendimento</mat-label>
+                                        <mat-select [(value)]="item.data.copy.priority">
+                                            <mat-option [value]="0" i18n>
+                                                Normal (0)
+                                            </mat-option>
+                                            <mat-option [value]="1" i18n>
+                                                Alta (1)
+                                            </mat-option>
+                                            <mat-option [value]="2" i18n>
+                                                Muito Alta (2)
+                                            </mat-option>
+                                            <mat-option [value]="3" i18n>
+                                                Máxima (3)
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="mrg10L" i18n-matTooltip
+                                                    matTooltip="Se sim, o agente não poderá remover essa etiqueta após ela ser aplicada a um atendimento. Somente o supervisor ou fluxos automatizados poderão alterar a etiqueta.">
+                                        <mat-label i18n>Bloquear troca</mat-label>
+                                        <mat-select [(value)]="item.data.copy.locktag">
+                                            <mat-option [value]="0" i18n>
+                                                Não
+                                            </mat-option>
+                                            <mat-option [value]="1" i18n>
+                                                Sim
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="full-width flex-row">
+                                    <mat-form-field i18n-matTooltip
+                                                    matTooltip="Se sim, o agente não visualizará esta etiqueta na lista de etiquetas para aplicação. A etiqueta só poderá ser aplicada por fluxo de automação ou supervisor.">
+                                        <mat-label i18n>Ocultar do agente</mat-label>
+                                        <mat-select [(value)]="item.data.copy.hidefromagents">
+                                            <mat-option [value]="0" i18n>
+                                                Não
+                                            </mat-option>
+                                            <mat-option [value]="1" i18n>
+                                                Sim
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field i18n-matTooltip class="mrg10L"
+                                                    matTooltip="Se sim, os agentes que possuírem atendimento com essa etiqueta receberão um alerta no painel de supervisor de acordo com o nível.">
+                                        <mat-label i18n>Alertar no painel</mat-label>
+                                        <mat-select [(value)]="item.data.copy.alertonpanel">
+                                            <mat-option [value]="0" i18n>
+                                                Não
+                                            </mat-option>
+                                            <mat-option [value]="1" i18n>
+                                                <fa-icon [icon]="['fas', 'check-circle']" class="fg-success"></fa-icon>
+                                                Sucesso
+                                            </mat-option>
+                                            <mat-option [value]="2" i18n>
+                                                <fa-icon [icon]="['fas', 'info-circle']" class="fg-info"></fa-icon>
+                                                Informação
+                                            </mat-option>
+                                            <mat-option [value]="3" i18n>
+                                                <fa-icon [icon]="['fas', 'exclamation-circle']"
+                                                         class="fg-alert"></fa-icon>
+                                                Risco Baixo
+                                            </mat-option>
+                                            <mat-option [value]="4" i18n>
+                                                <fa-icon [icon]="['fas', 'exclamation-circle']"
+                                                         class="fg-warning"></fa-icon>
+                                                Risco Médio
+                                            </mat-option>
+                                            <mat-option [value]="5" i18n>
+                                                <fa-icon [icon]="['fas', 'exclamation-circle']"
+                                                         class="fg-danger"></fa-icon>
+                                                Risco Alto
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="flex-elastic mrg10L">
+                                        <app-ivr-selection [showType]="2" [(value)]="item.data.copy.fk_automation"
+                                                           caption="Automação na atribuição" i18n-caption
+                                                           i18n-matTooltip
+                                                           matTooltip="Fluxo de automação que será executado quando essa etiqueta for atribuída a um atendimento.">
+                                        </app-ivr-selection>
+                                    </div>
+                                </div>
+                                <mat-form-field class="full-width">
+                                    <mat-label i18n>Descrição</mat-label>
+                                    <input matInput type="text" [(ngModel)]="item.data.copy.description"
+                                           name="description"
+                                           maxlength="255" i18n-placeholder
+                                           placeholder="Descrição" required #descriptionInput="ngModel"/>
+                                </mat-form-field>
+                                <div class="flex-column">
+                                    <div class="full-width font-bold" i18n>
+                                        Filtro de filas
+                                    </div>
+                                    <div class="full-width mrg5T">
+                                        <app-tag-box label="Filas" i18n-label [items]="service.allQueues"
+                                                     matTooltip="Você pode filtrar as filas das quais os atendimentos poderão utilizar esta etiqueta. Se você não selecionar nenhuma fila aqui, atendimentos de todas as filas poderão receber esta etiqueta."
+                                                     i18n-matTooltip [allowReordering]="false"
+                                                     [(value)]="item.data.copy.queuesfilter"
+                                                     [placeholder]="'Selecionar filas ...'"></app-tag-box>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-column mrg10T">
+                                <div class="full-width font-bold mrg5T" i18n>
+                                    Grupos de acesso
+                                </div>
+                                <div class="full-width mrg5T small white-space-initial" i18n>
+                                    Nesse campo você especifica quais grupos de acesso poderão aplicar essa etiqueta.
+                                    Somente usuários desse grupo de acesso visualizarão essa etiqueta na lista de
+                                    opções para aplicação a um atendimento. Se um usuário receber
+                                    um atendimento que possui uma etiqueta vinculada a um grupo de acesso ao qual ele não tem pertence,
+                                    ainda assim a etiqueta ficará visível para esse usuário. O grupo de acesso impede apenas
+                                    a aplicação da etiqueta por usuários que não possuem acesso a ela, mas não impede sua visualização.
+                                </div>
+                                <div class="full-width mrg10T">
+                                    <app-tag-box label="Grupos de acesso" i18n-label [items]="contactsgroups"
+                                                 [allowReordering]="false" [(value)]="item.data.copy.accessgroups"
+                                                 [placeholder]="'Selecione os grupos'"></app-tag-box>
+                                </div>
+                            </div>
+                            <div class="flex-row flex-center mrg10T">
+                                <button class="btn btn-success" (click)="saveConfig(item.data)" matRipple
+                                        matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                                    <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dx-data-grid>
+        </div>
+    </div>
+</div>

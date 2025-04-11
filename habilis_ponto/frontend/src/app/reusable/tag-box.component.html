@@ -1,0 +1,27 @@
+<mat-form-field class="full-width">
+  <mat-label>{{label}}</mat-label>
+  <mat-chip-grid #chipList cdkDropList cdkDropListOrientation="horizontal"
+                 (cdkDropListDropped)="drop($event)" [disabled]="disabled">
+    <mat-chip-row *ngFor="let item of valueClone; let i = index" cdkDrag
+                  [removable]="true" (removed)="remove(item)" [style.background-color]="colors[i] ? colors[i] : null">
+      <span [style.color]="fgColors[i] ? fgColors[i] : null" *ngIf="itemsMap && itemsMap[item]">
+        {{showPosition ? (i + 1) + 'º - ' : ''}}{{itemsMap[item][displayExpr]}}
+      </span>
+      <span class="mrg8L" matRipple (click)="showGroupMembersDialog(item)" *ngIf="showGroupMembersBtn">
+        <fa-icon class="pointer" [icon]="['fal', 'users']"
+                 matTooltip="Mostrar membros" i18n-matTooltip></fa-icon>&nbsp;
+      </span>
+      <span class="mrg4L" matChipRemove>
+        <fa-icon [icon]="['fal', 'times']"></fa-icon>
+      </span>
+    </mat-chip-row>
+    <input [disabled]="disabled"
+           placeholder="{{placeholder}}" [formControl]="inputCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" #itemInput>
+  </mat-chip-grid>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+      {{item[displayExpr]}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

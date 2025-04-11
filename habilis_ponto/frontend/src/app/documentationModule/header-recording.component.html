@@ -1,0 +1,21 @@
+<div class="call-element pointer">
+  <div class="flex-rigid flex-row flex-align-center overflow-hidden s18 mrg12L">
+    <fa-icon [icon]="['fas', 'circle']" class="fg-danger animated flash infinite duration-2000"></fa-icon>
+  </div>
+  <div class="h100 flex-align-center mrg6L flex-row flex-elastic"
+       style="padding-right: 12px; padding-bottom: 8px; padding-top: 8px;">
+      <div class="flex-elastic overflow-hidden">
+          <div i18n class="font-semi-bold s10">
+              Gravando
+          </div>
+          <div class="s10 font-light" *ngIf="now && screen.startTime">
+              {{Math.max((now - screen.startTime), 0) | formatTime}}
+          </div>
+      </div>
+      <div class="flex-rigid mrg4L">
+          <button class="action-btn" matRipple matTooltip="Encerrar gravação" i18n-matTooltip (click)="stopRecording()">
+              <fa-icon [icon]="['fas', 'stop']"></fa-icon>
+          </button>
+      </div>
+  </div>
+</div>

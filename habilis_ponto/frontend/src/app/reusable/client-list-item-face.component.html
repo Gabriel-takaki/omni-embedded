@@ -1,0 +1,81 @@
+<div class="flex-row full-size">
+  <div style="width: 46px;" class="flex-rigid">
+    <app-client-list-item-photo [type]="chat.queueType" [queueName]="chat.queueName" [pageName]="chat.pageName"
+                                [picHash]="chat.clientPicAuth" [queueId]="chat.queueId" [picId]="chat.id"
+                                [new]="chat.isNew && resultType === 0"></app-client-list-item-photo>
+  </div>
+  <div class="full-size flex-elastic overflow-hidden mrg8L flex-column">
+    <div class="full-width flex-row flex-center overflow-hidden flex-rigid">
+      <div class="flex-elastic overflow-hidden s12 font-medium">
+        <div
+          class="full-width no-break-with-ellipses overflow-hidden mrg2B">
+          {{chat && chat?.queueType !== 13 ? chat?.clientName || chat?.clientEmail || chat?.clientNumber || chat?.clientProfileName : chat?.queueType === 13 ? chat?.clientName || chat?.clientProfileName || texts.anonimo : texts.noChatSelected}}
+        </div>
+        <div class="no-break-with-ellipses s10 font-light full-width overflow-hidden"
+             *ngIf="resultType === 0 && !typing && chat.messages[chat.messages.length - 1] && (chat.messages[chat.messages.length - 1].text || chat.messages[chat.messages.length - 1].file_name)"
+        >{{lastText || chat.messages[chat.messages.length - 1].text || chat.messages[chat.messages.length - 1].file_name}}</div>
+        <div class="no-break-with-ellipses s10 font-light full-width overflow-hidden"
+             *ngIf="resultType === 0 && !typing && (!chat.messages[chat.messages.length - 1] ||
+             !(chat.messages[chat.messages.length - 1].text || chat.messages[chat.messages.length - 1].file_name))"
+        >...
+        </div>
+        <div class="s10 full-width overflow-hidden no-break-with-ellipses" *ngIf="resultType === 1"
+             [innerHtml]="msgText"></div>
+        <div class="no-break-with-ellipses s10 full-width overflow-hidden" *ngIf="typing && resultType === 0"
+             style="color: #0097a7;" i18n>Digitando...
+        </div>
+      </div>
+      <div class="mrg6L flex-rigid" *ngIf="chat.markerId && status.allTagsMap[chat.markerId] && resultType === 0">
+        <div class="marker-box" (mouseover)="showTooltip(true)"
+             (mouseleave)="showTooltip(false)"
+             [style.color]="status.allTagsMap[chat.markerId]?.color ? status.allTagsMap[chat.markerId].color.split('-')[1] : ''"
+             [style.border-color]="status.allTagsMap[chat.markerId]?.color ? status.allTagsMap[chat.markerId].color.split('-')[2] : ''"
+             [style.background-color]="status.allTagsMap[chat.markerId]?.color ? status.allTagsMap[chat.markerId].color.split('-')[0] : ''"
+        >{{status.allTagsMap[chat.markerId].marker}}</div>
+      </div>
+    </div>
+    <div class="flex-row full-width flex-center overflow-hidden mrg4T">
+      <div class="no-break-with-ellipses flex-elastic full-width overflow-hidden font-light flex-row align-items-center"
+           *ngIf="resultType === 0">
+        <ng-container *ngFor="let t of (chat?.contactTags | idstoobjects:status.contactTagsMap); let i = index">
+          <div *ngIf="i < 7" [style.background-color]="t.bgcolor || '#333'" [class.mrg5L]="i > 0"
+               class="pointer flex-shrink-1" [style.color]="t.fgcolor || '#fff'" matTooltip="{{t.name}}"
+               style="height: 10px; width: 10px; border-radius: 50%;"></div>
+        </ng-container>
+      </div>
+      <div class="s10 full-width flex-rigid" *ngIf="resultType === 1">{{msgTime}}</div>
+      <app-client-list-item-clock [now]="now" [beginTime]="chat.beginTime"
+                                  *ngIf="resultType === 0"></app-client-list-item-clock>
+      <div class="message-count-badge mrg4L" *ngIf="resultType === 0"
+           [class.bg-success]="(chat.messages | countUnreadMessages:chat.msgChangeCounter) > 0"
+           [class.bg-black-lighten-5]="(chat.messages | countUnreadMessages:chat.msgChangeCounter) === 0 && selected"
+           [class.bg-black-lighten-4]="(chat.messages | countUnreadMessages:chat.msgChangeCounter) === 0 && !selected">
+        {{(chat.messages | countUnreadMessages:chat.msgChangeCounter) > 99 ? '99' : (chat.messages | countUnreadMessages:chat.msgChangeCounter)}}
+      </div>
+    </div>
+
+  </div>
+</div>
+<dx-tooltip *ngIf="chat && chat.markerId && status.allTagsMap[chat.markerId]"
+            [target]="'#c' + chat.queueId + '-' + chat.id + '-' + resultType" position="right"
+            [(visible)]="showMarkerTooltip" [hideOnOutsideClick]="false">
+  <div style="max-width: 210px; width: 210px; text-align: left; " class="overflow-hidden">
+    <div class="font-medium flex-row flex-center overflow-hidden full-width">
+      <div class="flex-elastic overflow-hidden no-break-with-ellipses">
+        {{status.allTagsMap[chat.markerId].name}}
+      </div>
+      <div class="flex-rigid font-medium mrg5L s8" [class.bg-danger]="status.allTagsMap[chat.markerId].priority === 3"
+           [class.bg-warning]="status.allTagsMap[chat.markerId].priority === 2"
+           [class.bg-alert]="status.allTagsMap[chat.markerId].priority === 1"
+           [class.bg-black-lighten-4]="status.allTagsMap[chat.markerId].priority === 0"
+           style="padding: 2px 6px; border-radius: 2px;">
+        {{status.allTagsMap[chat.markerId].priority === 3 ? 'Máxima' :
+        status.allTagsMap[chat.markerId].priority === 2 ? 'Muito Alta' :
+          status.allTagsMap[chat.markerId].priority === 1 ? 'Alta' : 'Normal'}}
+      </div>
+    </div>
+    <div class="font-light mrg5T full-width" style="white-space: normal;">
+      {{status.allTagsMap[chat.markerId].description}}
+    </div>
+  </div>
+</dx-tooltip>

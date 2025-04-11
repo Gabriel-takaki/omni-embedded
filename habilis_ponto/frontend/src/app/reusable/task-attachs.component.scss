@@ -1,0 +1,68 @@
+@import "scss/newcolors";
+
+.items-list-base {
+  max-height: 170px;
+  min-height: 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 400;
+  display: flex;
+  border-radius: 8px;
+  padding: 6px;
+  background-color: $black-lighten-5;
+  flex-direction: column;
+}
+
+.list-item {
+  width: 100%;
+  border-radius: 4px;
+  height: 46px;
+  background-color: $white-base;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-item:hover {
+  box-shadow: $info-base 0 0 4px;
+}
+
+.item-btn {
+  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-grow: 0;
+  color: $black-lighten-2;
+  cursor: pointer;
+}
+
+.item-btn:hover:not(.disabled) {
+  color: $black-lighten-1;
+}
+
+.editable-div {
+  outline: none;
+}
+
+.editable-div:focus {
+  padding: 4px;
+  border: 1px solid $info-base;
+  border-radius: 4px;
+  overflow-x: scroll;
+}
+
+.editable-div:empty:before {
+  content: attr(data-text);
+  color: $black-lighten-2;
+}
+
+.disabled {
+  color: $black-lighten-3;
+}

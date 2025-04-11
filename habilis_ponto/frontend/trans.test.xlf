@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="pt" datatype="plaintext" original="ng2.template">
+        <body>
+            <trans-unit id="8835535563395378197" datatype="html">
+                <source>Supervisor</source>
+                <context-group purpose="location">
+                    <context context-type="sourcefile">src/app/app.consts.ts</context>
+                    <context context-type="linenumber">108</context>
+                </context-group>
+                <context-group purpose="location">
+                    <context context-type="sourcefile">src/app/app.texts.ts</context>
+                    <context context-type="linenumber">212</context>
+                </context-group>
+            </trans-unit>
+            <trans-unit id="a8a0aa1e23a902de9a1265a0c2b16c7e581c0d86" datatype="html">
+                <source>-
+                    <x id="INTERPOLATION" equiv-text="{{ state.startTodoDate | date:&apos;shortDate&apos; }}"/>
+                    à
+                    <x id="INTERPOLATION_1" equiv-text="{{ state.endTodoDate | date:&apos;shortDate&apos; }}"/>
+                </source>
+                <context-group purpose="location">
+                    <context context-type="sourcefile">src/app/tasksModule/tasks-list.component.html</context>
+                    <context context-type="linenumber">64,66</context>
+                </context-group>
+            </trans-unit>
+            <trans-unit id="2630013741530672183" datatype="html">
+                <source>Só realizadas</source>
+                <context-group purpose="location">
+                    <context context-type="sourcefile">src/app/app.consts.ts</context>
+                    <context context-type="linenumber">123</context>
+                </context-group>
+                <note priority="1" from="description">Chamadas realizadas</note>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

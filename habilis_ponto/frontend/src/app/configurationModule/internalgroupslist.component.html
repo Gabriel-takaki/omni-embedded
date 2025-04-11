@@ -1,0 +1,59 @@
+<div class="full-width h100 flex-column overflow-hidden">
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Grupos de chat interno
+    </div>
+    <button type="button" class="btn btn-primary" (click)="addGroup()" matRipple>
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="mrg15T flex-elastic full-width overflow-hidden card">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'agentDetailTemplate'}"
+                    [dataSource]="groups" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)"
+                    [hoverStateEnabled]="true">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <a class="grid-function-btn" (click)="removeItem(id.data)" matRipple
+             matTooltip="Excluir usuário">
+            <fa-icon [icon]="['far', 'times']"></fa-icon>
+          </a>
+        </div>
+        <div *dxTemplate="let item of 'agentDetailTemplate'" class="pad10A">
+          <div class="pad10A full-width flex-column">
+            <div class="h5 mrg15B">
+              Configurações
+            </div>
+
+            <mat-form-field>
+              <mat-label i18n>Nome</mat-label>
+              <input matInput type="text" [(ngModel)]="item.data.copy.name" name="name"
+                     maxlength="128" i18n-placeholder
+                     placeholder="Nome" required #nameInput="ngModel" class="full-width"/>
+            </mat-form-field>
+
+            <div class="flex-column" *ngIf="item.data.copy.type !== 0">
+              <div class="full-width font-medium" i18n>
+                Participantes
+              </div>
+              <div class="full-width mrg5T">
+                <app-tag-box label="Participantes" i18n-label [items]="users"
+                             displayExpr="fullname" valueExpr="id"
+                             [allowReordering]="false" [(value)]="item.data.copy.users"
+                             [placeholder]="'Selecione os participantes do grupo ...'"></app-tag-box>
+              </div>
+            </div>
+
+            <div class="mrg20T flex-center full-width">
+              <button class="btn btn-success" (click)="saveConfig(item.data)"
+                      matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+              </button>
+            </div>
+          </div>
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,348 @@
+@import "scss/newcolors";
+
+.wa-bg {
+  background-color: $wa-color;
+  color: $white-base;
+}
+
+.tg-bg {
+  background-color: $tg-color;
+  color: $white-base;
+}
+
+.fb-bg {
+  background-color: $fb-color;
+  color: $white-base;
+}
+
+.em-bg {
+  background-color: $em-color;
+  color: $white-base;
+}
+
+.ol-bg {
+  background-color: $ol-color;
+  color: $white-base;
+}
+
+.ml-bg {
+  background-color: $ml-color;
+  color: $white-base;
+}
+
+.gb-bg {
+  background-color: $gb-color;
+  color: $white-base;
+}
+
+.sg-bg {
+  background-color: $sg-color;
+  color: $white-base;
+}
+
+.ig-bg {
+  background-color: $ig-color;
+  color: $black-base;
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+.bg-green, .bg-success {
+  background-color: $success-base;
+  color: $white-base;
+
+  --mdc-snackbar-container-color: #06c270FF !important;
+  --mdc-snackbar-supporting-text-color: #FFFFFFFF !important;
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+}
+
+.bg-pink-lighten-1, .badge-pink-lighten-1 {
+  background-color: $pink-lighten-2;
+  color: $white-base;
+}
+
+.bg-pink-lighten-2, .badge-pink-lighten-2 {
+  background-color: $pink-lighten-2;
+  color: $white-base;
+}
+
+.bg-purple, .badge-purple {
+  background-color: $purple-base;
+  color: $white-base;
+}
+
+.bg-purple-lighten-1, .badge-purple-lighten-1 {
+  background-color: $purple-lighten-1;
+  color: $white-base;
+}
+
+.bg-purple-lighten-2, .badge-purple-lighten-2 {
+  background-color: $purple-lighten-2;
+  color: $white-base;
+}
+
+.bg-green-lighten-1, .badge-green-lighten-1 {
+  background-color: $green-lighten-1;
+  color: $white-base;
+}
+
+.bg-green-lighten-2, .badge-green-lighten-2 {
+  background-color: $green-lighten-2;
+  color: $black-base;
+}
+
+.bg-blue, .bg-info {
+  background-color: $info-base;
+  color: $white-base;
+
+  --mdc-snackbar-container-color: #29bdffFF !important;
+  --mdc-snackbar-supporting-text-color: #FFFFFFFF !important;
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+}
+
+.bg-call {
+  --mdc-snackbar-container-color: #29BDFFFF !important;
+  --mdc-snackbar-supporting-text-color: #FFFFFFFF !important;
+  --mat-mdc-snack-bar-button-color: #FFFFFFFF !important;
+  color: $white-base;
+
+  .mdc-button {
+    background: #06C270FF;
+  }
+
+}
+
+.bg-blue-lighten-1 {
+  background-color: $blue-lighten-1;
+  color: $white-base;
+}
+
+.bg-blue {
+  background-color: $blue-base;
+  color: $white-base;
+}
+
+.bg-blue-darken-1 {
+  background-color: $blue-darken-1;
+  color: $white-base;
+}
+
+.bg-blue-lighten-2 {
+  background-color: $blue-lighten-2;
+  color: $black-base;
+}
+
+.bg-black-lighten-1 {
+  background-color: $black-lighten-1;
+  color: $white-base;
+}
+
+.bg-black-lighten-2 {
+  background-color: $black-lighten-2;
+  color: $white-base;
+}
+
+.bg-black-lighten-3 {
+  background-color: $black-lighten-3;
+  color: $black-base;
+}
+
+.bg-black-lighten-4 {
+  background-color: $black-lighten-4;
+  color: $black-base;
+}
+
+.bg-black-lighten-5 {
+  background-color: $black-lighten-5;
+  color: $black-base;
+}
+
+.bg-white {
+  background-color: $white-base;
+  color: $black-base;
+}
+
+.bg-alert, .bg-yellow {
+  background-color: $alert-base;
+  color: $white-base;
+
+  --mdc-snackbar-container-color: #FFCE3AFF !important;
+  --mdc-snackbar-supporting-text-color: #FFFFFFFF !important;
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+}
+
+.bg-yellow-lighten-1, .badge-yellow-lighten-1 {
+  background-color: $yellow-lighten-1;
+  color: $white-base;
+}
+
+.bg-yellow-lighten-2, .badge-yellow-lighten-2 {
+  background-color: $yellow-lighten-2;
+  color: $black-base;
+}
+
+.bg-danger, .bg-red {
+  background-color: $red-base;
+  color: $white-base;
+
+  --mdc-snackbar-container-color: #FF3B3BFF !important;
+  --mdc-snackbar-supporting-text-color: #FFFFFFFF !important;
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+}
+
+.bg-red-lighten-1, .badge-red-lighten-1 {
+  background-color: $red-lighten-1;
+  color: $white-base;
+}
+
+.bg-red-lighten-2, .badge-red-lighten-2 {
+  background-color: $red-lighten-2;
+  color: $black-base;
+}
+
+.bg-warning, .bg-orange {
+  background-color: $warning-base;
+  color: $white-base;
+
+  --mdc-snackbar-container-color: #FF784BFF !important;
+  --mdc-snackbar-supporting-text-color: #FFFFFFFF !important;
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+  .mat-simple-snackbar-action button {
+    background-color: $white-base;
+  }
+
+}
+
+.bg-orange-lighten-1, .badge-orange-lighten-1 {
+  background-color: $orange-lighten-1;
+  color: $white-base;
+}
+
+.bg-orange-lighten-2, .badge-orange-lighten-2 {
+  background-color: $orange-lighten-2;
+  color: $black-base;
+}
+
+.bg-wa {
+  background-color: $wa-color;
+  color: $white-base;
+}
+
+.bg-fb {
+  background-color: $fb-color;
+  color: $white-base;
+}
+
+.bg-ig {
+  background-color: $ig-color;
+}
+
+.bg-tg {
+  background-color: $tg-color;
+  color: $white-base;
+}
+
+.bg-sg {
+  background-color: $tg-color;
+  color: $white-base;
+}
+
+.bg-ol {
+  background-color: $ol-color;
+  color: $white-base;
+}
+
+.bg-ml {
+  background-color: $ml-color;
+  color: $white-base;
+}
+
+.bg-gb {
+  background-color: $gb-color;
+  color: $white-base;
+}
+
+.bg-em {
+  background-color: $em-color;
+  color: $white-base;
+}
+
+.label-warning {
+  background-color: $orange-lighten-2;
+  color: $orange-base;
+}
+
+.label-danger {
+  background-color: $red-lighten-2;
+  color: $red-base;
+}
+
+.label-alert {
+  background-color: $yellow-lighten-2;
+  color: $yellow-base;
+}
+
+.label-success {
+  background-color: $green-lighten-2;
+  color: $green-base;
+}
+
+.label-info {
+  background-color: $blue-lighten-2;
+  color: $blue-base;
+}
+
+.label-default {
+  background-color: $black-lighten-5;
+  color: $black-base;
+}
+
+.label-primary {
+  background-color: var(--primary-bg-color);
+  color: var(--primary-color);
+}
+
+.bg-we {
+  background-color: var(--primary-bg-color);
+  color: var(--primary-color);
+}
+
+.bg-custom-color {
+  background-color: var(--primary-bg-color);
+  color: var(--primary-color);
+}
+
+.bg-primary-color {
+  background-color: var(--primary-color);
+  color: var(--primary-fg-color);
+}

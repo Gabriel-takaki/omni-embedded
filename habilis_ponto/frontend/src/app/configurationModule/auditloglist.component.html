@@ -1,0 +1,16 @@
+<div class="full-width h100 overflow-hidden flex-column">
+
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Logs de Auditoria
+    </div>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [dataSource]="logs" [height]="gridContainer.clientHeight"
+                    [hoverStateEnabled]="true">
+        <dxo-paging [enabled]="false"></dxo-paging>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

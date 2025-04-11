@@ -1,0 +1,57 @@
+<div class="full-width h100 overflow-hidden flex-column">
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Grupos de visualização
+    </div>
+    <button class="mrg10L btn btn-primary" matRipple (click)="addVisualGroup()">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'templateDetailTemplate'}"
+                    [dataSource]="visualgroups" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)"
+                    [hoverStateEnabled]="true">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <button class="grid-function-btn" (click)="removeItem(id.data)" matRipple
+                  matTooltip="Excluir grupo" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'times']"></fa-icon>
+          </button>
+        </div>
+        <div *dxTemplate="let item of 'templateDetailTemplate'" class="pad10A">
+          <div class="pad10A full-width flex-column">
+            <div class="h5">
+              Configurações
+            </div>
+            <div class="full-width overflow-hidden" *ngIf="item.data.copy">
+              <div class="flex-column full-width">
+                <div class="flex-row full-width mrg10T">
+                  <mat-form-field>
+                    <mat-label i18n>Nome</mat-label>
+                    <input matInput type="text" [(ngModel)]="item.data.copy.name" name="name"
+                           maxlength="128" i18n-placeholder
+                           placeholder="Nome" required #nameInput="ngModel"/>
+                  </mat-form-field>
+                  <mat-form-field class="mrg8L flex-elastic">
+                    <mat-label i18n>Descrição</mat-label>
+                    <input matInput type="text" [(ngModel)]="item.data.copy.description" name="description"
+                           maxlength="255" i18n-placeholder
+                           placeholder="Descrição" required #descriptionInput="ngModel"/>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="flex-row flex-center mrg10T">
+                <button class="btn btn-success" (click)="saveConfig(item.data)" matRipple
+                        matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                  <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

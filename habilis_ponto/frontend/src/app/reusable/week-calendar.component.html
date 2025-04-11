@@ -1,0 +1,75 @@
+<div class="header">
+  <div class="text-center">
+    <fa-icon [icon]="['fas', 'chevron-left']" class="chevron-icon" (click)="subWeek()"></fa-icon>
+  </div>
+  <div class="text-center">
+    {{selectedMonthString}} {{selectedYear}}
+  </div>
+  <div class="text-center">
+    <fa-icon [icon]="['fas', 'chevron-right']" class="chevron-icon" (click)="addWeek()"></fa-icon>
+  </div>
+</div>
+<div class="days-names mrg5T">
+  <div class="text-center" i18n="Domingo">
+    Dom
+  </div>
+  <div class="text-center" i18n="Segunda-feira">
+    Seg
+  </div>
+  <div class="text-center" i18n="Terça-feira">
+    Ter
+  </div>
+  <div class="text-center" i18n="Quarta-feira">
+    Qua
+  </div>
+  <div class="text-center" i18n="Quinta-feira">
+    Qui
+  </div>
+  <div class="text-center" i18n="Sexta-feira">
+    Sex
+  </div>
+  <div class="text-center" i18n="Sábado">
+    Sáb
+  </div>
+</div>
+<div style="overflow: hidden">
+  <div #container class="days-container"
+       [ngStyle]="{'transform': 'translateX(' + ((-1 * currentWeek * container.clientWidth) + transform) + 'px)'}"
+       (panstart)="panStart($event)" (panmove)="panMove($event)" (panend)="panEnd($event)"
+       (swiperight)="swipeRight($event)" (swipeleft)="swipeLeft($event)"
+       [class.no-transition]="noTransition">
+    <div class="days"
+         [ngStyle]="{'left.%': (preDiv === 0 ? (currentWeek2 * 100) - 100 : posDiv === 0 ? (currentWeek2 * 100) + 100 : (currentWeek2 * 100))}">
+      <div class="text-center" *ngFor="let d of currentWeekDays[0];"
+           (click)="selectDate(disabledDays.includes(d.format('DD/MM/YYYY')) ? null : d)">
+        <div class="day-selection" [class.day-disabled]="disabledDays.includes(d.format('DD/MM/YYYY'))"
+             [class.selected]="d.format('DD/MM/YYYY') === selectedDate.format('DD/MM/YYYY')">{{d.date()}}</div>
+        <div class="day-marker" *ngIf="markedDays.includes(d.format('DD/MM/YYYY'))">
+          <fa-icon [icon]="['fas', 'circle']"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div class="days"
+         [ngStyle]="{'left.%': (preDiv === 1 ? (currentWeek2 * 100) - 100 : posDiv === 1 ? (currentWeek2 * 100) + 100 : (currentWeek2 * 100))}">
+      <div class="text-center" *ngFor="let d of currentWeekDays[1];"
+           (click)="selectDate(disabledDays.includes(d.format('DD/MM/YYYY')) ? null : d)">
+        <div class="day-selection" [class.day-disabled]="disabledDays.includes(d.format('DD/MM/YYYY'))"
+             [class.selected]="d.format('DD/MM/YYYY') === selectedDate.format('DD/MM/YYYY')">{{d.date()}}</div>
+        <div class="day-marker" *ngIf="markedDays.includes(d.format('DD/MM/YYYY'))">
+          <fa-icon [icon]="['fas', 'circle']"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div class="days"
+         [ngStyle]="{'left.%': (preDiv === 2 ? (currentWeek2 * 100) - 100 : posDiv === 2 ? (currentWeek2 * 100) + 100 : (currentWeek2 * 100))}">
+      <div class="text-center" *ngFor="let d of currentWeekDays[2];"
+           (click)="selectDate(disabledDays.includes(d.format('DD/MM/YYYY')) ? null : d)">
+        <div class="day-selection" [class.day-disabled]="disabledDays.includes(d.format('DD/MM/YYYY'))"
+             [class.selected]="d.format('DD/MM/YYYY') === selectedDate.format('DD/MM/YYYY')">{{d.date()}}</div>
+        <div class="day-marker" *ngIf="markedDays.includes(d.format('DD/MM/YYYY'))">
+          <fa-icon [icon]="['fas', 'circle']"></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<!-- <div class="work-journey-card" style="width: 500px;">
+  <div class="journey-header">
+    <div class="journey-status">
+      <span class="journey-status-text">
+        {{ isCurrentlyWorking ? 'Em Jornada' : 'Última Jornada' }}
+    
+      </span>
+      <p *ngIf="!isCurrentlyWorking" class="text-sm text-gray-600" style="font-weight: 600; font-size: 16px;">
+        {{ lastJourneyEnd | date:'dd/MM/yyyy HH:mm' }}
+      </p>
+      <i class="journey-status-icon" *ngIf="isCurrentlyWorking" style="font-size: 20px;">✓</i>
+    </div>
+
+  </div>
+
+  <div class="journey-duration">
+    <span class="journey-duration-main">{{ journeyDuration.hours }}HRs</span>
+    <span class="journey-duration-secondary">{{ journeyDuration.minutes }}m</span>
+    <span class="journey-duration-secondary">{{ journeyDuration.seconds }}s</span>
+  </div>
+
+  <div class="weekly-calendar">
+    <div class="weekly-calendar-days">
+      <div *ngFor="let day of weekDays; let i = index" 
+           class="weekly-calendar-day" 
+           [ngClass]="{'active': isDayActive(i)}">
+        {{ day }}
+      </div>
+    </div>
+  </div>
+
+  <div class="weekly-hours">
+    {{ weeklyHours }} HRs
+  </div>
+
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="p-2 text-left">Data</th>
+        <th class="p-2 text-left">Entrada</th>
+        <th class="p-2 text-left">Saída</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of recentRecords">
+        <td class="p-2">{{ record.date | date:'dd/MM/yyyy' }}</td>
+        <td class="p-2">{{ record.startTime | date:'HH:mm' }}</td>
+        <td class="p-2">
+          {{ record.endTime ? (record.endTime | date:'HH:mm') : 'Em andamento' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+<!-- time-clock.component.html -->
+<mat-card class="time-clock-card">
+  <div class="time-clock-header">
+    Gestão de Ponto
+  </div>
+
+  <div class="time-clock-content">
+    <!-- Journey Status -->
+    <div class="journey-status-container">
+      <div class="journey-status-badge">
+        <span class="journey-status-text" *ngIf="!isCurrentlyWorking">
+          ÚLTIMA JORNADA <b>   {{lastJourneyEnd | date:'dd/MM/yyyy HH:mm'}} </b>
+        </span>
+
+        <span class="journey-status-text" *ngIf="isCurrentlyWorking">
+       EM JORNADA
+        </span>
+      </div>
+    </div>
+
+    <!-- Duration -->
+    <div class="journey-duration">
+      <span class="journey-duration-hours">{{journeyDuration.hours}}</span>
+      <span class="journey-duration-text">HRs</span>
+      <span class="journey-duration-details">{{journeyDuration.minutes}}m {{journeyDuration.seconds}}s</span>
+    </div>
+
+    <!-- Divider -->
+    <mat-divider></mat-divider>
+
+    <!-- Record Table -->
+    <div class="record-info">
+      <div class="record-header">
+        <div class="record-column">Data:</div>
+        <div class="record-column">Entrada:</div>
+        <div class="record-column">Saída:</div>
+      </div>
+      <div class="record-data">
+        <!-- <div class="record-column">{{recentRecord.date}}</div>
+        <div class="record-column">{{recentRecord.startTime}}</div>
+        <div class="record-column">{{recentRecord.endTime}}</div> -->
+      </div>
+    </div>
+  </div>
+</mat-card>

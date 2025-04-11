@@ -1,0 +1,26 @@
+<div class="flex-center full-width div-square" style="position: relative;">
+  <div *ngIf="new" style="position: absolute; top: -5px; left: -2px; font-size: 12px;"
+       class="fg-info animated infinite flash duration-1750" matTooltip="Novo atendimento" i18n-matTooltip>
+    <fa-icon [icon]="['fas', 'circle']"></fa-icon>
+  </div>
+  <div class="photo-frame div-square" [class.hide-border]="!showBorder"
+       [class.photo-frame-wa]="status.waQueues.includes(type)"
+       [class.photo-frame-fb]="type === 2" [class.photo-frame-gb]="type === 14 || type === 15"
+       [class.photo-frame-ig]="type === 4 || type === 12" [class.photo-frame-tg]="type === 3 || type === 11"
+       [class.photo-frame-ml]="type === 7" [class.photo-frame-ol]="type === 6"
+       [class.photo-frame-sg]="type === 8" [class.photo-frame-we]="type === 13 || type === 20"
+       [class.photo-frame-em]="type === 16"
+       [matTooltip]="call ? 'Chamada' : 'Fila: ' + queueName + (pageName ? '  -  Página: ' + pageName : '')">
+    <img (error)="imgError()" class="full-width"
+         [src]="baseUrl + '/static/' + (group ? 'getGroupProfilePicture' : 'getChatUserPic' ) + '?id=' + picId + '&queueId=' + queueId + (picHash ? '&auth=' + picHash : '')"
+         alt="Foto" i18n-alt
+         style="border-radius: 50%;" *ngIf="img && queueId && picId && (group || picHash) && !call"/>
+    <div class="photo-error-fallback div-square" *ngIf="(!queueId || !picId || !img || (!group && !picHash)) && !call"
+         [style.font-size.px]="fontSize">
+      <fa-icon [icon]="['fas', 'user']"></fa-icon>
+    </div>
+    <div class="photo-error-fallback div-square" *ngIf="call" [style.font-size.px]="fontSize">
+      <fa-icon [icon]="['fas', 'phone']"></fa-icon>
+    </div>
+  </div>
+</div>

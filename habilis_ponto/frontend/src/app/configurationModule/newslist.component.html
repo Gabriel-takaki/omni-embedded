@@ -1,0 +1,62 @@
+<div class="full-width h100 overflow-hidden flex-column">
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto">
+      <div i18n>
+        Novidades
+      </div>
+      <div class="s12 font-light mrg3T" i18n>
+        As novidades públicas ficam em cache por até 6 horas. As modificações feitas ou novidades acrescentadas podem levar até 6 horas para
+        aparecerem nas filas de Web Chat.
+      </div>
+    </div>
+    <button class="mrg10L btn btn-primary" matRipple (click)="add()">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: false}" [hoverStateEnabled]="true"
+                    [dataSource]="faqs" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="true"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <div class="grid-function-btn-area">
+            <button class="grid-function-btn" (click)="preview(id.data)" matTooltip="Pré-visualizar" matRipple
+                    i18n-matTooltip>
+              <fa-icon [icon]="['far', 'eye']"></fa-icon>
+            </button>
+            <button class="grid-function-btn" (click)="edit(id.data)" matTooltip="Editar texto" matRipple
+                    i18n-matTooltip>
+              <fa-icon [icon]="['far', 'edit']"></fa-icon>
+            </button>
+            <button class="grid-function-btn" (click)="removeItem(id.data)" matTooltip="Excluir texto" matRipple
+                    i18n-matTooltip>
+              <fa-icon [icon]="['far', 'times']"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div *dxTemplate="let t of 'writtenByTemplate'" class="no-break-with-ellipses">
+          <div class="full-width flex-row flex-center">
+            <div class="flex-rigid" style="width: 28px;">
+              <user-profile-pic [id]="t.data.writtenby" [picVersion]="t.data.writtenbypicversion"
+                                [auth]="t.data.writtenbypicauth"
+                                [initials]="t.value.toString().substr(0, 2)"></user-profile-pic>
+            </div>
+            <div class="flex-elastic mrg10L">
+              {{t.value}}
+            </div>
+          </div>
+        </div>
+        <div *dxTemplate="let t of 'ratingTemplate'" class="no-break-with-ellipses">
+          {{t.value}}
+        </div>
+        <div *dxTemplate="let t of 'typeTemplate'" class="no-break-with-ellipses">
+          {{t.value === 0 ? 'Pública' : t.value === 1 ? 'Interna' : t.value === 2 ? 'Pública restrita' : 'Interna restrita'}}
+        </div>
+        <div *dxTemplate="let t of 'validityTemplate'" class="no-break-with-ellipses">
+          {{!t.value ? 'Não' : 'Sim'}}
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="dialog-x-large" style="height: 90vh;">
+  <div class="dialog-content flex-column">
+    <div class="full-width flex-rigid flex-row align-items-center">
+      <div class="h5" i18n>
+        Live Session View
+      </div>
+      <div class="mrg12L label label-success label-big" *ngIf="chat?.tabsObj[tabId]" i18n>
+        Sessão conectada
+      </div>
+      <div class="mrg12L label label-danger label-big" *ngIf="!chat?.tabsObj[tabId]" i18n>
+        Sessão desconectada
+      </div>
+      <div class="mrg-left-auto flex-row">
+        <button class="btn btn-square-slim btn-black-lighten-4" matRipple
+                matTooltip="Solicitar controle remoto" i18n-matTooltip
+                *ngIf="(status.enableWebChatDesktopRemoteAssistance && chat?.desktopChat) || (status.enableWebChatHTMLRemoteAssistance && chat?.webChat)">
+          <fa-icon [icon]="['fas', 'mouse-alt']"></fa-icon>
+        </button>
+        <button class="mrg8L btn btn-square-slim btn-black-lighten-4" matRipple matTooltip="Fazer anotações"
+                i18n-matTooltip>
+          <fa-icon [icon]="['fas', 'pencil']"></fa-icon>
+        </button>
+      </div>
+      <div class="mrg24L">
+        <app-dialog-close-button (click)="close()"></app-dialog-close-button>
+      </div>
+    </div>
+    <div class="flex-elastic full-width overflow-hidden mrg12T">
+      <div class="full-size overflow-hidden position-relative" #playerBase>
+        <div class="loading-cover" *ngIf="!this.status.liveSessionPlayer?.scaleAdjusted || !chat?.tabsObj[tabId]">
+          <div>
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+          </div>
+          <div i18n class="font-light s20 mrg6T">
+            Conectando...
+          </div>
+        </div>
+        <div #player style="transform-origin: left top;"></div>
+      </div>
+    </div>
+  </div>
+</div>

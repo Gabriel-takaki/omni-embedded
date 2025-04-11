@@ -1,0 +1,56 @@
+<div class="agent-dashboard-base">
+  <div class="agent-dashboard-login-area">
+    <div class="flex-column full-width overflow-hidden flex-center">
+      <div class="full-width flex-row align-items-center s16">
+        <div i18n class="s20 font-medium flex-elastic">
+          Gestão de ponto
+        </div>
+
+
+          <ca-register-clock-action></ca-register-clock-action>
+
+        <div class="monitor-status" [class.pointer]="!monitor.localServiceAvailable"
+             *ngIf="status.taskManagerEnabled && status.user.tasksmonitor && (!status.isMobile || status.isEmbedded)"
+             [matTooltip]="monitor.localServiceAvailable ? 'O monitoramento está ativo para sua conta. Isso significa que suas atividades neste computador são registradas e reportadas aos seus gestores enquanto estiver logado ao sistema.' : 'O serviço local não está disponível. Clique para fazer o download do instalador.'"
+             i18n-matTooltip (click)="downloadInstaller(!monitor.localServiceAvailable)">
+          <fa-icon [icon]="['fas', monitor.localServiceAvailable ? 'video' : 'video-slash']"></fa-icon>
+          <span class="mrg5L" i18n *ngIf="monitor.localServiceAvailable">Monitoramento ativo</span>
+          <span class="mrg5L" i18n *ngIf="!monitor.localServiceAvailable">Serviço local indisponível</span>
+        </div>
+      </div>
+
+
+    </div>
+  
+
+    <ca-clockin-mini-card></ca-clockin-mini-card>
+  </div>
+  <div class="news-panel bg-black-lighten-5">
+    <div class="full-width">
+      <div class="s14 font-medium">
+        {{status.greetingMessage}}
+      </div>
+      <div class="s40 font-semi-bold mrg4T">
+        {{status.formattedTime}}
+      </div>
+      <div class="mrg4T s12 font-light font-italic" *ngIf="!status.config.disablequotes">
+        "{{status.quoteMessage}}"
+      </div>
+      <div class="full-width mrg4T s12 font-medium" *ngIf="!status.config.disablequotes">
+        {{status.quoteAuthor}}
+      </div>
+    </div>
+    <div class="full-width s18 font-medium mrg16T" *ngIf="false" i18n>
+      Tarefas
+    </div>
+    <div class="full-width s18 font-medium mrg16T" i18n>
+      Novidades
+    </div>
+    <div class="full-width font-light mrg6T" *ngIf="!news.length" i18n>
+      Nenhuma novidade para exibir.
+    </div>
+    <div class="full-width mrg10T" *ngFor="let new of news">
+      <news-card [newsData]="new" (click)="openNews(new)"></news-card>
+    </div>
+  </div>
+</div>

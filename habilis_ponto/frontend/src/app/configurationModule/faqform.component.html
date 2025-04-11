@@ -1,0 +1,215 @@
+<div class="dialog-x-large">
+  <div class="dialog-content flex-elastic">
+    <div class="full-width h100 flex-column overflow-hidden">
+      <div class="h5" i18n>Documento</div>
+      <div class="flex-elastic overflow-hidden mrg10T full-width">
+        <div class="full-width h100 scroll-y scroll1 pad5R">
+          <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T">
+            <div class="full-width flex-row">
+              <mat-form-field class="flex-elastic">
+                <mat-label i18n>Título</mat-label>
+                <input matInput type="text" [(ngModel)]="question" name="titleInput" placeholder="Título"
+                       i18n-placeholder
+                       required maxlength="500" #titleInput/>
+              </mat-form-field>
+              <mat-form-field class="flex-rigid mrg10L">
+                <mat-label i18n>Tipo</mat-label>
+                <mat-select [(value)]="type">
+                  <mat-option [value]="0" i18n>
+                    Pública
+                  </mat-option>
+                  <mat-option [value]="1">
+                    Interna
+                  </mat-option>
+                  <mat-option [value]="2">
+                    Pública restrita
+                  </mat-option>
+                  <mat-option [value]="3">
+                    Interna restrita
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="full-width" *ngIf="[2,3].includes(type)">
+              <app-tag-box label="Filas permitidas" i18n-label [items]="service.allQueues"
+                           [allowReordering]="false"
+                           [(value)]="queues" [placeholder]="'Selecione as filas permitidas ...'"></app-tag-box>
+            </div>
+            <mat-form-field class="full-width">
+              <mat-label i18n>Descrição</mat-label>
+              <textarea matInput type="text" [(ngModel)]="description" name="text"
+                        style="height: 50px;" placeholder="Descrição"></textarea>
+            </mat-form-field>
+            <mat-form-field class="full-width"
+                            (paste)="pasteEvent($event, keywords)"
+                            matTooltip="Palavras chaves associadas ao FAQ"
+                            i18n-matTooltip>
+              <mat-label i18n>Palavras chaves</mat-label>
+              <mat-chip-grid #chipList aria-label="Tags">
+                <mat-chip-row *ngFor="let tag of keywords"
+                              [removable]="true" (removed)="removeTag(tag, keywords)">
+                  {{tag}}&nbsp;&nbsp;
+                  <fa-icon class="pointer" [icon]="['fal', 'copy']" (click)="copyTag(tag)"
+                           matTooltip="Copiar tag" i18n-matTooltip></fa-icon>&nbsp;
+                  <fa-icon [icon]="['fal', 'times']" matChipRemove></fa-icon>
+                </mat-chip-row>
+                <input placeholder="Tags" [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="true"
+                       (matChipInputTokenEnd)="addTag($event, keywords)">
+              </mat-chip-grid>
+            </mat-form-field>
+            <div class="full-width">
+              <app-styled-tag-box label="Etiquetas" i18n-label [items]="tags"
+                                  [allowReordering]="false"
+                                  [(value)]="selectedTags"
+                                  [placeholder]="'Selecionar etiquetas ...'"></app-styled-tag-box>
+            </div>
+          </form>
+          <div class="s14 font-medium mrg10B mrg10T" i18n>
+            Sintomas
+          </div>
+          <dx-html-editor height="350px" [(value)]="symptoms">
+            <dxo-toolbar [multiline]="true">
+              <dxi-item name="undo"></dxi-item>
+              <dxi-item name="redo"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item
+                name="size"
+                [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+              ></dxi-item>
+              <dxi-item
+                name="font"
+                [acceptedValues]="['Inter',
+        'Arial',
+        'Courier New',
+        'Georgia',
+        'Impact',
+        'Lucida Console',
+        'Tahoma',
+        'Times New Roman',
+        'Verdana'
+      ]"
+              ></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="bold"></dxi-item>
+              <dxi-item name="italic"></dxi-item>
+              <dxi-item name="strike"></dxi-item>
+              <dxi-item name="underline"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="alignLeft"></dxi-item>
+              <dxi-item name="alignCenter"></dxi-item>
+              <dxi-item name="alignRight"></dxi-item>
+              <dxi-item name="alignJustify"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="orderedList"></dxi-item>
+              <dxi-item name="bulletList"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item
+                name="header"
+                [acceptedValues]="[false, 1, 2, 3, 4, 5]"
+              ></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="color"></dxi-item>
+              <dxi-item name="background"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="link"></dxi-item>
+              <dxi-item name="image"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="clear"></dxi-item>
+              <dxi-item name="codeBlock"></dxi-item>
+              <dxi-item name="blockquote"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="insertTable"></dxi-item>
+              <dxi-item name="deleteTable"></dxi-item>
+              <dxi-item name="insertRowAbove"></dxi-item>
+              <dxi-item name="insertRowBelow"></dxi-item>
+              <dxi-item name="deleteRow"></dxi-item>
+              <dxi-item name="insertColumnLeft"></dxi-item>
+              <dxi-item name="insertColumnRight"></dxi-item>
+              <dxi-item name="deleteColumn"></dxi-item>
+            </dxo-toolbar>
+            <dxo-media-resizing [enabled]="true"></dxo-media-resizing>
+          </dx-html-editor>
+          <div class="s14 font-medium mrg10B mrg10T" i18n>
+            Resposta / Conteúdo
+          </div>
+          <dx-html-editor height="350px" [(value)]="answer">
+            <dxo-toolbar [multiline]="true">
+              <dxi-item name="undo"></dxi-item>
+              <dxi-item name="redo"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item
+                name="size"
+                [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+              ></dxi-item>
+              <dxi-item
+                name="font"
+                [acceptedValues]="['Inter',
+        'Arial',
+        'Courier New',
+        'Georgia',
+        'Impact',
+        'Lucida Console',
+        'Tahoma',
+        'Times New Roman',
+        'Verdana'
+      ]"
+              ></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="bold"></dxi-item>
+              <dxi-item name="italic"></dxi-item>
+              <dxi-item name="strike"></dxi-item>
+              <dxi-item name="underline"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="alignLeft"></dxi-item>
+              <dxi-item name="alignCenter"></dxi-item>
+              <dxi-item name="alignRight"></dxi-item>
+              <dxi-item name="alignJustify"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="orderedList"></dxi-item>
+              <dxi-item name="bulletList"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item
+                name="header"
+                [acceptedValues]="[false, 1, 2, 3, 4, 5]"
+              ></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="color"></dxi-item>
+              <dxi-item name="background"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="link"></dxi-item>
+              <dxi-item name="image"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="clear"></dxi-item>
+              <dxi-item name="codeBlock"></dxi-item>
+              <dxi-item name="blockquote"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="insertTable"></dxi-item>
+              <dxi-item name="deleteTable"></dxi-item>
+              <dxi-item name="insertRowAbove"></dxi-item>
+              <dxi-item name="insertRowBelow"></dxi-item>
+              <dxi-item name="deleteRow"></dxi-item>
+              <dxi-item name="insertColumnLeft"></dxi-item>
+              <dxi-item name="insertColumnRight"></dxi-item>
+              <dxi-item name="deleteColumn"></dxi-item>
+            </dxo-toolbar>
+            <dxo-media-resizing [enabled]="true"></dxo-media-resizing>
+            <!--      <dxo-image-upload [tabs]="currentTab" fileUploadMode="base64">-->
+            <!--      </dxo-image-upload>-->
+          </dx-html-editor>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!thisForm.valid || !answer">
+        <span *ngIf="id" i18n>Atualizar</span>
+        <span *ngIf="!id" i18n>Adicionar</span>
+    </button>
+  </div>
+</div>

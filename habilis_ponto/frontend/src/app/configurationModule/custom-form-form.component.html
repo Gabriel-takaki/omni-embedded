@@ -1,0 +1,121 @@
+<div class="dialog-small overflow-hidden" style="height: 80vh;">
+  <div class="dialog-content h100 overflow-hidden flex-column">
+    <div class="h5 flex-rigid" i18n>Formulário personalizado</div>
+    <mat-form-field class="full-width flex-rigid mrg8T">
+      <mat-label i18n>Nome</mat-label>
+      <input placeholder="Nome" i18n-placeholder required #nameInput
+             matInput type="text" [(ngModel)]="form.name" name="nameInput"/>
+    </mat-form-field>
+    <mat-form-field class="full-width flex-rigid">
+      <mat-label i18n>Descrição</mat-label>
+      <textarea matInput type="text" [(ngModel)]="form.description" name="text"
+                style="height: 70px;" placeholder="Descrição" i18n-placeholder></textarea>
+    </mat-form-field>
+    <div class="flex-column full-width flex-elastic overflow-hidden">
+      <div class="full-width flex-row flex-rigid flex-center">
+        <div class="font-regular s14">
+          Campos do formulário
+        </div>
+        <div class="mrg-left-auto">
+          <button class="btn btn-primary btn-slim" matRipple [matMenuTriggerFor]="fields"
+                  matTooltip="Adicionar campo" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'plus']"></fa-icon>
+          </button>
+        </div>
+        <mat-menu #fields="matMenu" xPosition="before">
+          <button mat-menu-item (click)="addField(1)" i18n>
+            Texto
+          </button>
+          <button mat-menu-item (click)="addField(2)" i18n>
+            Área de texto
+          </button>
+          <button mat-menu-item (click)="addField(3)" i18n>
+            Número inteiro
+          </button>
+          <button mat-menu-item (click)="addField(4)" i18n>
+            Decimal
+          </button>
+          <button mat-menu-item (click)="addField(5)" i18n>
+            Telefone
+          </button>
+          <button mat-menu-item (click)="addField(6)" i18n>
+            E-mail
+          </button>
+          <button mat-menu-item (click)="addField(7)" i18n>
+            Data
+          </button>
+<!--          <button mat-menu-item (click)="addField(8)" i18n>-->
+<!--            Hora-->
+<!--          </button>-->
+          <button mat-menu-item (click)="addField(9)" i18n>
+            Data e hora
+          </button>
+          <button mat-menu-item (click)="addField(10)" i18n>
+            Lista de seleção
+          </button>
+<!--          <button mat-menu-item (click)="addField(11)" i18n>-->
+<!--            Múltipla escolha (Seleção múltipla)-->
+<!--          </button>-->
+          <button mat-menu-item (click)="addField(12)" i18n>
+            Caixa de marcação
+          </button>
+        </mat-menu>
+      </div>
+      <div class="fields-card scroll1" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div class="card mrg8B" *ngFor="let field of form.fields; let i = index;" cdkDrag>
+          <div class="full-width flex-row overflow-hidden flex-center">
+            <div class="flex-rigid s20 mrg8L move-cursor" cdkDragHandle>
+              <fa-icon [icon]="['far', 'text']" *ngIf="[1,2,3,4].includes(field.type)"></fa-icon>
+              <fa-icon [icon]="['far', 'at']" *ngIf="[6].includes(field.type)"></fa-icon>
+              <fa-icon [icon]="['far', 'phone']" *ngIf="[5].includes(field.type)"></fa-icon>
+              <fa-icon [icon]="['far', 'calendar-alt']" *ngIf="[7,9].includes(field.type)"></fa-icon>
+              <fa-icon [icon]="['far', 'clock']" *ngIf="[8].includes(field.type)"></fa-icon>
+              <fa-icon [icon]="['far', 'ballot-check']" *ngIf="[10,11].includes(field.type)"></fa-icon>
+              <fa-icon [icon]="['far', 'check-square']" *ngIf="[12].includes(field.type)"></fa-icon>
+            </div>
+            <div class="flex-elastic overflow-hidden mrg16L">
+              <div class="s14 font-medium">
+                <span class="s12 font-light">#{{field.id}}</span>&nbsp;&nbsp;{{field.label}} <span class="font-bold fg-danger" *ngIf="field.required">*</span> <fa-icon class="mrg8L s10" [icon]="['far', 'lock']" *ngIf="field.lock"></fa-icon>
+              </div>
+              <div class="font-light s12 mrg4T">
+                <span *ngIf="field.type === 1" i18n>Texto</span>
+                <span *ngIf="field.type === 2" i18n>Área de texto</span>
+                <span *ngIf="field.type === 3" i18n>Número inteiro</span>
+                <span *ngIf="field.type === 4" i18n>Decimal</span>
+                <span *ngIf="field.type === 5" i18n>Telefone</span>
+                <span *ngIf="field.type === 6" i18n>E-mail</span>
+                <span *ngIf="field.type === 7" i18n>Data</span>
+                <span *ngIf="field.type === 8" i18n>Hora</span>
+                <span *ngIf="field.type === 9" i18n>Data e hora</span>
+                <span *ngIf="field.type === 10" i18n>Múltipla escolha (Seleção única)</span>
+                <span *ngIf="field.type === 11" i18n>Múltipla escolha (Seleção múltipla)</span>
+                <span *ngIf="field.type === 12" i18n>Caixa de marcação</span>
+              </div>
+            </div>
+            <div class="flex-rigid flex-row">
+              <button class="btn btn-slim flex-row flex-center line-1" matRipple matTooltip="Editar campo"
+                      i18n-matTooltip style="width: 34px; height: 34px;" (click)="editField(field)">
+                <fa-icon [icon]="['far', 'edit']"></fa-icon>
+              </button>
+              <button class="btn btn-slim mrg4L flex-row flex-center line-1" matRipple matTooltip="Remover campo"
+                      i18n-matTooltip
+                      (click)="removeField(field)" style="width: 34px; height: 34px;">
+                <fa-icon [icon]="['fas', 'times']"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!form.name || !form.fields.length">
+        <span *ngIf="form.id" i18n>Atualizar</span>
+        <span *ngIf="!form.id" i18n>Adicionar</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="item-base" [class.base-border]="showBaseBorder" (clickOutside)="clearButton()"
+     [style.background-color]="baseColor">
+    <div class="item-cover pointer" matRipple [class.left-border]="false" [class.open-left-25]="openButton1"
+         [class.open-left-50]="openButton2" [class.open-right-25]="openButton4" [class.open-right-50]="openButton3"
+         [class.no-transition]="noTransition" [class.selected]="selected && selectionMode"
+         (panstart)="panStart($event)" (panmove)="panMove($event)" (panend)="panEnd($event)" (press)="press()"
+         (touchend)="touchEnd($event)" (swiperight)="swipeRight($event)" (swipeleft)="swipeLeft($event)"
+         (click)="click($event)" [matRippleDisabled]="!status.isEmbedded"
+         [ngStyle]="{'transform': 'translateX(' + transform + 'px)', 'border-color': borderColor, 'background-color': backgroundColor, 'color': fontColor}">
+        <div class="full-size" [cdkContextMenuTriggerFor]="outer">
+            <app-client-list-item-face [index]="index" [selected]="selected" [typing]="typing"
+                                       [chat]="chat" [msgsCount]="msgsCount" [now]="now"
+                                       [resultType]="resultType" [msgTime]="msgTime" [msgId]="msgId"
+                                       [msgText]="msgText"></app-client-list-item-face>
+        </div>
+        <ng-template #outer>
+            <div class="menu-base" cdkMenu>
+                <div class="full-width s12 font-medium mrg8B overflow-hidden no-break-with-ellipses pad8A">
+                    {{ chat && chat?.queueType !== 13 ? chat?.clientName || chat?.clientEmail || chat?.clientNumber || chat?.clientProfileName : chat?.queueType === 13 ? chat?.clientName || chat?.clientProfileName || texts.anonimo : texts.noChatSelected }}
+                </div>
+                <div class="menu-btn" cdkMenuItem matRipple (click)="openTransferDialog()">
+                    <div class="full-width flex-row align-items-center">
+                        <div class="mrg4L" style="width: 32px">
+                            <fa-icon [icon]="['far', 'exchange']"></fa-icon>
+                        </div>
+                        <div class="mrg4L" i18n>
+                            Transferir
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-btn" cdkMenuItem matRipple (click)="setAsNotReaded()" i18n-matTooltip
+                     matTooltip="Essa função irá marcar a última mensagem recebida nesse atendimento como não lida. Caso nenhuma mensagem tenha sido recebida nesse atendimento, essa função não terá nenhum efeito.">
+                    <div class="full-width flex-row align-items-center">
+                        <div class="mrg4L" style="width: 32px">
+                            <fa-icon [icon]="['far', 'envelope']"></fa-icon>
+                        </div>
+                        <div class="mrg4L" i18n>
+                            Marcar como não lida
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-btn" cdkMenuItem matRipple (click)="sendToWaitingRoom()">
+                    <div class="full-width flex-row align-items-center">
+                        <div class="mrg4L" style="width: 32px">
+                            <fa-icon [icon]="['far', 'snooze']"></fa-icon>
+                        </div>
+                        <div class="mrg4L" i18n>
+                            Enviar para sala de espera
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-btn" cdkMenuItem matRipple (click)="closeChat()">
+                    <div class="full-width flex-row align-items-center">
+                        <div class="mrg4L" style="width: 32px">
+                            <fa-icon class="fg-danger" [icon]="['far', 'comment-alt-times']"></fa-icon>
+                        </div>
+                        <div class="mrg4L" i18n>
+                            Encerrar
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <a matRipple class="item-button-1" *ngIf="button1Enabled" (click)="buttonClick('1')"
+       [ngStyle]="{'background-color': baseColor && direction && direction !== 'right' ? baseColor : button1BgColor, 'color': button1FgColor}">
+        <div class="button-icon animated" [class.fadeIn]="popButton1" [class.popOut]="!popButton1">
+            <fa-icon [icon]="button1Icon"></fa-icon>
+        </div>
+        <div class="button-text animated" [class.fadeIn]="popButton1" [class.popOut]="!popButton1">
+            {{ button1Text }}
+        </div>
+    </a>
+    <a matRipple class="item-button-2" *ngIf="button2Enabled" (click)="buttonClick('2')"
+       [ngStyle]="{'background-color': baseColor && direction && direction !== 'right' ? baseColor : button2BgColor, 'color': button2FgColor}">
+        <div class="button-icon animated" [class.fadeIn]="popButton2" [class.transparent]="!popButton2">
+            <fa-icon [icon]="button2Icon"></fa-icon>
+        </div>
+        <div class="button-text animated" [class.fadeIn]="popButton2" [class.transparent]="!popButton2">
+            {{ button2Text }}
+        </div>
+    </a>
+    <a matRipple class="item-button-3" *ngIf="button3Enabled" (click)="buttonClick('3')"
+       [ngStyle]="{'background-color': baseColor && direction && direction !== 'left' ? baseColor : button3BgColor, 'color': button3FgColor}">
+        <div class="button-icon animated" [class.fadeIn]="popButton3" [class.transparent]="!popButton3">
+            <fa-icon [icon]="button3Icon"></fa-icon>
+        </div>
+        <div class="button-text animated" [class.fadeIn]="popButton3" [class.transparent]="!popButton3">
+            {{ button3Text }}
+        </div>
+    </a>
+    <a matRipple class="item-button-4" *ngIf="button4Enabled" (click)="buttonClick('4')"
+       [ngStyle]="{'background-color': baseColor && direction && direction !== 'left' ? baseColor : button4BgColor, 'color': button4FgColor}">
+        <div class="button-icon animated" [class.fadeIn]="popButton4" [class.popOut]="!popButton4">
+            <fa-icon [icon]="button4Icon"></fa-icon>
+        </div>
+        <div class="button-text animated" [class.fadeIn]="popButton4" [class.popOut]="!popButton4">
+            {{ button4Text }}
+        </div>
+    </a>
+</div>

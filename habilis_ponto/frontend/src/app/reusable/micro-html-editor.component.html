@@ -1,0 +1,43 @@
+<div class="full-width position-relative" #baseDiv>
+  <div class="full-width editable-div mrg6T scroll1 scroll-y" [style.font-size.px]="fontSize" id="div-editor"
+       [class.font-light]="baseFontWeight === 'light'"
+       contentEditable="{{disabled ? 'false' : 'true'}}" #divEditor (selectstart)="updateSelection()"
+       (keydown.escape)="removeFocus($event)" (keydown.shift.enter)="removeFocus($event)"
+       (keydown.enter)="unFocusOnEnter ? removeFocus($event) : null"
+       (keyup)="updateModel($event.target.innerHTML)" (focusin)="showMenu()"
+       i18n-data-text (focusout)="updateModel($event.target.innerHTML) && hideMenu()"
+       [innerHTML]="modelText" style="max-height: 120px;">
+  </div>
+  <div class="menu-base-div bg-black-lighten-5" [@visibilityState]="'visible'" *ngIf="_showMenu">
+    <div class="menu-button mrg4L marker-yellow" matRipple (click)="addMark() && preventDefault($event)">
+      <fa-icon [icon]="['far', 'check']" class="fg-white"></fa-icon>
+    </div>
+    <div class="menu-button mrg8L marker-orange" matRipple (click)="preventDefault($event)">
+
+    </div>
+    <div class="menu-button mrg8L marker-red" matRipple (click)="preventDefault($event)">
+
+    </div>
+    <div class="menu-button mrg8L marker-blue" matRipple (click)="preventDefault($event)">
+
+    </div>
+    <div class="menu-button mrg8L marker-green" matRipple (click)="preventDefault($event)">
+
+    </div>
+    <div class="text-menu-base">
+      <div class="text-menu-button" [class.selected]="bold" matRipple (click)="toogleBold() && preventDefault($event)">
+        <fa-icon [icon]="['far', 'bold']"></fa-icon>
+      </div>
+      <div class="text-menu-button mrg4L" [class.selected]="italic" matRipple (click)="preventDefault($event)">
+        <fa-icon [icon]="['far', 'italic']"></fa-icon>
+      </div>
+      <div class="text-menu-button mrg4L" [class.selected]="underline" matRipple (click)="preventDefault($event)">
+        <fa-icon [icon]="['far', 'underline']"></fa-icon>
+      </div>
+    </div>
+    <div class="emoji-button mrg8L" matRipple (click)="preventDefault($event)" *ngIf="false">
+      <fa-icon [icon]="['far', 'broom']"></fa-icon>
+    </div>
+  </div>
+
+</div>

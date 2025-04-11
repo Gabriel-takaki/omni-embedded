@@ -1,0 +1,89 @@
+<input [ngxMatDatetimePicker]="picker" type="datetime-local" (dateChange)="changeDueDate($event)"
+       style="visibility: hidden !important; position:absolute;" *ngIf="editable"
+       [value]="duedate || now.clone().add(1, 'hour').startOf('hour')">
+<ngx-mat-datetime-picker #picker [defaultTime]="[11, 0, 0]"
+                         [showSeconds]="false" [stepHour]="1" [stepMinute]="5" [touchUi]="status.isMobile">
+  <ngx-mat-datepicker-actions>
+    <button class="btn" ngxMatDatepickerCancel i18n>Cancelar</button>
+    <button class="btn btn-success" i18n ngxMatDatepickerApply>Aplicar</button>
+  </ngx-mat-datepicker-actions>
+</ngx-mat-datetime-picker>
+
+<div *ngIf="taskStatus !== 2 && !scheduleMode" (click)="editable ? picker.open() : null" [class.pointer]="editable">
+  <div class="label-big label-warning flex-row" *ngIf="isToday"
+       [style.font-size.px]="fontSize">
+    <div i18n>
+      Vence hoje às {{date | date:'shortTime'}}
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-alert flex-row" *ngIf="duedate && isTommorow"
+       [style.font-size.px]="fontSize">
+    <div i18n>
+      Vence amanhã às {{date | date:'shortTime'}}
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-danger flex-row" *ngIf="duedate && isPast" [style.font-size.px]="fontSize">
+    <div i18n>
+      Vencido em {{date | date:'short'}}
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-default flex-row" *ngIf="duedate && !isToday && !isTommorow && !isPast"
+       [style.font-size.px]="fontSize">
+    <div i18n>
+      Vence em {{date | date:'short'}}
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+         *ngIf="editable">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+  <div class="label-big label-default" *ngIf="!duedate" [style.font-size.px]="fontSize" i18n>
+    Sem vencimento
+  </div>
+</div>
+<div *ngIf="taskStatus === 2 && !scheduleMode">
+  <div class="label-big label-success flex-row flex-center" [style.font-size.px]="fontSize">
+    <div class="mrg4R" *ngIf="finishedDue"
+         matTooltip="Concluído em atraso"
+         i18n-matTooltip>
+      <fa-icon [icon]="['fas', 'exclamation-triangle']" class="fg-danger"></fa-icon>
+    </div>
+    <div class="mrg4R" *ngIf="!finishedDue" matTooltip="Concluído no prazo" i18n-matTooltip>
+      <fa-icon [icon]="['fas', 'check-circle']"></fa-icon>
+    </div>
+    <div class="flex-elastic" i18n>
+      Concluído em {{finishDate | date:'short'}}
+    </div>
+  </div>
+</div>
+<div *ngIf="scheduleMode" (click)="editable ? picker?.open() : null" [class.pointer]="editable">
+  <div class="label-big label-default flex-row flex-center" [style.font-size.px]="fontSize" *ngIf="duedate">
+    <div class="mrg8R" *ngIf="isPast">
+      <fa-icon [icon]="['fas', 'exclamation-triangle']" class="fg-danger"></fa-icon>
+    </div>
+    <div class="flex-elastic flex-row">
+      <div>
+        <span *ngIf="showScheduleText" i18n>Agendado para</span> {{date | date:'short'}}
+      </div>
+      <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearDate($event)"
+           *ngIf="editable">
+        <fa-icon [icon]="['far', 'times']"></fa-icon>
+      </div>
+    </div>
+  </div>
+  <div class="label-big label-default" *ngIf="!duedate" [style.font-size.px]="fontSize" i18n>
+    Sem agendamento
+  </div>
+</div>

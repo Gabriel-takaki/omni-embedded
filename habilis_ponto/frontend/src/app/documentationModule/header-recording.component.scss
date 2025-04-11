@@ -1,0 +1,46 @@
+@import "../../scss/newcolors";
+@import "../../scss/medias";
+@import "../../scss/newtypography";
+@import "../../scss/newhelpers";
+
+.action-btn {
+  @extend .s12;
+  @extend .font-semi-bold;
+  @extend .flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  box-shadow: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  transition: filter 0.2s ease-in-out;
+  @include phone() {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.action-btn:hover:not(:disabled) {
+  filter: brightness(105%);
+}
+
+.action-btn:focus:not(:disabled) {
+  outline: 2px dashed var(--primary-color);
+}
+
+.call-element {
+  width: 190px;
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  background: white;
+  color: $black-base;
+  align-items: center;
+  overflow: hidden;
+  justify-content: center;
+  @include phone() {
+    width: 80%;
+  }
+}

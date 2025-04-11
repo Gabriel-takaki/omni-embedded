@@ -1,0 +1,102 @@
+<div class="full-width h100 overflow-hidden flex-column">
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Captura de Webhook
+    </div>
+    <button class="mrg10L btn btn-primary" matRipple (click)="addCapture()">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'captureDetailTemplate'}"
+                    [dataSource]="captures" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)"
+                    [hoverStateEnabled]="true">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <button class="grid-function-btn" (click)="removeItem(id.data)" matRipple
+                  matTooltip="Excluir etiqueta" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'times']"></fa-icon>
+          </button>
+        </div>
+        <div *dxTemplate="let item of 'captureDetailTemplate'" class="pad10A">
+          <mat-tab-group mat-align-tabs="start">
+            <mat-tab label="Configurações" i18n-label>
+              <div class="pad10A full-width flex-column">
+                <div class="h5">
+                  Configurações
+                </div>
+                <div class="s12 mrg4T">
+                    <span i18n>Requisições enviadas para</span> https://{{window.location.host}}/webhookcapture/capture/{{item.data.key}}
+                  <span class="btn-super-slim btn bg-black-lighten-4 mrg4L" matTooltip="Copiar" i18n-matTooltip
+                        matRipple (click)="copyUrl(item.data.key)">
+                    <fa-icon [icon]="['far', 'copy']"></fa-icon>
+                  </span>
+                    <span i18n>serão capturadas aqui.</span>
+                </div>
+                <div class="full-width overflow-hidden mrg4T" *ngIf="item.data.copy">
+                  <div class="flex-column full-width">
+                    <div class="flex-row full-width mrg10T">
+                      <mat-form-field class="flex-elastic">
+                        <mat-label i18n>Nome</mat-label>
+                        <input matInput type="text" [(ngModel)]="item.data.copy.name" name="name"
+                               maxlength="150" i18n-placeholder
+                               placeholder="Nome" required #nameInput="ngModel"/>
+                      </mat-form-field>
+                      <mat-form-field class="mrg10L flex-elastic" matTooltip="Se este campo estiver preenchido, a captura irá retornar um HTTP 302 com a url preenchida. Se estiver em branco, irá retornar somente um HTTP 200.">
+                        <mat-label i18n>Redirecionar para URL</mat-label>
+                        <input matInput type="text" [(ngModel)]="item.data.copy.redirecturl" name="redirecturl"
+                               maxlength="1000" i18n-placeholder
+                               placeholder="Redirecionar para URL" #redirecturlInput="ngModel"/>
+                      </mat-form-field>
+                      <div class="flex-elastic mrg10L">
+                        <app-ivr-selection [showType]="2" [(value)]="item.data.copy.fk_ivr"
+                                           caption="Fluxo de automação" i18n-caption i18n-matTooltip
+                                           matTooltip="Selecione qual automação será executada quando uma requisição HTTP chegar à URL dessa captura">
+                        </app-ivr-selection>
+                      </div>
+                      <mat-form-field class="mrg10L flex-elastic">
+                        <mat-label i18n>Fila</mat-label>
+                        <mat-select [(ngModel)]="item.data.copy.fk_queue">
+                          <mat-option [value]="0" i18n>Não selecionado</mat-option>
+                          <ng-container *ngFor="let q of service.allQueues">
+                            <mat-option [value]="q.id" *ngIf="q.type === 5 || q.type === 10">{{q.name}}</mat-option>
+                          </ng-container>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="flex-row flex-center mrg10T">
+                    <button class="btn btn-success" (click)="saveConfig(item.data)" matRipple
+                            matTooltip="Salvar configurações" i18n i18n-matTooltip>
+                      <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Visualizar" i18n-label>
+              <div class="full-width flex-row overflow-hidden mrg12T">
+                <div class="flex-elastic s12" i18n>
+                  Aqui você pode visualizar os dados recebidos na última requisição capturada. Clique no botão ao lado para carregar os dados.
+                </div>
+                <div class="flex-rigid">
+                  <button class="btn btn-info" (click)="loadLastData(item.data.key)" matRipple
+                          matTooltip="Carregar informações" i18n i18n-matTooltip>
+                    Carregar informações
+                  </button>
+                </div>
+              </div>
+              <div class="full-width overflow-hidden mrg12T">
+                <div class="full-width scroll-y" style="height: 400px; white-space: normal;">
+                    {{lastData}}
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

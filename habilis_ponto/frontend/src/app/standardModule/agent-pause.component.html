@@ -1,0 +1,41 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Pausar</div>
+    <div class="s12 font-light mrg5T" i18n>Selecione o motivo da pausa</div>
+    <div class="full-width mrg5T">
+      <mat-form-field class="full-width">
+        <mat-label i18n>Buscar</mat-label>
+        <input matInput type="text" placeholder="Buscar" [(ngModel)]="filter" i18n-placeholder="Busca de texto"
+               id="searchField" #searchField (keyup)="handleKeyUp($event)" (ngModelChange)="applyFilter()"/>
+      </mat-form-field>
+    </div>
+    <div class="scroll1 pad5R flex-column scroll-y" style="height: 185px;" #scrollDiv id="scrollDiv">
+
+      <div class="full-width font-base" *ngIf="!filteredItems.length" i18n>
+        Nenhum resultado encontrado
+      </div>
+
+      <div (click)="pause(a.id)" *ngFor="let a of filteredItems; let i = index;"
+           class="agent-item" [class.mrg5T]="i > 0" [class.selected]="selectedItem === i">
+
+        <div class="flex-row overflow-hidden" style="align-items: center;">
+          <div class="font-medium no-break-with-ellipses overflow-hidden">
+            {{a.text}}
+          </div>
+        </div>
+        <div class="flex-row small mrg3T scroll1 scroll align-items-center">
+          <div class="counter-badge">
+            <fa-icon
+              [icon]="['far', 'clock']"></fa-icon>&nbsp;&nbsp;{{texts.maxTime + ' ' + a.maxTime + ' ' + (a.maxTime === 1 ? texts.minute : texts.minutes)}}
+          </div>
+          <div class="counter-badge">
+            {{a.timesPerDay}}x
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>

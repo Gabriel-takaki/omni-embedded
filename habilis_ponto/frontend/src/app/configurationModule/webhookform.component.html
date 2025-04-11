@@ -1,0 +1,197 @@
+<h3 i18n>Configuração de webhooks e API</h3>
+<form #thisForm="ngForm" (ngSubmit)="save()" class="mrg20T">
+  <div class="full-width pad0A mrg10T scroll1 flex-column" style="height: 400px; overflow-y: auto;">
+    <mat-form-field class="full-width">
+      <mat-label i18n>Chave para autenticação na fila (api_key)</mat-label>
+      <input matInput type="text" [(ngModel)]="hooks.apiKey" name="apiKey" #apiKey
+             placeholder="Chave para autenticação na fila (api_key)" class="full-width" i18n-placeholder/>
+    </mat-form-field>
+    <div class="full-width flex-row small flex-align-center">
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para alteração no estado da fila
+        </div>
+        <div i18n>
+          Evento disparado quando há alguma mudança no estado da fila, como por exemplo, a perda de autenticação,
+          desconexão do smartphone ou do serviço de mensageria.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('authStatusHook')"
+        i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T">
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para alteração no estado da fila
+        </div>
+        <div i18n>
+          Evento disparado quando há alguma mudança no estado da fila, como por exemplo, a perda de autenticação,
+          desconexão do smartphone ou do serviço de mensageria.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('authStatusHook')"
+        i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T">
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para chamada recebida
+        </div>
+        <div i18n>
+          Evento disparado quando um cliente faz uma chamada de áudio ou de vídeo para o serviço de uma fila.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('callReceivedHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T">
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para cliente digitando
+        </div>
+        <div i18n>
+          Evento disparado quando um cliente está digitando em um atendimento aberto na fila.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('typingHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T"
+         >
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para confirmação de mensagem recebida pelo servidor
+        </div>
+        <div i18n>
+          Evento disparado quando o serviço de mensageria confirma que seu servidor recebeu uma mensagem enviada. Nesse
+          momento ainda não há confirmação de que a mensagem já foi entregue ao usuário.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('msgReceivedByServerHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T"
+         >
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para confirmação de mensagem recebida pelo cliente
+        </div>
+        <div i18n>
+          Evento disparado quando o serviço de mensageria confirma que o cliente recebeu uma mensagem enviada.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('msgReceivedByUserHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T"
+         >
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para mensagem recebida no sistema
+        </div>
+        <div i18n>
+          Evento disparado quando uma mensagem é recebida na fila.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('msgReceivedHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T"
+         >
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para comunicação de mensagem excluída pelo cliente
+        </div>
+        <div i18n>
+          Evento disparado quando o cliente solicita a exclusão de uma mensagem ao serviço de mensageria.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('msgDeletedHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T"
+         >
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para confirmação de mensagem lida pelo cliente
+        </div>
+        <div i18n>
+          Evento disparado quando o serviço de mensageria confirma que o cliente leu uma mensagem enviada.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('msgReadedHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T"
+         >
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para a abertura de um novo atendimento
+        </div>
+        <div i18n>
+          Evento disparado quando um novo atendimento é aberto no sistema.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('newChatHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-row small flex-align-center mrg10T"
+         >
+      <div class="flex-elastic flex-column">
+        <div class="bold" i18n>
+          Hook para fechamento de um atendimento aberto
+        </div>
+        <div i18n>
+          Evento disparado quando um atendimento da fila é encerrado.
+        </div>
+      </div>
+      <div class="flex flex-align-center h100 flex-rigid pad10A">
+        <button class="btn-30" matTooltip="Configurar hook" (click)="openHookConfigEditor('chatClosedHook')" i18n-matTooltip>
+          <fa-icon [icon]="['far', 'cog']"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 text-center pad5T">
+    <button type="button" mat-button class="btn btn-alt btn-default" (click)="close()">
+      <span i18n>Cancelar</span>
+    </button>
+    <button type="submit" class="btn btn-alt btn-success mrg10L" matRipple [matRippleDisabled]="!thisForm.valid"
+            [disabled]="!thisForm.valid">
+      <span i18n>Salvar</span>
+      <fa-icon [icon]="['far', 'save']" class="mrg10L"></fa-icon>
+    </button>
+  </div>
+</form>

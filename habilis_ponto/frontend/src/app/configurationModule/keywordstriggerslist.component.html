@@ -1,0 +1,105 @@
+<div class="full-width h100 overflow-hidden flex-column">
+
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Gatilhos de palavras chaves
+    </div>
+    <button class="mrg10L btn btn-primary" matRipple (click)="addTrigger()">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'triggerDetailTemplate'}"
+                    [dataSource]="triggers" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)"
+                    [hoverStateEnabled]="true">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="true"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <button class="grid-function-btn" (click)="removeItem(id.data)" matRipple
+                  matTooltip="Excluir conjunto" i18n-matTooltip>
+            <fa-icon [icon]="['far', 'times']"></fa-icon>
+          </button>
+        </div>
+        <div *dxTemplate="let id of 'triggersTemplate'">
+          <div *ngIf="!id.data.keywords?.length" i18n>
+            Sem palavras
+          </div>
+          <div *ngIf="id.data.keywords?.length === 1" i18n>
+            1 palavra
+          </div>
+          <div *ngIf="id.data.keywords?.length > 1" i18n>
+            {{ id.data.keywords.length }} palavras
+          </div>
+        </div>
+        <div *dxTemplate="let item of 'triggerDetailTemplate'" class="pad10A">
+          <div class="pad10A full-width flex-column">
+            <div class="h5">
+              Configurações
+            </div>
+            <div class="full-width overflow-hidden mrg10T" *ngIf="item.data.copy">
+              <div class="full-width flex-row">
+                <mat-form-field class="flex-elastic">
+                  <mat-label i18n>Nome</mat-label>
+                  <input matInput type="text" [(ngModel)]="item.data.copy.name" name="name"
+                         maxlength="255" i18n-placeholder placeholder="Nome" required/>
+                </mat-form-field>
+                <mat-form-field class="mrg5L flex-elastic" i18n-matTooltip
+                                matTooltip="Fecha automaticamente o atendimento caso o cliente permaneça sem interagir pelo tempo tempo especificado.">
+                  <mat-label i18n>Tipo</mat-label>
+                  <mat-select [(ngModel)]="item.data.copy.type">
+                    <mat-option [value]="2" i18n>Palavras chaves em mensagens enviadas (Contém)</mat-option>
+                    <mat-option [value]="3" i18n>Palavras chaves em mensagens recebidas (Contém)</mat-option>
+                    <mat-option [value]="0" i18n>Todas as mensagens enviadas</mat-option>
+                    <mat-option [value]="1" i18n>Todas as mensagens recebidas</mat-option>
+                    <mat-option [value]="4" i18n>Palavras chaves em mensagens enviadas (Exato)</mat-option>
+                    <mat-option [value]="5" i18n>Palavras chaves em mensagens recebidas (Exato)</mat-option>
+                    <mat-option [value]="6" i18n>Resposta de flow</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="flex-elastic mrg5L">
+                  <app-ivr-selection [showType]="2" [(value)]="item.data.copy.fk_ivr"
+                                     caption="Fluxo de automação" i18n-caption i18n-matTooltip
+                                     matTooltip="Selecione qual automação será executada por essa regra">
+                  </app-ivr-selection>
+                </div>
+              </div>
+              <div class="full-width flex-row" *ngIf="[2,3,4,5].includes(item.data.copy.type)">
+                <mat-form-field class="flex-elastic"
+                                (paste)="pasteEvent($event, item.data.copy.keywords)"
+                                matTooltip="O agente irá receber atendimentos sem filtros ou com um dos filtros abaixo"
+                                i18n-matTooltip>
+                  <mat-label i18n>Palavras chaves</mat-label>
+                  <mat-chip-grid #chipList aria-label="Tags">
+                    <mat-chip-row *ngFor="let tag of item.data.copy.keywords"
+                                  [removable]="true" (removed)="removeTag(tag, item.data.copy.keywords)">
+                      {{ tag }}&nbsp;&nbsp;
+                      <fa-icon class="pointer" [icon]="['fal', 'copy']" (click)="copyTag(tag)"
+                               matTooltip="Copiar tag" i18n-matTooltip></fa-icon>&nbsp;
+                      <fa-icon [icon]="['fal', 'times']" matChipRemove></fa-icon>
+                    </mat-chip-row>
+                    <input placeholder="Tags" [matChipInputFor]="chipList"
+                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                           [matChipInputAddOnBlur]="true"
+                           (matChipInputTokenEnd)="addTag($event, item.data.copy.keywords)">
+                  </mat-chip-grid>
+                  <mat-hint i18n>Palavras: {{ item.data.copy.keywords.length }} de 500</mat-hint>
+                </mat-form-field>
+                <button class="btn mrg10L align-self-start" matRipple matTooltip="Copiar palavras chaves"
+                        i18n-matTooltip (click)="copyAllTags(item.data.copy.keywords)">
+                  <fa-icon [icon]="['far', 'copy']"></fa-icon>
+                </button>
+              </div>
+              <div class="flex-row flex-center mrg10T">
+                <button class="btn btn-success" (click)="saveConfig(item.data)" matRipple
+                        matTooltip="Salvar configurações" i18n-matTooltip>
+                  <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

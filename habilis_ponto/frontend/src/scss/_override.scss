@@ -1,0 +1,119 @@
+@import "newcolors";
+
+.dxc-tooltip {
+  z-index: 1000;
+}
+
+.ck-editor__editable_inline {
+  min-height: 200px;
+}
+
+.cdk-overlay-pane {
+  max-width: 100vw !important;
+}
+
+.swagger-ui .info .title small pre {
+  background-color: inherit;
+  border: 0;
+}
+
+.mat-bottom-sheet-container {
+  min-width: auto !important;
+}
+
+.mat-tab-body-wrapper {
+  flex-grow: 1;
+}
+
+.dx-toolbar-items-container {
+  margin-bottom: 10px;
+}
+
+.leader-line {
+  z-index: 1;
+  position: fixed !important;
+}
+
+.simple-notification.success {
+  background: $success-base !important;
+}
+
+.simple-notification.success .sn-progress-loader span {
+  background: $green-darken-1 !important;
+}
+
+.simple-notification.error {
+  background: $danger-base !important;
+}
+
+.simple-notification.error .sn-progress-loader span {
+  background: $red-darken-1 !important;
+}
+
+.simple-notification.info {
+  background: $info-base !important;
+}
+
+.simple-notification.info .sn-progress-loader span {
+  background: $blue-darken-1 !important;
+}
+
+.simple-notification.warn {
+  background: $warning-base !important;
+  color: #fff !important;
+}
+
+.simple-notification.warn .sn-progress-loader span {
+  background: $orange-darken-1 !important;
+}
+
+.simple-notification.warn div .sn-content, .simple-notification.warn div .sn-html, .simple-notification.warn div .sn-title {
+  color: #fff !important;
+}
+
+.simple-notification.alert {
+  background: $alert-base !important;
+}
+
+.simple-notification.alert .sn-progress-loader span {
+  background: $yellow-darken-1 !important;
+}
+
+.simple-notification {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mat-mdc-tab-body-wrapper {
+  flex-grow: 1;
+}
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 3;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--primary-bg-color) !important;
+  color: var(--primary-color) !important;
+}
+
+.cdk-overlay-container:has(div.higherDialogBackdrop) {
+  z-index: 1005;
+}
+
+.mat-horizontal-stepper-header{
+  pointer-events: none !important;
+}
+
+.emoji-mart .emoji-mart-emoji {
+  padding: 8px 4px;
+  cursor: pointer;
+}
+
+.emoji-mart-emoji > span {
+  line-height: 1;
+  font-size: 22px !important;
+  width: auto !important;
+  height: auto !important;
+  cursor: pointer !important;
+}

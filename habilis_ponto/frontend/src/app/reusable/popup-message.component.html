@@ -1,0 +1,18 @@
+<div class="dialog-no-margins">
+  <div class="pad15A fg-grey-darken-3">
+    <div class="full-width" style="font-size: 1.3rem; font-weight: 400;">
+      {{title}}
+    </div>
+    <div class="full-width mrg10T" style="font-size: 1rem; font-weight: 300;">
+      {{text}}
+    </div>
+  </div>
+  <div class="pad8A full-width bg-grey-lighten-4 mrg10T">
+    <div class="flex-row justify-content-center">
+      <button style="padding: 0.5rem 1.2rem; font-size: 0.95rem;" matRipple type="button" id="noButton"
+              class="btn btn-transparent bold no-outline" (click)="result(false)">
+        <span>{{buttonText}}</span>
+      </button>
+    </div>
+  </div>
+</div>

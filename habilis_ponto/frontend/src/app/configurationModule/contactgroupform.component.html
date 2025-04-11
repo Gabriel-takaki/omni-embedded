@@ -1,0 +1,29 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n *ngIf="!id">Novo grupo</div>
+    <div class="h5" i18n *ngIf="id">Atualizar grupo</div>
+    <div class="s12 font-light mrg5T" i18n>Campos marcados com * são obrigatórios</div>
+    <form #thisForm="ngForm" class="mrg25T">
+      <mat-form-field class="full-width">
+        <mat-label i18n>Nome</mat-label>
+        <input matInput type="text" [(ngModel)]="name" name="titleInput" placeholder="Nome" i18n-placeholder
+               required maxlength="128" class="full-width" #titleInput/>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label i18n>Descrição</mat-label>
+        <textarea matInput type="text" [(ngModel)]="description" name="text"
+                  style="height: 120px;" placeholder="Descrição"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!thisForm.valid">
+        <span *ngIf="id" i18n>Atualizar</span>
+        <span *ngIf="!id" i18n>Adicionar</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,2007 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="pt-BR" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="4373321690530860434" datatype="html">
+        <source>Ramal disponível</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1683606545572555679" datatype="html">
+        <source>Ramal indisponível</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6286115327031817526" datatype="html">
+        <source>Smartphone conectado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1074517259841151116" datatype="html">
+        <source>Smartphone desconectado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7173191034532275356" datatype="html">
+        <source>minutos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3335483208158369517" datatype="html">
+        <source>minuto</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7269303621681106121" datatype="html">
+        <source>Tempo máximo:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6268410926798739216" datatype="html">
+        <source>Vezes por dia:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4551324153682909838" datatype="html">
+        <source>Ilimitada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1454128188787647965" datatype="html">
+        <source>Ilimitado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3486887833798258861" datatype="html">
+        <source>Filas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Filas de atendimento</note>
+      </trans-unit>
+      <trans-unit id="5548678873280701859" datatype="html">
+        <source>Fila</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">Fila de atendimento</note>
+      </trans-unit>
+      <trans-unit id="1767573652908315863" datatype="html">
+        <source>N/D</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <note priority="1" from="description">Não disponível</note>
+      </trans-unit>
+      <trans-unit id="6783105952810882991" datatype="html">
+        <source>Instabilidade na conexão com o agente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7762343342664785196" datatype="html">
+        <source>Chamando</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">Telefone chamando</note>
+      </trans-unit>
+      <trans-unit id="2136137908543402682" datatype="html">
+        <source>Deslogado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <note priority="1" from="description">Agente não logado na fila</note>
+      </trans-unit>
+      <trans-unit id="3297055980706511326" datatype="html">
+        <source>Logado e em atendimento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8324325912069416648" datatype="html">
+        <source>Logado e em pausa</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3968378262540972494" datatype="html">
+        <source>Logado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">Agente logado na fila</note>
+      </trans-unit>
+      <trans-unit id="7982611398941061245" datatype="html">
+        <source>Em pausa</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">Agente em pausa</note>
+      </trans-unit>
+      <trans-unit id="2619954405539523085" datatype="html">
+        <source>Logado e disponível</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2378897881494274403" datatype="html">
+        <source>Retorno de callback</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5382535954829737915" datatype="html">
+        <source>Recebendo chamada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3170112729806037876" datatype="html">
+        <source>Realizando chamada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3165338068810331809" datatype="html">
+        <source>chat</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8327565556870411710" datatype="html">
+        <source>chats</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="116012815857049544" datatype="html">
+        <source>chamada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="453118359934303013" datatype="html">
+        <source>chamadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5103511749165104634" datatype="html">
+        <source>avaliação</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">Nota de pesquisa de satisfação</note>
+      </trans-unit>
+      <trans-unit id="581224814777743363" datatype="html">
+        <source>avaliações</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">Nota de pesquisa de satisfação</note>
+      </trans-unit>
+      <trans-unit id="1172874628211888204" datatype="html">
+        <source>Desbloquear agente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4293152011417943960" datatype="html">
+        <source>Bloquear agente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="488470591497713064" datatype="html">
+        <source>Nenhum chat selecionado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8870711330013548872" datatype="html">
+        <source>Online</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="313850810538580916" datatype="html">
+        <source>Offline</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2032131516224459555" datatype="html">
+        <source>Disponível</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2721378465381547210" datatype="html">
+        <source>Indisponível</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5116410756036675429" datatype="html">
+        <source>Logar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5454452538371356605" datatype="html">
+        <source>Deslogar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.texts.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dea33ef9eccfdb9de32fd8e67b25e4b9fb112c3e" datatype="html">
+        <source>Erro 404</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/error.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="840fb8e4c131e81e8b45087db11ce76a1a4de604" datatype="html">
+        <source>Página não encontrada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/error.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="db2cc4e2e380d3c36953968f32fc9f23fdda905e" datatype="html">
+        <source>A página que você está buscando foi movida ou não existe.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/error.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9d82146ed059b0a25f8fb0db49cf1cd3ec5d52f0" datatype="html">
+        <source>Retornar à aplicação</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/error.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="50dcb6cbb085d7b093993d09402f9a9515c4e403" datatype="html">
+        <source>Usuário</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <note priority="1" from="description">Nome do usuário para login</note>
+      </trans-unit>
+      <trans-unit id="7b5d9a66b6a91846c21d186e3f6a2d971f4bacbb" datatype="html">
+        <source>Senha</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e0bb0d8c53b4b1394b6638e0986f828bb18a5ae1" datatype="html">
+        <source>Entrar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <note priority="1" from="description">Botão para autenticar no sistema</note>
+      </trans-unit>
+      <trans-unit id="8728685857063668154" datatype="html">
+        <source>Falha</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6276267310920446108" datatype="html">
+        <source>Já existe um usuário logado com esta conta atualmente.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4624323258568170240" datatype="html">
+        <source>A autenticação falhou. Por favor, verifique os dados digitados e tente novamente.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b6bc65f3e9576dc6ac1493740124944c259a11f4" datatype="html">
+        <source>Buscar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-chat.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-transfer.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/internal-chat.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">Busca de texto</note>
+      </trans-unit>
+      <trans-unit id="714e3cfa5c96cd8c72f24f3bffb14e216279ad86" datatype="html">
+        <source>Altera o método de ordenação dos atendimentos na lista</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-chat.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="75489e8724910a6144fb9457faecfa810ad9de2c" datatype="html">
+        <source><x id="START_TAG_FA_ICON" ctype="x-fa_icon" equiv-text="&lt;fa-icon [icon]=&quot;[&apos;far&apos;, &apos;check&apos;]&quot; *ngIf=&quot;status.user.chatOrder === 0&quot; class=&quot;fg-green&quot;&gt;"/><x id="CLOSE_TAG_FA_ICON" ctype="x-fa_icon" equiv-text="&lt;/fa-icon&gt;"/>  Por ordem de chegada </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-chat.component.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5264675410151101510" datatype="html">
+        <source>Sucesso</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-chat.component.ts</context>
+          <context context-type="linenumber">190</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.ts</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8566399906716634295" datatype="html">
+        <source>Solicitação enviada com sucesso.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-chat.component.ts</context>
+          <context context-type="linenumber">190</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2405243671559172269" datatype="html">
+        <source>Erro</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-chat.component.ts</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.ts</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="29704f0753782177e38db725484556462c71da9e" datatype="html">
+        <source> Gerenciar filas </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0c5a0e594306ce5bf72381dd04fee600b20d16eb" datatype="html">
+        <source>Deslogar de todas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f3db664fc6e6ccd4de94408f48ae4ca2c62d1fa1" datatype="html">
+        <source>Logar em todas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7f7596cb2b8d656e851fd8cdee27a693270c6e4a" datatype="html">
+        <source>Pausa</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0e67b06b2154bd18c398108bdf1e1de19ad8c285" datatype="html">
+        <source>Ramal:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1aa75d39ec76f6dcb8e541b93762c29924affad1" datatype="html">
+        <source> Informar </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">21,22</context>
+        </context-group>
+        <note priority="1" from="description">Informar ramal de telefonia</note>
+      </trans-unit>
+      <trans-unit id="6af459f444da8b576f25fc9727b913ed7e6aea51" datatype="html">
+        <source>Estado:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <note priority="1" from="description">Estado atual do ramal, se disponível ou não</note>
+      </trans-unit>
+      <trans-unit id="444813050f7647a23b9757b2cfcd65ba528bbc80" datatype="html">
+        <source>Em pausa</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c0e512d0c06842c495082f5140e0767aa6ac98e0" datatype="html">
+        <source>Motivo:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">Descrição do motivo para pausa</note>
+      </trans-unit>
+      <trans-unit id="af54e215e69ee6951205f084d65cfbcc17a3f757" datatype="html">
+        <source>Máximo:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <note priority="1" from="description">Tempo máximo</note>
+      </trans-unit>
+      <trans-unit id="2061707245359651243" datatype="html">
+        <source>Tem certeza que deseja deslogar da fila?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2761514239633714002" datatype="html">
+        <source>Confirmar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7882705558985218956" datatype="html">
+        <source>Tem certeza que deseja logar na fila?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2064724740649029145" datatype="html">
+        <source>Tem certeza que deseja deslogar de todas as filas?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9178763202668483870" datatype="html">
+        <source>Tem certeza que deseja logar em todas as filas?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4692729080693382968" datatype="html">
+        <source>Tem certeza que deseja encerrar pausa?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3882589983382730916" datatype="html">
+        <source>Encerrar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-dashboard.component.ts</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7569b98e302d806df8d8d31bb938afdf15e739f2" datatype="html">
+        <source>Transferir atendimento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-transfer.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="363e098d90f5ae4d47f2e6b896d06c8b258632b6" datatype="html">
+        <source>Selecione o agente para quem deseja transferir</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agent-transfer.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bb3a61e5ce4cc6fc68a26688a8a586d8720d0b06" datatype="html">
+        <source>Agente: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b3b771a59076abe038ec74d6206b33d03c2fdb64" datatype="html">
+        <source>Trocar senha do agente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8324b3f019fe75b17401dd8a4fb94bcc278fd240" datatype="html">
+        <source>Deslogar agente do aplicativo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bb8437b66e67706be4296d862a332a8a0a9392fd" datatype="html">
+        <source>Filas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+        <note priority="1" from="description">Filas de atendimento</note>
+      </trans-unit>
+      <trans-unit id="afff781d130cccc987ca9f34d68c639596da947e" datatype="html">
+        <source>Estado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7d339c6b9431946d4c3aaac696b8dc7f876a3288" datatype="html">
+        <source> Nome da fila </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">114,115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="811e5076573045f4f5f5d2ba0eea58b4a9ea6df4" datatype="html">
+        <source>Tempo logado hoje</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">191</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0837a97c1e65fd285575108c8b5747f26a0e3ad8" datatype="html">
+        <source>Ligações</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4f34fb1e4f061176565989e7f2340f906b9d5a3e" datatype="html">
+        <source>Número</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">143</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <note priority="1" from="description">Número telefônico</note>
+      </trans-unit>
+      <trans-unit id="bad09f48e76165da2db8c059b1c0282ede129db8" datatype="html">
+        <source>Tempo logado da chamada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1393f6019cb03d20bf41234f738f40e146bd40d2" datatype="html">
+        <source> Funções </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">148,149</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">195,196</context>
+        </context-group>
+        <note priority="1" from="description">Seção com botões de funções da tabela. ex apagar, expandir, etc.</note>
+      </trans-unit>
+      <trans-unit id="4a780f5fa9cf0a943977e2b0001297633fbd2669" datatype="html">
+        <source>Escutar chamada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">165</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0bcb596736468169d5ebf989384a2c1c85946396" datatype="html">
+        <source>Sussurrar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">169</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="239eeff828264c70b0bdfe5b6c89974ec7dd4922" datatype="html">
+        <source>Chats</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">181</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0854efdb46268069d9f100d54c9615156bd6e0c0" datatype="html">
+        <source>Origem</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
+        <note priority="1" from="description">Fila de origem do atendimento</note>
+      </trans-unit>
+      <trans-unit id="878426a9a60c2d3e63e1591eb579a0a55f1af9f8" datatype="html">
+        <source> Cliente </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">186,187</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a739d82a0402da4dd555a9ab06e56b22b304480a" datatype="html">
+        <source> Resp. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">189,190</context>
+        </context-group>
+        <note priority="1" from="description">Abreviação de &apos;respondido&apos;, marca se um atendimento já foi respondido ou não</note>
+      </trans-unit>
+      <trans-unit id="aea2b7d02ba17aa6311a117d6dde4225de0ea998" datatype="html">
+        <source>Visualizar conversa</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">217</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="42a08b0cf7f730ad88a94e1d867faececb32f41b" datatype="html">
+        <source>Transferir chat</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.html</context>
+          <context context-type="linenumber">221</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7047711400848597145" datatype="html">
+        <source>Tempo disponível</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.ts</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="639422890580444328" datatype="html">
+        <source>Tempo em pausa</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4971370994122026142" datatype="html">
+        <source>Tempo em atendimento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/agentdetail.component.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="005eeecf7057d5515feb8b2b8347c7ac2fe67e52" datatype="html">
+        <source> Grupo </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.html</context>
+          <context context-type="linenumber">21,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2778adde13917aaa1b9dace39e40264e7e718859" datatype="html">
+        <source>Consultar CEP</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="59f86e16ef347c23b22c508e94f494889400017f" datatype="html">
+        <source>Enviar mídia</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="757d27eb3808b51f5aa7c3f67a0c57529f7102ed" datatype="html">
+        <source>Foto</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3e78eb2a68f08d954da8f41110e33bb1a508ddcd" datatype="html">
+        <source>Vídeo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9cace5412ea1c9c6ba70bcd59d0cb6a1cb0ef578" datatype="html">
+        <source>Documento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <note priority="1" from="description">Arquivo de computador</note>
+      </trans-unit>
+      <trans-unit id="1272968356976447637" datatype="html">
+        <source>Boa noite</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1804424455878688778" datatype="html">
+        <source>Boa tarde</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4313892804040980941" datatype="html">
+        <source>Bom dia</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5542574285161137051" datatype="html">
+        <source>boa noite</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1726917972531617799" datatype="html">
+        <source>boa tarde</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2354345857573707873" datatype="html">
+        <source>bom dia</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-alt.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3a920ff33a0e25877ee5f6be08025ff38798812a" datatype="html">
+        <source>Histórico de Chats</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d5f44351f38c3509b049b7f28cdf36aff37daa61" datatype="html">
+        <source>Reabrir chat</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6990443002155929174" datatype="html">
+        <source>Origem</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">Fila de origem do atendimento. ex. fila 1, fila 2</note>
+      </trans-unit>
+      <trans-unit id="2332180001770133395" datatype="html">
+        <source>Nome</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">Nome do cliente</note>
+      </trans-unit>
+      <trans-unit id="5129898699442968363" datatype="html">
+        <source>Número</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <note priority="1" from="description">Número telefônico</note>
+      </trans-unit>
+      <trans-unit id="1890300073702152532" datatype="html">
+        <source>E-mail</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8493270102832467341" datatype="html">
+        <source>Fechamento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <note priority="1" from="description">Horário de encerramento do atendimento</note>
+      </trans-unit>
+      <trans-unit id="5821355534384874282" datatype="html">
+        <source>Resultado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <note priority="1" from="description">Motivo de encerramento do atendimento</note>
+      </trans-unit>
+      <trans-unit id="5493670966331320795" datatype="html">
+        <source>Observação</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5139718465805428436" datatype="html">
+        <source>Funções</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">Seção com botões de funções da tabela. ex apagar, expandir, etc.</note>
+      </trans-unit>
+      <trans-unit id="1544881686056634033" datatype="html">
+        <source>Erro ao recuperar dados.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7758202814897124602" datatype="html">
+        <source>Tem certeza que deseja reabrir esse atendimento?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6301219507723843660" datatype="html">
+        <source>Reabrir atendimento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7235461969033675549" datatype="html">
+        <source>Reabrir</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="55153000977478094" datatype="html">
+        <source>Solicitação de reabertura de chat realizada com sucesso.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5371286905301620568" datatype="html">
+        <source>Erro ao reabrir chat.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat-history.component.ts</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="99fdfffe045ac8327aa7eefc23fda423eeb2b70a" datatype="html">
+        <source> Etiquetas: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+        <note priority="1" from="description">Etiquetas para marcação de tipo</note>
+      </trans-unit>
+      <trans-unit id="81d75561ae1a7438286b0cbc10f22333eabe72be" datatype="html">
+        <source> Sem contato cadastrado </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="468e510b0589e0dd26b4e8b3b00f91ab4c83a82e" datatype="html">
+        <source>Protocolo:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <note priority="1" from="description">Núemro do protocolo de atendimento</note>
+      </trans-unit>
+      <trans-unit id="4b3909a663abdc5161b72328e1a9add346d09b97" datatype="html">
+        <source>Enviar link de pagamento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cf9bbe8fd4814123d5591c05bdc325829bf2ee43" datatype="html">
+        <source>Aberto a:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <note priority="1" from="description">Tempo que um atendimento está aberto</note>
+      </trans-unit>
+      <trans-unit id="121f2cd2194a178737445616f375711a9928ecfe" datatype="html">
+        <source>Inserir mensagem de informação</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="666edcec6958fb1a29bb1135c19bbd1ff47d9a30" datatype="html">
+        <source>Tranferir chat</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="92d14252089c21420a6f8a6658b95a3f5fae7e0f" datatype="html">
+        <source>Documento </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">73,74</context>
+        </context-group>
+        <note priority="1" from="description">Arquivo de computador</note>
+      </trans-unit>
+      <trans-unit id="79c2784fe1ce0b0208ec463ba4b210d3cf31dd93" datatype="html">
+        <source>Encerrar chat</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2904081931386493586" datatype="html">
+        <source>Não há informações de contato para este cliente. O que deseja fazer?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5994311418032932484" datatype="html">
+        <source>Adicionar contato</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2479177838647636419" datatype="html">
+        <source>Criar novo contato</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6903976942012477138" datatype="html">
+        <source>Adicionar dados a contato existente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">121</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="740351793449588588" datatype="html">
+        <source>Selecione um contato</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/chat.component.ts</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b5279583a1b03eac57814d227085eee8aae1e362" datatype="html">
+        <source>Novo contato</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4e35ca7185da1659fb7790eda9442f4de8f7a9fb" datatype="html">
+        <source>Editar contato</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="06d0491684a3972bb9ec45b5f05b18ce11488080" datatype="html">
+        <source>Nome</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="84651781d2034891887957a562de3b87873e8ba2" datatype="html">
+        <source>Usuário do instagram</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f85dc01e7aab1a5c282d14b74650255ae4042fe0" datatype="html">
+        <source>E-mail</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b087d6d128827d4ddffb0f0d3853bd648a7fc2d1" datatype="html">
+        <source> Etiquetas </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+        <note priority="1" from="description">Etiqueta para marcação de tipo</note>
+      </trans-unit>
+      <trans-unit id="2928bdacb694a1b1ab85f8a9957c4107d3fa00d3" datatype="html">
+        <source> Nenhuma etiqueta cadastrada </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+        <note priority="1" from="description">Etiqueta para marcação de tipo</note>
+      </trans-unit>
+      <trans-unit id="5ca33e328ca1b6614a7255d1934f35aa0e167060" datatype="html">
+        <source>Comentários</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="04f38a34d1cf448854b5fd5e48810e9856951d46" datatype="html">
+        <source>Agente preferencial</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="82096aa4052c7f46650e52b4afc2a579bb98d441" datatype="html">
+        <source> Nenhum </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="295ab04ede78a6d9ada6585550b49afdc502c6b6" datatype="html">
+        <source> Últimos contatos do cliente: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+        <note priority="1" from="description">Últimas vezes que o cliente entrou em contato</note>
+      </trans-unit>
+      <trans-unit id="5ad4eecbd0fe09c34678fefce317a052af39dc96" datatype="html">
+        <source>Data</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/reopen-schedule.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6794dc0fbcb4ae335373ae721828521e22bf2de7" datatype="html">
+        <source>Foto / Fila</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7409fd69d017e7c79d8f798928ccf425a3f9aeb5" datatype="html">
+        <source>Agente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="54be86e8da959f97f0611a5e653d49fcff6bb48e" datatype="html">
+        <source>Fechamento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <note priority="1" from="description">Motivo pelo qual o atendimento foi encerrado</note>
+      </trans-unit>
+      <trans-unit id="e8d22cdef9f5780e31395340125d873f9df518c3" datatype="html">
+        <source>Cancelar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/info-message.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/new-chat.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/reopen-schedule.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/widgetsModule/redirectform.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d8bc820fa46662b671bc3051f7723b226e3a4c45" datatype="html">
+        <source>Atualizar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d26fdd3fd7f45dc071947384061d89869ccea00a" datatype="html">
+        <source>Adicionar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.html</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4743964845086571588" datatype="html">
+        <source>É necessário preencher o número ou o instagram.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.ts</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+        <note priority="1" from="description">Solicita número telefônico ou instagram</note>
+      </trans-unit>
+      <trans-unit id="1854345041231320193" datatype="html">
+        <source>Contato atualizado com sucesso!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/contactform.component.ts</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1864dacf6261e8ac508daca388f646adc6348feb" datatype="html">
+        <source>Buscar...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <note priority="1" from="description">Buscar por texto</note>
+      </trans-unit>
+      <trans-unit id="f25363eea3a261015f8ad2f5e2a9e6f0d10ece2d" datatype="html">
+        <source>Agora</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5addc6cc2d7c2ff2ed0a361bc7087c124c373509" datatype="html">
+        <source>Hoje</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a29141fd986b4f24afa44e2f1c39b1f06f91e3ce" datatype="html">
+        <source> Estado </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+        <note priority="1" from="description">Estado do agente, se logado, deslogado ou em pausa</note>
+      </trans-unit>
+      <trans-unit id="2e29e4acb0be8f358a6826f31a0656d7bf3fdaee" datatype="html">
+        <source>Ligações agora</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="652b491da9d19f82c0dfbd290abcae88f4d21a3c" datatype="html">
+        <source>Chats agora</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="aa77b59005bff302f13d17e281c556b4ab0a2656" datatype="html">
+        <source>Ligações atendidas hoje</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="797fe86ca48fb694e33dd5ac81bd3267ede53260" datatype="html">
+        <source>Chats atendidos hoje</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0a799bc79d5a8f8753a04f4e3728cc635eb034b8" datatype="html">
+        <source>Avaliações hoje</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+        <note priority="1" from="description">Avaliações da qualidade do atendimento</note>
+      </trans-unit>
+      <trans-unit id="4cded8c69695e3120a58b453b8d393ed2c32d42f" datatype="html">
+        <source>Tempo total logado hoje</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="926974d9c1b459944cdef9f125de07922e88fdf5" datatype="html">
+        <source>Tempo total em pausa hoje</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="396e0da0fe7e217c3034399052edf14bf1650361" datatype="html">
+        <source> Funções </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">94,95</context>
+        </context-group>
+        <note priority="1" from="description">Seção com botões de funções da tabela. ex apagar, expandir, etc.</note>
+      </trans-unit>
+      <trans-unit id="11f898dcb9e21ecefe4cacac1a37222d7e8fb635" datatype="html">
+        <source> N/D </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">254,255</context>
+        </context-group>
+        <note priority="1" from="description">Não disponível</note>
+      </trans-unit>
+      <trans-unit id="ac774bfe66ab269d2a0229a172fcc67f2d42d0ae" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {chat} other {chats}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">257</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f9f3547998b2eca4adf06d6fce318ecc6a650882" datatype="html">
+        <source> <x id="ICU" equiv-text="{a.chats.length, plural, =1 {chat} other {chats}}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">257,258</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="35b02cfde351a7c4f1921d0913ca15ac99df3ade" datatype="html">
+        <source>Fila: <x id="INTERPOLATION" equiv-text="{{c?.queueName}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">267</context>
+        </context-group>
+        <note priority="1" from="description">Fila de atendimento</note>
+      </trans-unit>
+      <trans-unit id="9b51622c76a90f693a7530c797c0bc4024848283" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {ligação} other {ligações}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">282</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="720e14ed2c57363b86b33672b270c0df6d259258" datatype="html">
+        <source> <x id="ICU" equiv-text="{a.callsToday, plural, =1 {ligação} other {ligações}}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">282,283</context>
+        </context-group>
+        <note priority="1" from="description">Chamada telefônica</note>
+      </trans-unit>
+      <trans-unit id="a3c1f9b255ae93c1756de8ccd3821d6d36864ef3" datatype="html">
+        <source> N/D </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">285,286</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">296,297</context>
+        </context-group>
+        <note priority="1" from="description">Não disponível</note>
+      </trans-unit>
+      <trans-unit id="617b041399e1d8e5612f42df1afd12bdd6dbbb65" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {chat} other {chats}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">293</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="67f0d940765ef2136368de401f4d2d78f98396c8" datatype="html">
+        <source> <x id="ICU" equiv-text="{a.chatsToday, plural, =1 {chat} other {chats}}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">293,294</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="71e7e942983beb89e32e32306ba3d923950dd9d2" datatype="html">
+        <source>Colocar o agente em pausa administrativa</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">326</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="56cb44de29497fc06175073c0bacea3282f70196" datatype="html">
+        <source>Escutar chamada corrente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">331</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7bb9e0214ec6259a4580b3f2e2a9b1043335b109" datatype="html">
+        <source>Detalhamento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/dashboard.component.html</context>
+          <context context-type="linenumber">339</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f35d132c87f6a4e397b1342a74b26ddf8c312ecc" datatype="html">
+        <source> Encerrar atendimento </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2ebc50ab9ea68d3defef3399454e1eaa948b4ed7" datatype="html">
+        <source> Tem certeza que deseja encerrar esse atendimento? </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4f94ad6286dcdd9d75bb663d9df1d63d5be23c7d" datatype="html">
+        <source>Resultado do atendimento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bd6221bd4fc45e285812096adcea78ce47b02958" datatype="html">
+        <source>Não especificado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">Resultado não especificado</note>
+      </trans-unit>
+      <trans-unit id="9831dba3b94cb24ad83000abf69ef3e6676d48af" datatype="html">
+        <source>Observação</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">Observações com relação ao atendimento sendo encerrado</note>
+      </trans-unit>
+      <trans-unit id="a63a8657350fef2dc36f394327d6d0463960b9ae" datatype="html">
+        <source> Não enviar mensagem automática de encerramento </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">27,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7a508388734520eaa56825e1eb938b0fc03ab1f9" datatype="html">
+        <source> Agendar reabertura </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="85dc80c83409c72839a144047d378aa96e1ae8a3" datatype="html">
+        <source>Data da reabertura</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3879c21ac1f5ddb0c4724d2b891054f32eb8df3b" datatype="html">
+        <source>Hora</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0c3d865df916100578ddfcc42368549934f7b0e2" datatype="html">
+        <source>Minuto</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2bce7b039852fe52edd6887c072cf0a55bdb8e8a" datatype="html">
+        <source>Motivo</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+        <note priority="1" from="description">Motivo de encerramento do atendimento</note>
+      </trans-unit>
+      <trans-unit id="1dc825ba43bcb7abf3a623ae29544fac674ee200" datatype="html">
+        <source>Encerrar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/end-chat.component.html</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="21667f4c1758e5d26567e4f6ba16e8d419f4f105" datatype="html">
+        <source> Inserir mensagem de informação </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/info-message.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="64d061a00e5a46ce971139440c4871075859e97d" datatype="html">
+        <source> Mensagens de informação não serão vistas pelo cliente. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/info-message.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="25def87482f096ad8dfbce2ef91c545c400c51e3" datatype="html">
+        <source>Mensagem</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/info-message.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/info-message.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Mensagem de texto</note>
+      </trans-unit>
+      <trans-unit id="c0426f5a7848f6f901807c9ca44c253ecf2892f4" datatype="html">
+        <source>Inserir</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/info-message.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f1a518bec765c4e8e7be0f46df51bb7a60c21525" datatype="html">
+        <source>Fila</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Fila de atendimentos</note>
+      </trans-unit>
+      <trans-unit id="5b1bf7d42f2d3ee7e66e6c4eff4323eb00744c8d" datatype="html">
+        <source>Todas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <note priority="1" from="description">Todas as filas de atendimento</note>
+      </trans-unit>
+      <trans-unit id="f355fecd84ba172d09660048c430d948aa5c2e1f" datatype="html">
+        <source>Período</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Intervalo de datas</note>
+      </trans-unit>
+      <trans-unit id="1b337eaf27466ecd5b163735160288cf672664f0" datatype="html">
+        <source>Este mês</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1b1d990ec9306e8dd9919ad3ee6178b1dc459ea8" datatype="html">
+        <source>Últimos 30 dias</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cf3c91ed6ccc4ae94837ac8025a1df891c540d18" datatype="html">
+        <source>Personalizado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <note priority="1" from="description">Intervalo de datas personalizado</note>
+      </trans-unit>
+      <trans-unit id="a09a3de36abd985158ea99a7bfd7a3319df72070" datatype="html">
+        <source>Data de início</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="167dfd2aab1ebbd765b86057adb586f3d425f4d8" datatype="html">
+        <source>Data de fim</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7885220d2af8b3563aed7b5dfe3d0cf85b75ce6f" datatype="html">
+        <source> Atendimentos </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="595b8c5fd8d50aebd66a7ce9d09232cf63732e9b" datatype="html">
+        <source> Clientes únicos </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">54,55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5e44a4c63fa131e9a0a82bfde7d0076f9c4f12de" datatype="html">
+        <source> Mensagens enviadas </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="27ebc7be72b0c7adb1e018681beb8722b92626a6" datatype="html">
+        <source> Mensagens recebidas </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">78,79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2bf479f55f9bd5c135d9ec2556e4dcd0170f7748" datatype="html">
+        <source> Méd. atend. / agente </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">88,89</context>
+        </context-group>
+        <note priority="1" from="description">Média de atendimentos por agente</note>
+      </trans-unit>
+      <trans-unit id="ca017485081397ea49b3b502eaa37663da8c55dc" datatype="html">
+        <source> TMA </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">97,98</context>
+        </context-group>
+        <note priority="1" from="description">Abreviação para Tempo Médio de Atendimento</note>
+      </trans-unit>
+      <trans-unit id="393d1a78a540c829903c44175a3aa0bfd3b436ff" datatype="html">
+        <source>Contatos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+        <note priority="1" from="description">Agenda de contatos</note>
+      </trans-unit>
+      <trans-unit id="b696b9f0f6c26a6f20a43c7c086e7d21b16a75f9" datatype="html">
+        <source>Abandonadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+        <note priority="1" from="description">Chamadas telefônicas abandonadas na fila</note>
+      </trans-unit>
+      <trans-unit id="deb97abcc6756b693d0cea55d413dedb4d753051" datatype="html">
+        <source>Atendimentos por fila</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">135</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="90ca3161d0312e71559f8258940ff18875d32b84" datatype="html">
+        <source>Atendimentos por canal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c477d7c87b89861ce10391b3a2b682c2f585f77e" datatype="html">
+        <source>Atendimentos por filtro da URA</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">182</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ada3aa6748dbb0f80a0ecc2d7e17d61ceda92f21" datatype="html">
+        <source>Atendimentos por fechamento</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.html</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2465153570780698301" datatype="html">
+        <source>Agente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.ts</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+        <note priority="1" from="description">Agente de atendimento</note>
+      </trans-unit>
+      <trans-unit id="9009713462112280628" datatype="html">
+        <source>Atendimentos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.ts</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="15071603232824393" datatype="html">
+        <source>Dias</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8271316022755041153" datatype="html">
+        <source>Méd. Atend. / Dia</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.ts</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <note priority="1" from="description">Média de atendimentos por dia</note>
+      </trans-unit>
+      <trans-unit id="6838488093740114708" datatype="html">
+        <source>Msg. Enviadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.ts</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+        <note priority="1" from="description">Quantidade de mensagens enviadas</note>
+      </trans-unit>
+      <trans-unit id="4168123674538152283" datatype="html">
+        <source>Msg. Recebidas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.ts</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+        <note priority="1" from="description">Quantidade de mensagens recebidas</note>
+      </trans-unit>
+      <trans-unit id="5541439901317901510" datatype="html">
+        <source>TMA</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/kpidashboard.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+        <note priority="1" from="description">Abreviação para Tempo Médio de Atendimento</note>
+      </trans-unit>
+      <trans-unit id="7e694c2820e10d79eaeb41071fa882de07227c89" datatype="html">
+        <source> Abrir novo atendimento </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/new-chat.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7dfa2f13ea0f91f4141c12d759df639fd949dd88" datatype="html">
+        <source> Para abrir um novo atendimento, escolha a fila onde o atendimento deve ser aberto e digite o número do cliente, com código de área. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/new-chat.component.html</context>
+          <context context-type="linenumber">7,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1f3fe1d2fa48ef191c61b52a84a0e02c8ad49041" datatype="html">
+        <source>Fila para abertura</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/new-chat.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">Filas de atendimento</note>
+      </trans-unit>
+      <trans-unit id="3168b98dbbdacccaf21ddd1c6bd2a508f2205ce5" datatype="html">
+        <source>Número do cliente com DDD</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/new-chat.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">Número de telefone com código de área</note>
+      </trans-unit>
+      <trans-unit id="5dab699d2f1300faf0b1623128f01721a0ac5235" datatype="html">
+        <source>O número digitado não é válido para o país selecionado.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/new-chat.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ba5721c1c580df36b00b0ff4a75c90ff287cb162" datatype="html">
+        <source>Abrir</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/new-chat.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <note priority="1" from="description">Abrir novo atendimento</note>
+      </trans-unit>
+      <trans-unit id="bb79c0054f6b86babe69501bbcd9a2810dd42567" datatype="html">
+        <source> Agendar reabertura </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/reopen-schedule.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="19e97d9b6ed373b9425460667bd203bb7fde9bc4" datatype="html">
+        <source> Criar agendamento para que este atendimento seja automaticamente reaberto. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/reopen-schedule.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9e23370ba2c7e6414a3879440603846c60b5faf8" datatype="html">
+        <source>Remover</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/reopen-schedule.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6216192454331320013" datatype="html">
+        <source>Atualizar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/reopen-schedule.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <note priority="1" from="description">atualizar um agendamento existente</note>
+      </trans-unit>
+      <trans-unit id="1185117915889403189" datatype="html">
+        <source>Criar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/reopen-schedule.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">criar novo agendamento</note>
+      </trans-unit>
+      <trans-unit id="20543177263587cd5dd1d5d4cc46b62cc99ad32f" datatype="html">
+        <source><x id="START_TAG_FA_ICON" ctype="x-fa_icon" equiv-text="&lt;fa-icon [icon]=&quot;[&apos;far&apos;, &apos;exclamation-triangle&apos;]&quot; class=&quot;fg-warning&quot;&gt;"/><x id="CLOSE_TAG_FA_ICON" ctype="x-fa_icon" equiv-text="&lt;/fa-icon&gt;"/>    Não é possível executar a mídia. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.html</context>
+          <context context-type="linenumber">20,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c4efd3aba1b5e6c9864796b2f1e8298102378751" datatype="html">
+        <source> Formato desconhecido. <x id="INTERPOLATION" equiv-text="{{file.name}}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.html</context>
+          <context context-type="linenumber">25,27</context>
+        </context-group>
+        <note priority="1" from="description">Formato de arquivo</note>
+      </trans-unit>
+      <trans-unit id="a3a0c47ccf853234336ca78a11d8da688cc858fe" datatype="html">
+        <source> Cancelar </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6b56a9b2b0e644d92a235e232f7cc53fd2f5a096" datatype="html">
+        <source> Enviar </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.html</context>
+          <context context-type="linenumber">43,44</context>
+        </context-group>
+        <note priority="1" from="description">Enviar arquivo</note>
+      </trans-unit>
+      <trans-unit id="4348421929968873762" datatype="html">
+        <source>O arquivo que você está tentando enviar é maior que o permitido. (Tamanho máx. <x id="PH" equiv-text="Math.round(this.status.config.maxfilesize / 1024)"/> KB)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.ts</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1333450866373555458" datatype="html">
+        <source>Fechar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.ts</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.ts</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3664176708836728166" datatype="html">
+        <source>O formato do arquivo que você está tentando enviar não é permitido.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/standardModule/send-media.component.ts</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c73f4fc646677bfdb5a88f135de955a4dc5601b0" datatype="html">
+        <source>Redirecionar chamada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/widgetsModule/redirectform.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">Cabeçalho de formulário para redirecionamento de chamada</note>
+      </trans-unit>
+      <trans-unit id="d971ebe874fb8c12d2090f5f244c422e8107169a" datatype="html">
+        <source>Redirecionar para</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/widgetsModule/redirectform.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/widgetsModule/redirectform.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b67c727457803fa93ea39f43500f3039eb5449b4" datatype="html">
+        <source>Redirecionar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/widgetsModule/redirectform.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

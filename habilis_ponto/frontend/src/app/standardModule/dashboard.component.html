@@ -1,0 +1,480 @@
+<div class="full-width h100 flex-column overflow-hidden">
+  <div class="full-width flex-rigid flex-row">
+    <mat-form-field style="width: 245px;">
+      <span matPrefix class="pad10L pad10R s14 fg-black-lighten-2">
+        <fa-icon [icon]="['far', 'filter']"></fa-icon>
+      </span>
+      <mat-label i18n>Filtrar</mat-label>
+      <input matInput type="text" [(ngModel)]="queueFilter" placeholder="Filtrar ..." i18n-placeholder>
+      <button class="btn btn-square-slim mrg8R" [matRippleDisabled]="!queueFilter" [disabled]="!queueFilter"
+              (click)="queueFilter = ''"
+              matSuffix matTooltip="Limpar" matRipple i18n-matTooltip>
+        <fa-icon [icon]="['far', 'times']"></fa-icon>
+      </button>
+    </mat-form-field>
+    <div class="s20 font-medium mrg15L" style="justify-self: flex-start;">
+      <app-option-toggle option1Text="Painel de agentes" i18n-option1Text i18n-option2Text [option1Value]="0"
+                         [(value)]="panelToogle" [option1BgColor]="status.primaryColor"
+                         (valueChange)="panelToogleEvent()"
+                         [option2BgColor]="status.primaryColor" [color]="status.primaryColor"
+                         [bgColor]="status.primaryBgColor" [fontSize]="14" [height]="52" [width]="400"
+                         option2Text="Painel de atendimentos" [option2Value]="1"></app-option-toggle>
+    </div>
+    <mat-form-field class="mrg-left-auto">
+      <mat-label i18n>Filtrar</mat-label>
+      <mat-select [(value)]="filterBy">
+        <mat-option i18n [value]="0">Agentes</mat-option>
+        <mat-option i18n [value]="1">Atendimentos</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="mrg10L">
+      <mat-label i18n>Buscar</mat-label>
+      <input matInput type="text" [(ngModel)]="filter" placeholder="Buscar..." i18n-placeholder>
+      <button class="btn btn-square-slim mrg8R" [matRippleDisabled]="!filter" [disabled]="!filter" (click)="filter = ''"
+              matSuffix matTooltip="Limpar" matRipple i18n-matTooltip>
+        <fa-icon [icon]="['far', 'times']"></fa-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div class="full-width flex-elastic overflow-hidden">
+    <div class="flex-row full-width h100" cdkDropListGroup cdkDropList (cdkDropListDropped)="drop($event)">
+      <div class="page-sidebar scroll1 flex-rigid" #queuesList (scroll)="scrollEventQueues()"
+           *ngIf="status.user && status.adminTypes.includes(status.user.type) && status.showQueues">
+        <div class="full-width">
+          <ng-container
+            *ngFor="let q of ((status.allQueues || []).slice(0, scrollMaxQueues)); let i = index; trackBy: status.trackById">
+            <ca-queuewidget [queue]="q" [agentsCount]="q.loggedAgentsCount"
+                            [now]="status.now" [surveyGradeToday]="q.surveyGradeToday"
+                            [filter]="queueFilter"></ca-queuewidget>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="pad0A h100 flex-elastic mrg5L" *ngIf="panelToogle === 0">
+        <div class="h100 full-width scroll-y scroll1 pad3R" (scroll)="scrollEvent()" #agentTable>
+          <div class="card flex-column" style="min-height: 100%">
+
+            <div class="total-card">
+              <div class="status-sign bg-red-lighten-2 fg-danger">
+                <fa-icon [icon]="['far', 'times-circle']"></fa-icon>
+              </div>
+              <div class="mrg4L">
+                {{ (agents | filterAgents:filter:filterBy) | countAgents:'availableNotLogged' }}
+              </div>
+              <div class="status-sign bg-yellow-lighten-2 fg-warning mrg12L">
+                <fa-icon [icon]="['far', 'pause-circle']"></fa-icon>
+              </div>
+              <div class="mrg4L">
+                {{ (agents | filterAgents:filter:filterBy) | countAgents:'paused' }}
+              </div>
+              <div class="status-sign bg-green-lighten-2 fg-success mrg12L">
+                <fa-icon [icon]="['far', 'play-circle']"></fa-icon>
+              </div>
+              <div class="mrg4L">
+                {{ (agents | filterAgents:filter:filterBy) | countAgents:'queueLogged' }}
+              </div>
+              <div class="status-sign bg-red-lighten-2 fg-danger mrg12L">
+                <fa-icon [icon]="['far', 'lock']"></fa-icon>
+              </div>
+              <div class="mrg4L">
+                {{ (agents | filterAgents:filter:filterBy) | countAgents:'locked' }}
+              </div>
+            </div>
+
+            <table class="s12 full-width table-base">
+              <thead class="font-medium s12">
+              <tr>
+                <td class="border-right-light"></td>
+                <td class="border-bottom-light" [colSpan]="status.disableTelephony ? '3' : '4'" i18n
+                    [style.width.px]="status.disableTelephony ? 166 : 222">Agora
+                </td>
+                <td class="border-bottom-light bg-black-lighten-5"
+                    [colSpan]="status.disableTelephony ? '5' : '6'" i18n
+                    [style.width.px]="status.disableTelephony ? 348 : 408">Hoje
+                </td>
+                <td style="width: 175px;"></td>
+              </tr>
+              <tr>
+                <td class="border-bottom-tick border-right-light clickable-header"
+                    (click)="changeOrder('fullName')">
+                  <div class="flex-row align-items-center">
+                    <div i18n>Agente</div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'fullName' && status.agentsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'fullName' && status.agentsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick border-right-light text-center" style="width: 46px; min-width: 46px;">
+                  <fa-icon [icon]="['far', 'play-circle']"></fa-icon>
+                </td>
+                <td class="border-bottom-tick text-center pad0A border-right-light"
+                    style="width: 56px; min-width: 56px;" i18n="Estado do agente, se logado, deslogado ou em pausa">
+                  Estado
+                </td>
+                <td class="border-bottom-tick text-center" style="width: 56px; min-width: 56px;"
+                    matTooltip="Ligações agora" *ngIf="!status.disableTelephony" i18n-matTooltip>
+                  <fa-icon [icon]="['far', 'phone']"></fa-icon>
+                </td>
+                <td class="border-bottom-tick text-center clickable-header" matTooltip="Chats agora"
+                    i18n-matTooltip
+                    style="width: 60px; min-width: 60px;" (click)="changeOrder('chatsCount')">
+                  <div class="flex-row flex-center">
+                    <div>
+                      <fa-icon [icon]="['far', 'comments-alt']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'chatsCount' && status.agentsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'chatsCount' && status.agentsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick border-right-light text-center bg-black-lighten-5 clickable-header"
+                    matTooltip="Ligações atendidas hoje"
+                    i18n-matTooltip *ngIf="!status.disableTelephony" style="width: 60px; min-width: 60px;"
+                    (click)="changeOrder('callsToday')">
+                  <div class="flex-row flex-center">
+                    <div>
+                      <fa-icon [icon]="['far', 'phone']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'callsToday' && status.agentsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'callsToday' && status.agentsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick border-right-light text-center bg-black-lighten-5 clickable-header"
+                    matTooltip="Chats atendidos hoje" i18n-matTooltip style="width: 60px; min-width: 48px;"
+                    [cdkContextMenuTriggerFor]="fieldSelectionMenu" (click)="changeOrder(chatsTodayField)">
+                  <div class="flex-row flex-center">
+                    <div>
+                      <fa-icon [icon]="['far', 'comments-alt']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'chatsToday' && status.agentsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'chatsToday' && status.agentsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <ng-template #fieldSelectionMenu>
+                  <div class="menu-base" cdkMenu>
+                    <div class="full-width s12 font-light mrg8B pad8A" i18n>
+                      Selecione a informação que deseja exibir nessa coluna
+                    </div>
+                    <div class="menu-btn flex-row flex-center" cdkMenuItem matRipple i18n-matTooltip
+                         (click)="changeChatsTodayField('chatsToday')"
+                         matTooltip="Total de atendimentos encerrados pelo agente hoje.">
+                      <div class="flex-rigid flex-row flex-center" style="width: 20px;"
+                           [class.fg-primary]="chatsTodayField === 'chatsToday'">
+                        <fa-icon [icon]="[chatsTodayField === 'chatsToday' ? 'fas' : 'far', 'circle']"></fa-icon>
+                      </div>
+                      <div class="flex-elastic mrg8L" i18n>
+                        Atendimentos encerrados hoje
+                      </div>
+                    </div>
+                    <div class="menu-btn flex-row flex-center" cdkMenuItem matRipple i18n-matTooltip
+                         (click)="changeChatsTodayField('chatIdsReceivedToday')"
+                         matTooltip="Total de atendimentos atribuídos ao agente hoje, mesmo que ele não os tenha respondido ou encerrado. Se um mesmo atendimento for atribuído mais de uma vez, ele só é considerado uma única vez para essa contagem.">
+                      <div class="flex-rigid flex-row flex-center" style="width: 20px;"
+                           [class.fg-primary]="chatsTodayField === 'chatIdsReceivedToday'">
+                        <fa-icon
+                          [icon]="[chatsTodayField === 'chatIdsReceivedToday' ? 'fas' : 'far', 'circle']"></fa-icon>
+                      </div>
+                      <div class="flex-elastic mrg8L" i18n>
+                        Atendimentos atribuídos hoje
+                      </div>
+                    </div>
+                    <div class="menu-btn flex-row flex-center" cdkMenuItem matRipple i18n-matTooltip
+                         (click)="changeChatsTodayField('clientIdsReceivedToday')"
+                         matTooltip="Total de clientes únicos atribuídos ao agente hoje, mesmo que ele não os tenha respondido ou encerrado. Se um mesmo cliente entra em contato várias vezes, ele só é considerado uma única vez para essa contagem.">
+                      <div class="flex-rigid flex-row flex-center" style="width: 20px;"
+                           [class.fg-primary]="chatsTodayField === 'clientIdsReceivedToday'">
+                        <fa-icon
+                          [icon]="[chatsTodayField === 'clientIdsReceivedToday' ? 'fas' : 'far', 'circle']"></fa-icon>
+                      </div>
+                      <div class="flex-elastic mrg8L" i18n>
+                        Clientes únicos atribuídos hoje
+                      </div>
+                    </div>
+                    <div class="menu-btn flex-row flex-center" cdkMenuItem matRipple i18n-matTooltip
+                         (click)="changeChatsTodayField('chatIdsRespondedToday')"
+                         matTooltip="Total de atendimentos respondidos pelo agente hoje, mesmo que ele não os tenha encerrado. São considerados somente os atendimentos respondidos pelo agente em específico. Se um mesmo atendimento for atribuído e respondido mais de uma vez, ele só é contato uma única vez para essa contagem.">
+                      <div class="flex-rigid flex-row flex-center" style="width: 20px;"
+                           [class.fg-primary]="chatsTodayField === 'chatIdsRespondedToday'">
+                        <fa-icon
+                          [icon]="[chatsTodayField === 'chatIdsRespondedToday' ? 'fas' : 'far', 'circle']"></fa-icon>
+                      </div>
+                      <div class="flex-elastic mrg8L" i18n>
+                        Atendimentos respondidos hoje
+                      </div>
+                    </div>
+                    <div class="menu-btn flex-row flex-center" cdkMenuItem matRipple i18n-matTooltip
+                         (click)="changeChatsTodayField('clientIdsRespondedToday')"
+                         matTooltip="Total de clientes únicos respondidos pelo agente hoje, mesmo que ele não os tenha encerrado. São considerados somente os atendimentos respondidos pelo agente em específico. Se um mesmo cliente entra em contato várias vezes e é atribuído e respondido várias vezes pelo mesmo agente, ele só é considerado uma única vez para essa contagem.">
+                      <div class="flex-rigid flex-row flex-center" style="width: 20px;"
+                           [class.fg-primary]="chatsTodayField === 'clientIdsRespondedToday'">
+                        <fa-icon
+                          [icon]="[chatsTodayField === 'clientIdsRespondedToday' ? 'fas' : 'far', 'circle']"></fa-icon>
+                      </div>
+                      <div class="flex-elastic mrg8L" i18n>
+                        Clientes únicos respondidos hoje
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <!--        <td class="border b1r text-center bg-super-light" width="65" matTooltip="Avaliações hoje" *ngIf="status.user?.showscoreondashboard">-->
+                <td class="border-bottom-tick border-right-light text-center bg-black-lighten-5 clickable-header"
+                    matTooltip="Avaliações hoje"
+                    i18n-matTooltip="Avaliações da qualidade do atendimento" style="width: 60px; min-width: 60px;"
+                    (click)="changeOrder('surveyGradeToday')">
+                  <div class="flex-row flex-center">
+                    <div>
+                      <fa-icon [icon]="['far', 'clipboard-check']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'surveyGradeToday' && status.agentsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'surveyGradeToday' && status.agentsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                  <td class="border-bottom-tick border-right-light text-center bg-black-lighten-5 clickable-header"
+                      matTooltip="Avaliações por IA hoje"
+                      i18n-matTooltip="Avaliações da qualidade do atendimento" style="width: 60px; min-width: 60px;"
+                      (click)="changeOrder('aiScoreGradeToday')">
+                      <div class="flex-row flex-center">
+                          <div>
+                              <fa-layers [fixedWidth]="true">
+                                  <fa-icon [icon]="['far', 'clipboard-check']"></fa-icon>
+                                  <fa-icon transform="shrink-5 right-6 down-6" [icon]="['fas', 'stars']"></fa-icon>
+                              </fa-layers>
+                          </div>
+                          <div
+                                  *ngIf="status.agentsDashboardOrderBy === 'aiScoreGradeToday' && status.agentsDashboardOrderByDirection === 'desc'"
+                                  class="mrg6L s10">
+                              <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                          </div>
+                          <div
+                                  *ngIf="status.agentsDashboardOrderBy === 'aiScoreGradeToday' && status.agentsDashboardOrderByDirection === 'asc'"
+                                  class="mrg6L s10">
+                              <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                          </div>
+                      </div>
+                  </td>
+                <td class="border-bottom-tick border-right-light text-center bg-black-lighten-5 clickable-header"
+                    matTooltip="Tempo total logado hoje"
+                    i18n-matTooltip style="width: 78px; min-width: 78px;"
+                    (click)="changeOrder('loggedTimeCount')">
+                  <div class="flex-row flex-center">
+                    <div i18n>Logado</div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'loggedTimeCount' && status.agentsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'loggedTimeCount' && status.agentsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick text-center bg-black-lighten-5 clickable-header"
+                    matTooltip="Tempo total em pausa hoje"
+                    i18n-matTooltip style="width: 78px; min-width: 78px;"
+                    (click)="changeOrder('pausedTimeCount')">
+                  <div class="flex-row flex-center">
+                    <div i18n>Pausa</div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'pausedTimeCount' && status.agentsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.agentsDashboardOrderBy === 'pausedTimeCount' && status.agentsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick" style="width: 175px; min-width: 175px;"
+                    i18n="Seção com botões de funções da tabela. ex apagar, expandir, etc.">
+                  Funções
+                </td>
+              </tr>
+              </thead>
+              <tbody class="full-width">
+              <ng-container
+                *ngFor="let a of ((agents | filterAgents:filter:filterBy) | orderAgents:status.agentsDashboardOrderBy:status.agentsDashboardOrderByDirection:scrollMax); let i = index;">
+                <tr class="full-width border-bottom-tick" cdkDropList [externalFilter]="filterBy === 1 ? filter : ''"
+                    (cdkDropListDropped)="transferChat($event.item.data, a)" app-dashboard-list-item [blink]="blink"
+                    cdkDropListAutoScrollDisabled cdkDropListSortingDisabled [chatsCount]="a.chats?.length"
+                    style="overflow: hidden; height: 57px;" [(dragging)]="dragging" [agent]="a"
+                    [callsCount]="a.calls?.length" [chatsToday]="a[chatsTodayField]" [callsToday]="a.callsToday"
+                    [index]="i"
+                    [loggedTimeCount]="a.loggedTimeCount" [localAgentEventId]="a.localAgentEventId"
+                    [pausedTimeCount]="a.pausedTimeCount" [ringing]="a.ringing" [queueLogged]="a.queueLogged"
+                    [locked]="a.locked" [idle]="a.idle" [paused]="a.paused" [incall]="a.incall" [inchat]="a.inchat"
+                    [socketUnstable]="a.socketUnstable" [localServiceAvailable]="a.localServiceAvailable"></tr>
+              </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="pad0A h100 flex-elastic mrg5L" *ngIf="panelToogle === 1">
+        <div class="h100 full-width scroll-y scroll1 pad3R" (scroll)="scrollEventChats()" #chatTable>
+          <div class="card flex-column" style="min-height: 100%">
+
+            <div class="total-card">
+              <div class="status-sign bg-red-lighten-2 fg-danger">
+                <fa-icon [icon]="['far', 'times-circle']"></fa-icon>
+              </div>
+              <div class="mrg4L">
+                {{ (chats | filterPanelChats:filter:filterBy) | countChats:'notRespondend' }}
+              </div>
+              <div class="status-sign bg-yellow-lighten-2 fg-warning mrg12L">
+                <fa-icon [icon]="['far', 'check-circle']"></fa-icon>
+              </div>
+              <div class="mrg4L">
+                {{ (chats | filterPanelChats:filter:filterBy) | countChats:'respondedByAny' }}
+              </div>
+              <div class="status-sign bg-green-lighten-2 fg-success mrg12L">
+                <fa-icon [icon]="['far', 'check-circle']"></fa-icon>
+              </div>
+              <div class="mrg4L">
+                {{ (chats | filterPanelChats:filter:filterBy) | countChats:'respondedByAgent' }}
+              </div>
+            </div>
+
+            <table class="s12 full-width table-base">
+              <thead class="font-medium s12">
+              <tr>
+                <td class="border-bottom-tick text-center pad0A border-right-light" i18n
+                    style="width: 66px; min-width: 66px;">
+                  Etiqueta
+                </td>
+                <td class="border-bottom-tick border-right-light clickable-header"
+                    (click)="changeChatOrder('clientCompositeName')">
+                  <div class="flex-row align-items-center">
+                    <div i18n>Cliente</div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'clientCompositeName' && status.chatsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'clientCompositeName' && status.chatsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick border-right-light clickable-header"
+                    (click)="changeChatOrder('agentName')">
+                  <div class="flex-row align-items-center">
+                    <div i18n>Agente</div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'agentName' && status.chatsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'agentName' && status.chatsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick border-right-light text-center" style="width: 56px; min-width: 56px;"
+                    matTooltip="Sinaliza se o cliente já recebeu a primeira resposta" i18n-matTooltip>
+                  <fa-icon [icon]="['far', 'check-circle']"></fa-icon>
+                </td>
+                <td class="border-bottom-tick border-right-light text-center clickable-header"
+                    matTooltip="Tempo total desde a abertura do atendimento" i18n-matTooltip
+                    style="width: 80px; min-width: 80px;" (click)="changeChatOrder('openTimeCount')">
+                  <div class="flex-row flex-center">
+                    <div i18n>Aberto</div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'openTimeCount' && status.chatsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'openTimeCount' && status.chatsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick text-center clickable-header"
+                    matTooltip="Tempo total desde a atribuição do atendimento ao agente atual"
+                    i18n-matTooltip style="width: 80px; min-width: 80px;"
+                    (click)="changeChatOrder('desigTimeCount')">
+                  <div class="flex-row flex-center">
+                    <div i18n>Atribuido</div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'desigTimeCount' && status.chatsDashboardOrderByDirection === 'desc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-down']"></fa-icon>
+                    </div>
+                    <div
+                      *ngIf="status.chatsDashboardOrderBy === 'desigTimeCount' && status.chatsDashboardOrderByDirection === 'asc'"
+                      class="mrg6L s10">
+                      <fa-icon [icon]="['fal', 'arrow-up']"></fa-icon>
+                    </div>
+                  </div>
+                </td>
+                <td class="border-bottom-tick" style="width: 175px; min-width: 175px;"
+                    i18n="Seção com botões de funções da tabela. ex apagar, expandir, etc.">
+                  Funções
+                </td>
+              </tr>
+              </thead>
+              <tbody class="full-width">
+              <ng-container
+                *ngFor="let a of ((chats | filterPanelChats:filter:filterBy) | orderChats:status.chatsDashboardOrderBy:status.chatsDashboardOrderByDirection:status.now:scrollMax); let i = index;">
+                <tr class="full-width border-bottom-tick" [desigTimeCount]="status.now - a.desigBeginTime"
+                    [responded]="a.responded" [userResponded]="a.userResponded" [blink]="blink"
+                    [openTimeCount]="status.now - a.beginTime" [userId]="a.agentId" app-chat-dashboard-list-item
+                    style="overflow: hidden; height: 57px;" [chat]="a" [onIvr]="a.onIvr"></tr>
+              </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

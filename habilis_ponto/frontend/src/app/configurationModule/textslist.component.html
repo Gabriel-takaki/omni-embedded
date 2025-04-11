@@ -1,0 +1,38 @@
+<div class="full-width h100 overflow-hidden flex-column">
+    <div class="default-buttons-area">
+        <div class="h5 mrg-right-auto" i18n>
+            Cadastro de respostas
+        </div>
+        <button class="mrg10L btn btn-primary" matRipple (click)="add()">
+            <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+        </button>
+    </div>
+    <div class="flex-elastic card mrg15T full-width">
+        <div class="full-width h100" #gridContainer>
+            <dx-data-grid [columns]="columns" [masterDetail]="{enabled: false}" [hoverStateEnabled]="true"
+                          [dataSource]="texts" [height]="gridContainer.clientHeight" (onRowExpanded)="copyData($event)">
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-paging [enabled]="true"></dxo-paging>
+                <div *dxTemplate="let id of 'functionsTemplate'">
+                    <div class="grid-function-btn-area">
+                        <button class="grid-function-btn" (click)="edit(id.data)" matTooltip="Editar texto" matRipple
+                                i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'edit']"></fa-icon>
+                        </button>
+                        <button class="grid-function-btn" (click)="removeItem(id.data)" matTooltip="Excluir texto"
+                                matRipple
+                                i18n-matTooltip>
+                            <fa-icon [icon]="['far', 'times']"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+                <div *dxTemplate="let t of 'textTemplate'" class="no-break-with-ellipses">
+                    {{ t.value }}
+                </div>
+                <div *dxTemplate="let t of 'accessTemplate'" class="no-break-with-ellipses">
+                    {{ t.value?.join(',') }}
+                </div>
+            </dx-data-grid>
+        </div>
+    </div>
+</div>

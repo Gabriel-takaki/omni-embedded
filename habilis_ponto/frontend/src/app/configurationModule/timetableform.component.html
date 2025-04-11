@@ -1,0 +1,142 @@
+<div class="dialog-x-large">
+  <div class="dialog-content">
+    <div class="flex-row align-items-center">
+      <div class="flex-elastic">
+        <div class="h5" i18n>Tabela de Horários</div>
+        <p class="s12 font-light mrg5T" i18n>Aqui devem ser inseridos os horários em que a fila <b>NÃO</b> está disponível</p>
+      </div>
+      <div class="flex-rigid">
+        <button type="button" class="btn" (click)="addTime()" matRipple>
+          <fa-icon [icon]="['far', 'plus']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T full-width overflow-hidden" style="height: 55vh;">
+      <div class="flex-column scroll-y scroll1 full-width h100">
+        <div class="mrg5T flex-row full-width" *ngFor="let t of table">
+          <div class="flex-rigid" style="width: 120px;">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Tipo</mat-label>
+              <mat-select [(value)]="t.type">
+                <mat-option [value]="0" i18n="Período de tempo regular">
+                  Regular
+                </mat-option>
+                <mat-option [value]="1" i18n="Período de tempo específico">
+                  Específica
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="t.type === 0" class="flex-elastic mrg5L">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Dia início</mat-label>
+              <mat-select [(value)]="t.weekdaybegin">
+                <mat-option [value]="0" i18n>
+                  Domingo
+                </mat-option>
+                <mat-option [value]="1" i18n>
+                  Segunda-feira
+                </mat-option>
+                <mat-option [value]="2" i18n>
+                  Terça-feira
+                </mat-option>
+                <mat-option [value]="3" i18n>
+                  Quarta-feira
+                </mat-option>
+                <mat-option [value]="4" i18n>
+                  Quinta-feira
+                </mat-option>
+                <mat-option [value]="5" i18n>
+                  Sexta-feira
+                </mat-option>
+                <mat-option [value]="6" i18n>
+                  Sábado
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="t.type === 0" class="flex-elastic mrg5L">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Dia fim</mat-label>
+              <mat-select [(value)]="t.weekdayend">
+                <mat-option [value]="0" *ngIf="t.weekdaybegin <= 0" i18n>
+                  Domingo
+                </mat-option>
+                <mat-option [value]="1" *ngIf="t.weekdaybegin <= 1" i18n>
+                  Segunda-feira
+                </mat-option>
+                <mat-option [value]="2" *ngIf="t.weekdaybegin <= 2" i18n>
+                  Terça-feira
+                </mat-option>
+                <mat-option [value]="3" *ngIf="t.weekdaybegin <= 3" i18n>
+                  Quarta-feira
+                </mat-option>
+                <mat-option [value]="4" *ngIf="t.weekdaybegin <= 4" i18n>
+                  Quinta-feira
+                </mat-option>
+                <mat-option [value]="5" *ngIf="t.weekdaybegin <= 5" i18n>
+                  Sexta-feira
+                </mat-option>
+                <mat-option [value]="6" *ngIf="t.weekdaybegin <= 6" i18n>
+                  Sábado
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngIf="t.type === 1" class="flex-elastic mrg5L">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Data</mat-label>
+              <input matInput [matDatepicker]="pickerStart" [(ngModel)]="t.date" name="start{{t.uuid}}" tabindex="3">
+              <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #pickerStart></mat-datepicker>
+            </mat-form-field>
+            <!--        <dx-date-box [(value)]="" name="" height="32" required></dx-date-box>-->
+          </div>
+          <div style="width: 105px;" class="flex-rigid mrg5L">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Hora Início</mat-label>
+              <input matInput type="number" max="23" min="0" step="1" [(ngModel)]="t.hourbegin" name="hourbegin{{t.uuid}}"
+                     placeholder="Hora Início" i18n-placeholder required maxlength="30"/>
+            </mat-form-field>
+          </div>
+          <div style="width: 105px;" class="flex-rigid mrg5L">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Min Início</mat-label>
+              <input matInput type="number" max="59" min="0" step="1" [(ngModel)]="t.minutebegin"
+                     name="minutebegin{{t.uuid}}"
+                     placeholder="Minuto Início" i18n-placeholder required maxlength="30"/>
+            </mat-form-field>
+          </div>
+          <div style="width: 105px;" class="flex-rigid mrg5L">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Hora Fim</mat-label>
+              <input matInput type="number" max="23" min="0" step="1" [(ngModel)]="t.hourend" name="hourend{{t.uuid}}"
+                     placeholder="Hora Fim" i18n-placeholder required maxlength="30"/>
+            </mat-form-field>
+          </div>
+          <div style="width: 105px;" class="flex-rigid mrg5L">
+            <mat-form-field class="full-width">
+              <mat-label i18n>Min Fim</mat-label>
+              <input matInput type="number" max="59" min="0" step="1" [(ngModel)]="t.minuteend" name="minuteend{{t.uuid}}"
+                     placeholder="Minuto Fim" i18n-placeholder required maxlength="30"/>
+            </mat-form-field>
+          </div>
+          <div class="flex-rigid">
+            <button type="button" class="btn btn-sm btn-danger mrg10L" (click)="removeItem(t)">
+              <fa-icon [icon]="['far', 'times']"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" tabindex="3" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!thisForm.valid" i18n>
+      Salvar
+    </button>
+  </div>
+</div>

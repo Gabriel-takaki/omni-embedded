@@ -1,0 +1,55 @@
+<div class="dialog-medium" style="max-height: 95vh;">
+    <div class="dialog-content flex-elastic flex-column" style="max-height: 80vh">
+        <div class="full-width h100 flex-column overflow-hidden">
+            <div class="font-medium s14" i18n>Selecione o template</div>
+            <div class="full-width flex-elastic mrg10T h100 scroll-y scroll1 flex-row">
+                <div class="flex-elastic overflow-hidden h100">
+                    <form #thisForm="ngForm" class="h100 full-width">
+                        <app-template-selection [(value)]="selectedTemplate" caption="Templates" [queueId]="queue.id"
+                                                i18n-caption (valueChange)="getTemplateData()"></app-template-selection>
+                        <div class="full-width flex-column" *ngIf="fields.length">
+                            <ng-container *ngFor="let field of fields; let i = index;">
+                                <mat-form-field class="full-width" *ngIf="[0,1,2].includes(field.type)">
+                                    <mat-label>{{ field.name }}</mat-label>
+                                    <input matInput type="{{field.type === 0 ? 'text' : 'number'}}"
+                                           (ngModelChange)="incrementCounter()"
+                                           [step]="field.type === 1 ? 1 : 0.01" [required]="!!field.required"
+                                           [(ngModel)]="formData[i]" name="field{{i}}" placeholder="{{field.name}}"/>
+                                </mat-form-field>
+                                <mat-form-field class="full-width" *ngIf="[3].includes(field.type)">
+                                    <mat-label>{{ field.name }}</mat-label>
+                                    <input matInput [matDatepicker]="pickerStart" [(ngModel)]="formData[i]"
+                                           (ngModelChange)="incrementCounter()"
+                                           [required]="!!field.required" name="field{{i}}">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                                    <mat-datepicker touchUi #pickerStart></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field class="full-width" *ngIf="[4].includes(field.type)">
+                                    <mat-label>{{ field.name }}</mat-label>
+                                    <mat-select [(ngModel)]="formData[i]" (ngModelChange)="incrementCounter()"
+                                                [required]="!!field.required" name="field{{i}}">
+                                        <mat-option *ngFor="let o of field.options" [value]="o">{{ o }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex-rigid mrg8L h100">
+                    <ca-template-message *ngIf="status.allTemplatesMap[selectedTemplate]" [counter]="counter"
+                                         [template]="status.allTemplatesMap[selectedTemplate]"
+                                         [formData]="formData"></ca-template-message>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-buttons flex-rigid">
+        <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+            Cancelar
+        </button>
+        <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+                (click)="save()" [disabled]="!thisForm.valid">
+            <span i18n>Enviar</span>
+        </button>
+    </div>
+</div>

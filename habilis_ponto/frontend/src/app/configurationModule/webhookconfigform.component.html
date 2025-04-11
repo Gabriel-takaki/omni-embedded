@@ -1,0 +1,139 @@
+<div class="dialog-medium">
+  <div class="dialog-content">
+    <div class="h5" i18n>Configuração do webhook {{hookName}}</div>
+
+    <div class="full-width overflow-hidden">
+
+      <div class="full-width flex-row mrg10T">
+        <div class="flex-rigid">
+          <mat-form-field i18n-matTooltip
+                          matTooltip="Tipo de método que deverá ser utilizado para a requisição.">
+            <mat-label>Método</mat-label>
+            <mat-select [(value)]="hookConfig.method" name="type">
+              <mat-option [value]="'post'">
+                POST
+              </mat-option>
+              <mat-option [value]="'get'">
+                GET
+              </mat-option>
+              <mat-option [value]="'put'">
+                PUT
+              </mat-option>
+              <mat-option [value]="'delete'">
+                DELETE
+              </mat-option>
+              <mat-option [value]="'patch'">
+                PATCH
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-elastic mrg5L">
+          <mat-form-field class="full-width" matTooltip="Url para onde o evento será enviado"
+                          i18n-matTooltip>
+            <mat-label i18n>Url</mat-label>
+            <input matInput type="url" [(ngModel)]="hookConfig.url" name="url" required #url/>
+          </mat-form-field>
+        </div>
+        <div class="flex-rigid mrg5L" *ngIf="hookConfig.method !== 'get'">
+          <mat-form-field i18n-matTooltip
+                          matTooltip="Caso existam dados, em qual formato eles devem ser enviados.">
+            <mat-label i18n>Tipo</mat-label>
+            <mat-select [(value)]="hookConfig.dataType" name="type">
+              <mat-option [value]="'json'">
+                JSON
+              </mat-option>
+              <mat-option [value]="'urlencoded'">
+                URL Encoded
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="h4 data-area">
+        <div class="flex-row flex-align-center flex-shrink-0">
+          <div class="flex-grow-1 s14 font-medium" i18n>
+            Dados
+          </div>
+          <div>
+            <button class="btn btn-info btn-slim" matRipple (click)="addData()" i18n
+                    [disabled]="hookConfig.method === 'get'">
+              Adicionar
+            </button>
+          </div>
+        </div>
+        <div class="flex-elastic mrg5T scroll-y scroll1 pad5R"
+             *ngIf="hookConfig.method !== 'get'">
+          <div class="full-width flex-row" *ngFor="let d of dataToSend">
+            <div class="flex-elastic">
+              <mat-form-field class="full-width" matTooltip="Nome do atributo no objeto de dados"
+                              i18n-matTooltip>
+                <mat-label i18n>Nome do atributo</mat-label>
+                <input matInput type="text" [(ngModel)]="d.key"/>
+              </mat-form-field>
+            </div>
+            <div class="flex-elastic mrg5L">
+              <mat-form-field class="full-width" matTooltip="Valor do atributo no objeto de dados"
+                              i18n-matTooltip>
+                <mat-label i18n>Valor do atributo</mat-label>
+                <input matInput type="text" [(ngModel)]="d.value"/>
+              </mat-form-field>
+            </div>
+            <div class="flex-rigid mrg5L">
+              <button class="btn btn-slim btn-danger mrg10T" matTooltip="Remover" (click)="removeItem(d, dataToSend)"
+                      i18n-matTooltip>
+                <fa-icon [icon]="['far', 'times']"></fa-icon>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="h4 mrg5T data-area">
+        <div class="flex-row flex-align-center flex-shrink-0">
+          <div class="flex-grow-1 s14 font-medium" i18n>
+            Cabeçalhos
+          </div>
+          <div>
+            <button class="btn btn-info btn-slim" matRipple (click)="addHeader()" i18n>
+              Adicionar
+            </button>
+          </div>
+        </div>
+        <div class="flex-elastic scroll-y mrg5T scroll1 pad5R">
+          <div class="full-width flex-row" *ngFor="let d of headers">
+            <div class="flex-elastic">
+              <mat-form-field class="full-width" matTooltip="Nome do cabeçalho" i18n-matTooltip>
+                <mat-label i18n>Nome do cabeçalho</mat-label>
+                <input matInput type="text" [(ngModel)]="d.key"/>
+              </mat-form-field>
+            </div>
+            <div class="flex-elastic mrg5L">
+              <mat-form-field class="full-width" matTooltip="Valor do cabeçalho" i18n-matTooltip>
+                <mat-label i18n>Valor do cabeçalho</mat-label>
+                <input matInput type="text" [(ngModel)]="d.value"/>
+              </mat-form-field>
+            </div>
+            <div class="flex-rigid mrg5L">
+              <button class="btn btn-slim btn-danger mrg10T" matTooltip="Remover" (click)="removeItem(d, headers)"
+                      i18n-matTooltip>
+                <fa-icon [icon]="['far', 'times']"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" i18n>
+      Salvar
+    </button>
+  </div>
+</div>

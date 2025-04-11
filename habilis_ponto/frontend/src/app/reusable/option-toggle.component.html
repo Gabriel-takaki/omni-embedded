@@ -1,0 +1,18 @@
+<div class="option-tootle-base"
+     [ngStyle]="{color: color, backgroundColor: 'var(--primary-bg-color)', 'width.px': width,'height.px': height, 'font-size.px': fontSize}">
+  <div class="option-container pointer" (click)="toggle()">
+    <div class="background"
+         [@backState]="{value: value === option1Value ? 'option1' : 'option2',
+         params: {op1Width: option1.offsetWidth, op2Width: option2.offsetWidth,
+         op1Color: option1BgColor, op2Color: option2BgColor, op2Left: option2.offsetLeft}}">
+    </div>
+    <div #option1 class="option"
+         [@checkState]="{value: value === option1Value ? 'checked' : 'clear', params: {color: option1Color, clearColor: color}}">
+      {{option1Text}}
+    </div>
+    <div #option2 class="option"
+         [@checkState]="{value: value === option2Value ? 'checked' : 'clear', params: {color: option2Color, clearColor: color}}">
+      {{option2Text}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="h5" i18n>Novo grupo</div>
+    <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T">
+      <mat-form-field class="full-width">
+        <mat-label i18n>Nome do grupo</mat-label>
+        <input matInput type="text" [(ngModel)]="name" name="nameInput"
+               required #nameInput maxlength="32" i18n-plaholder placeholder="Nome do grupo"/>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" [disabled]="!thisForm.valid" i18n>
+      Adicionar
+    </button>
+  </div>
+</div>

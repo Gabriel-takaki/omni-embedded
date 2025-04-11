@@ -1,0 +1,108 @@
+<!-- clock-in-dialog.component.html -->
+<div class="clock-in-dialog">
+    <div class="dialog-header">
+      <h2>{{registerClockout ? 'Registrar saída de ponto' : 'Registrar entrada de ponto' }}</h2>
+    </div>
+    
+    <div class="time-display">
+      <!-- <div class="date">{{registerClockout ? '' : 'Registrar saída de ponto'}}</div> -->
+      <div class="time">{{ currentDate | date:'HH:mm' }}</div>
+      <div class="date">{{ currentDate | date:'d' }} de {{ currentDate | date:'MMMM' }} de {{ currentDate | date:'yyyy' }}</div>
+    </div>
+    
+    <!-- Photo capture method -->
+    <div *ngIf="registerMethod === 'photo'" class="method-container photo-container">
+      <div *ngIf="!capturedImage" class="camera-view">
+        <video #videoElement autoplay playsinline [class.hidden]="!cameraReady"></video>
+        <div class="face-outline"></div>
+        <p class="instruction">Mantenha seu rosto no enquadramento.</p>
+      </div>
+      
+      <div *ngIf="capturedImage" class="preview-container">
+        <img [src]="capturedImage" alt="Captured photo" />
+        <p *ngIf="loading">Verificando...</p>
+      </div>
+      
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+    </div>
+    <!-- Action buttons for photo or location method -->
+    
+    <!-- Location method -->
+    <div *ngIf="registerMethod === 'location'" class="method-container location-container">
+      <div class="location-icon" [class.loading]="loading">
+        <!-- <mat-icon>location_on</mat-icon> -->
+      </div>
+      
+      <div *ngIf="!currentLocation && !locationError">
+        <p>Obtendo sua localização...</p>
+      </div>
+      
+      <div *ngIf="currentLocation">
+        <p>Localização obtida com sucesso!</p>
+        <p class="coords">
+          Lat: {{ currentLocation.coords.latitude | number:'1.6-6' }}<br>
+          Long: {{ currentLocation.coords.longitude | number:'1.6-6' }}
+        </p>
+      </div>
+      
+      <div *ngIf="locationError" class="error-message">
+        {{ locationError }}
+      </div>
+    </div>
+    
+    <!-- Password method -->
+    <div *ngIf="registerMethod === 'password'" class="method-container password-container">
+      <form [formGroup]="passwordForm" (ngSubmit)="submitPassword()">
+        <mat-form-field appearance="outline">
+          <mat-label>Senha de Segurança</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="passwordForm.get('password')?.hasError('required')">
+            Senha é obrigatória
+          </mat-error>
+          <mat-error *ngIf="passwordForm.get('password')?.hasError('incorrect')">
+            Senha incorreta
+          </mat-error>
+        </mat-form-field>
+        
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          [disabled]="passwordForm.invalid || loading">
+          Verificar
+        </button>
+      </form>
+      
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+    </div>
+    
+
+    <div *ngIf="(registerMethod === 'photo' && capturedImage && !loading) || (registerMethod === 'location' && currentLocation && !loading)" class="action-buttons">
+      <button class="btn btn-transparent" matRipple in18 (click)="cancel()">Cancelar</button>
+      <button class="mrg15L btn btn-success" matRipple in18 (click)="registerClockout ? registerOut() : registerEntry() ">
+        {{registerClockout ? 'Registrar saída' : 'Registrar entrada'}}
+      </button>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-transparent" matRipple in18 (click)="cancel()" *ngIf="registerMethod === 'photo' && !capturedImage && cameraReady">Cancelar</button>
+      
+      <ng-container *ngIf="registerMethod === 'photo' && !capturedImage && cameraReady">
+        <button class="mrg15L btn btn-success" matRipple in18 (click)="capturePhoto()">Capturar</button>
+      </ng-container>
+      
+      <!-- <ng-container *ngIf="registerMethod === 'photo' && capturedImage && !loading">
+        <button mat-button (click)="retakePhoto()">Repetir</button>
+      </ng-container> -->
+    </div>
+    
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="loading-overlay">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  </div>

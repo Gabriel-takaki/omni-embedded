@@ -1,0 +1,11 @@
+<div class="flex-center full-width h100">
+  <div class="state-base" [style.font-size.px]="fontSize" [matTooltip]="toolTipText"
+       [class.bg-green-lighten-2]="state === 2" [class.bg-red-lighten-2]="[0].includes(state)"
+       [class.bg-orange-lighten-2]="[1].includes(state)" [class.bg-black-lighten-5]="[3].includes(state)"
+       [class.fg-green]="state === 2" [class.fg-red]="[0].includes(state)"
+       [class.fg-black-lighten-3]="[3].includes(state)" [class.fg-orange]="[1].includes(state)">
+    <fa-icon [icon]="['far', 'check-circle']" *ngIf="[1, 2].includes(state)"></fa-icon>
+    <fa-icon [icon]="['far', 'times-circle']" *ngIf="[0].includes(state)"></fa-icon>
+    <fa-icon [icon]="['far', 'lock']" *ngIf="[3].includes(state)"></fa-icon>
+  </div>
+</div>

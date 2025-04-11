@@ -1,0 +1,120 @@
+<div class="dialog-medium" style="height: 80vh; display: flex; flex-direction: column; overflow: hidden;">
+  <div class="dialog-content flex-elastic">
+    <div class="full-width h100 flex-column overflow-hidden">
+      <div i18n class="h5">Importar contatos</div>
+      <div class="flex-row flex-align-center pad10A">
+        <div>
+          <h5 i18n>O arquivo deve ter ; como delimitador de campos e " como delimitador de texto, estar
+            codificado em UTF8 e ter a estrutura conforme o modelo.</h5>
+        </div>
+        <div class="mrg10L">
+          <a [href]="baseUrl + '/static/getContactsCSVModel'" matRipple tabindex="10" class="mrg15L btn btn-primary">
+            Modelo
+          </a>
+        </div>
+      </div>
+      <div class="flex-row pad10A" *ngIf="!contacts.length">
+        <div>
+          <mat-form-field style="width: 240px; flex-shrink: 1;" class="mrg10R" i18n-matTooltip
+                          matTooltip="Coluna chave para encontrar duplicidades">
+            <mat-label i18n>Coluna chave</mat-label>
+            <mat-select [(ngModel)]="keyColumn">
+              <mat-option [value]="0" i18n>Número</mat-option>
+              <mat-option [value]="1" i18n>Instagram</mat-option>
+              <mat-option [value]="2" i18n>ID</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="mrg10L">
+          <mat-form-field style="width: 240px; flex-shrink: 1;" class="mrg10R" i18n-matTooltip
+                          matTooltip="O que fazer quando um contato duplicado for encontrado.">
+            <mat-label i18n>Tratamento de duplicados</mat-label>
+            <mat-select [(ngModel)]="dupAction">
+              <mat-option [value]="0" i18n>Ignorar</mat-option>
+              <mat-option [value]="1" i18n>Atualizar dados</mat-option>
+              <mat-option [value]="2" i18n>Cadastrar um novo</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="pad10A" style="flex-grow: 1; flex-shrink: 1; min-height: 1px;" *ngIf="!contacts.length">
+        <div class="full-width mrg15T mrg15B pad10A flex-column flex-align-center pointer"
+             (click)="openFileSelection()">
+          <div>
+            <fa-icon [icon]="['fad', 'upload']" style="font-size: 36px"></fa-icon>
+          </div>
+          <div style="font-size: 24px" class="mrg5T">Selecionar arquivo</div>
+          <div style="font-size: 16px" class="mrg10T fg-danger" *ngIf="parseError">Erro ao ler arquivo.</div>
+        </div>
+        <input type="file" hidden (change)="fileSelected($event)" #csvDialog
+               accept=".csv" style="visibility: hidden; height: 0px;" [multiple]="false"/>
+      </div>
+      <div class="full-width no-break-with-ellipses flex-row mrg5T mrg5B" style="align-items: center; flex-shrink: 0;"
+           *ngIf="contacts.length">
+        <app-animated-toogle [(value)]="showHidden"></app-animated-toogle>
+        <span class="mrg10L" i18n>Exibir ocultos (inseridos, atualizados e ignorados)</span>
+      </div>
+      <div class="pad10A full-width" style="flex-grow: 1; flex-shrink: 1; min-height: 1px; overflow: auto;"
+           *ngIf="contacts.length" #contactsList (scroll)="scrollEvent()">
+        <table class="full-width table">
+          <thead>
+          <tr>
+            <td></td>
+            <td>Nome</td>
+            <td>Número</td>
+            <td>Instagram</td>
+            <td>Facebook</td>
+            <td>E-mail</td>
+            <td>Documento</td>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let contact of contacts; let i = index">
+            <tr *ngIf="(contact.show || showHidden) && i <= scrollMax + regId">
+              <td>
+                <fa-icon [icon]="['fad', 'clock']" *ngIf="contact.result === 0" matTooltip="Não processado"
+                         i18n-matTooltip></fa-icon>
+                <fa-icon [icon]="['fad', 'check-circle']" class="fg-success" *ngIf="contact.result === 1"
+                         matTooltip="Inserido" i18n-matTooltip></fa-icon>
+                <fa-icon [icon]="['fad', 'pen-square']" class="fg-info" *ngIf="contact.result === 2"
+                         matTooltip="Atualizado"
+                         i18n-matTooltip></fa-icon>
+                <fa-icon [icon]="['fad', 'forward']" class="fg-gray" *ngIf="contact.result === 3" matTooltip="Ignorado"
+                         i18n-matTooltip></fa-icon>
+                <fa-icon [icon]="['fad', 'times-circle']" class="fg-danger" *ngIf="contact.result === 4"
+                         matTooltip="Erro"
+                         i18n-matTooltip></fa-icon>
+              </td>
+              <td>{{contact.name}}</td>
+              <td>{{contact.number}}</td>
+              <td>{{contact.instagram}}</td>
+              <td>{{contact.facebook}}</td>
+              <td>{{contact.email}}</td>
+              <td>{{contact.document}}</td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-buttons flex-rigid">
+    <div style="margin-right: auto;" *ngIf="contacts.length">
+      Importado {{regId}} de {{contacts.length}}
+    </div>
+    <button matRipple type="button" id="noButton" tabindex="5" [disabled]="importing"
+            [matRippleDisabled]="importing" class="btn btn-transparent" (click)="close()">
+      <span i18n>Fechar</span>
+    </button>
+    <button matRipple type="button" tabindex="3" (click)="pause()"
+            class="mrg15L btn btn-danger" *ngIf="importing">
+      Parar
+    </button>
+    <button matRipple type="button" tabindex="3" (click)="save()"
+            *ngIf="!importing"
+            class="mrg15L btn btn-success" [disabled]="!this.contacts.length || regId >= contacts.length"
+            [matRippleDisabled]="!this.contacts.length || regId >= contacts.length">
+      Importar
+    </button>
+  </div>
+</div>

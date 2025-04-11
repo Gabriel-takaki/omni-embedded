@@ -1,0 +1,189 @@
+<div class="dialog-medium" style="height: 80vh; display: flex; flex-direction: column; overflow: hidden; width: 100%;">
+  <div class="dialog-content flex-elastic">
+    <div class="full-width h100 flex-column overflow-hidden">
+      <div i18n class="h5">Importar Oportunidades </div>
+      <div class="flex-row flex-align-center pad10A">
+        <div>
+          <h5 i18n>O arquivo deve ter ; como delimitador de campos e " como delimitador de texto, estar
+            codificado em UTF8 e ter a estrutura conforme o modelo.</h5>
+        </div>
+        <div class="mrg10L">
+          <a [href]="baseUrl + '/static/getContactsCSVModel'" matRipple tabindex="10" class="mrg15L btn btn-primary">
+            Modelo
+          </a>
+        </div>
+      </div>
+
+      <div class="flex-row pad10A" *ngIf="!opportunities.length">
+
+        <div>
+          <div class="flex-row align-items-center mrg15L">
+            <app-animated-toogle  matTooltip="Se habilitado a oportunidade será importada e criada mesmo em etapas do funil onde não é permitida a criação" [(value)]="ignoreCreateRestriction"> ></app-animated-toogle>
+            <span class="mrg10L" i18n i18n-matTooltip
+              matTooltip="Se habilitado a oportunidade será importada e criada mesmo em etapas do funil onde não é permitida a criação">
+              Ignorar restrição de importação
+            </span>
+            </div>
+          </div>
+
+          <div class="mrg10L">
+            <mat-form-field style="width: 240px; flex-shrink: 1;" class="mrg10R" i18n-matTooltip
+              matTooltip="Cadastrar colunas 'Etapa', 'Origem' e 'Responsável' por id ou por valor escrito ex: Etapa: Primeira etapa ou Etapa ID: 1">
+              <mat-label i18n>Cadastrar por valor ou id</mat-label>
+              <mat-select [(ngModel)]="createById">
+                <mat-option [value]="0" i18n>Nome</mat-option>
+                <mat-option [value]="1" i18n>ID</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="mrg10L">
+            <mat-form-field style="width: 240px; flex-shrink: 1;" class="mrg10R" i18n-matTooltip
+              matTooltip="Coluna chave pra encontrar duplicidades">
+              <mat-label i18n>Coluna chave</mat-label>
+              <mat-select [(ngModel)]="keyColumn">
+                <mat-option [value]="0" i18n>ID</mat-option>
+                <mat-option [value]="1" i18n>Número</mat-option>
+                <mat-option [value]="2
+                " i18n>E-mail</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="mrg10L">
+            <mat-form-field style="width: 240px; flex-shrink: 1;" class="mrg10R" i18n-matTooltip
+                            matTooltip="O que fazer quando um contato duplicado for encontrado.">
+              <mat-label i18n>Tratamento de duplicados</mat-label>
+              <mat-select [(ngModel)]="dupAction">
+                <mat-option [value]="0" i18n>Ignorar</mat-option>
+                <mat-option [value]="1" i18n>Atualizar dados</mat-option>
+                <mat-option [value]="2" i18n>Cadastrar um novo</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+
+  
+
+        <div class="flex-row pad10A" *ngIf="!opportunities.length">
+          <div class="pad10A" style="flex-grow: 1; flex-shrink: 1; min-height: 1px;" *ngIf="!opportunities.length">
+            <div class="full-width mrg15T mrg15B pad10A flex-column flex-align-center pointer"
+              (click)="openFileSelection()">
+              <div>
+                <fa-icon [icon]="['fad', 'upload']" style="font-size: 36px"></fa-icon>
+              </div>
+              <div style="font-size: 24px" class="mrg5T">Selecionar arquivo</div>
+              <div style="font-size: 16px" class="mrg10T fg-danger" *ngIf="fileErrorMessage">{{fileErrorMessage}}</div>
+            </div>
+            <input type="file" hidden (change)="fileSelected($event)" #csvDialog accept=".csv"
+              style="visibility: hidden; height: 0px;" [multiple]="false" />
+          </div>
+        </div>
+
+
+        <div class="pad10A full-width" style="flex-grow: 1; flex-shrink: 1; min-height: 1px; overflow: auto;"
+          *ngIf="opportunities.length" #oplist (scroll)="scrollEvent()">
+          <table class="full-width table">
+            <thead>
+              <tr class="header">
+                <td style="min-width: 25px;"></td>
+                <td>ID</td>
+                <td >Etapa</td>
+                <td>Etapa ID</td>
+                <td >Título</td>
+                <td >Responsável</td>
+                <td>Responsável ID</td>
+                <td >Seguidores</td>
+                <td >Seguidores ID</td>
+                <td >Origem</td>
+                <td>Origem ID</td>
+                <td >Estado</td>
+                <td>Estado ID</td>
+                <td >Empresa</td>
+                <td>Empresa ID</td>
+                <td >Prazo</td>
+                <td >Endereço</td>
+                <td >Telefone</td>
+                <td >Email</td>
+                <td>Valor</td>
+                <td>Valor recorrente</td>
+                <td>Probabilidade</td>
+                <td >Etiquetas</td>
+                <td>Etiquetas ID</td>
+                <td >Criado em</td>
+                <td>Estagnada</td>
+                <td >Descrição</td>
+                 <td *ngFor="let key of dynamicKeys">{{ key }}</td>
+              </tr>
+            </thead>
+            <br>
+            <tbody>
+              <ng-container *ngFor="let op of opportunities">
+                <tr>
+                  <td style="width: 40px;">
+                    <fa-icon [icon]="['fad', 'clock']" *ngIf="op.result === 0" matTooltip="Não processado"></fa-icon>
+                    <fa-icon [icon]="['fad', 'check-circle']" class="fg-success" *ngIf="op.result === 1" matTooltip="Inserido"></fa-icon>
+                    <fa-icon [icon]="['fad', 'pen-square']" class="fg-info" *ngIf="op.result === 2" matTooltip="Atualizado"></fa-icon>
+                    <fa-icon [icon]="['fad', 'forward']" class="fg-gray" *ngIf="op.result === 3" matTooltip="Ignorado"></fa-icon>
+                    <fa-icon [icon]="['fad', 'times-circle']" class="fg-danger" *ngIf="op.result === 4" [matTooltip]="op.errorstring || 'Erro'"></fa-icon>
+                  </td>
+                  <td>{{ op.id }}</td>
+                  <td>{{ op.stagename }}</td>
+                  <td>{{ op.fk_stage }}</td>
+                  <td>{{ op.title }}</td>
+                  <td>{{ op.responsable }}</td>
+                  <td>{{ op.responsableid }}</td>
+                  <td>{{ op.followersname }}</td>
+                  <td>{{ op.followers }}</td>
+                  <td>{{ op.originname }}</td>
+                  <td>{{ op.origin }}</td>
+                  <td>{{ op.statusname }}</td>
+                  <td>{{ op.status }}</td>
+                  <td>{{ op.companyname }}</td>
+                  <td>{{ op.company }}</td>
+                  <td>{{ op.expectedclosedate | date: 'short' }}</td>
+                  <td>{{ op.formattedlocation | slice: 0:20 }}
+                    <span *ngIf="op.formattedlocation.length >= 20" [matTooltip]="op.formattedlocation">...</span>
+                  </td>
+                  <td>{{ op.mainphone }}</td>
+                  <td>{{ op.mainmail }}</td>
+                  <td>{{ op.value }}</td>
+                  <td>{{ op.recurrentvalue }}</td>
+                  <td>{{ op.probability }}</td>
+                  <td>{{ op.tags }}</td>
+                  <td>{{ op.tagsid }}</td>
+                  <td>{{ op.createadAt | date: 'short' }}</td>
+                  <td>{{ op.stagnated }}</td>
+                  <td>{{ op.description }}</td>
+                  <td *ngFor="let key of dynamicKeys">{{ op[key] }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-buttons flex-rigid">
+      <div style="margin-right: auto;" *ngIf="opportunities.length">
+        Importado {{regId}} de {{opportunities.length}}
+      </div>
+      <button matRipple type="button" id="noButton" tabindex="5" [disabled]="importing" [matRippleDisabled]="importing"
+        class="btn btn-transparent" (click)="close()">
+        <span i18n>Fechar</span>
+      </button>
+      <button matRipple type="button" tabindex="3" (click)="pause()" class="mrg15L btn btn-danger" *ngIf="importing">
+        Parar
+      </button>
+      <button matRipple type="button" tabindex="3" (click)="downloadErrorData()" *ngIf="hasError()" class="mrg15L btn btn-success">      
+        Exportar dados com erro
+    </button>
+      <button matRipple type="button" tabindex="3" (click)="save()" *ngIf="!importing" class="mrg15L btn btn-success"
+        [disabled]="!this.opportunities.length || regId >= opportunities.length"
+        [matRippleDisabled]="!this.opportunities.length || regId >= opportunities.length">
+        Importar
+      </button>
+    </div>
+  </div>

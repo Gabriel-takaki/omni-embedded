@@ -1,0 +1,29 @@
+<div class="dialog-small">
+  <div class="dialog-content">
+    <div class="full-width s14 font-medium" i18n>
+      Inserir mensagem de informação
+    </div>
+    <div class="full-width mrg10T s12 font-light" i18n>
+      Mensagens de informação não serão vistas pelo cliente.
+    </div>
+    <div class="full-width mrg10T">
+      <mat-form-field class="full-width">
+        <mat-label i18n="Mensagem de texto">Mensagem</mat-label>
+        <textarea matInput placeholder="Mensagem" i18n-placeholder="Mensagem de texto" type="text" [(ngModel)]="msg"
+                  class="form-input" tabindex="1" name="msg" id="infoText" #infoText></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button matRipple type="button" id="noButton" tabindex="3"
+            #noButton (keydown)="handleArrows($event, 'noButton')"
+            class="btn btn-transparent" (click)="result(false)">
+      <span i18n>Cancelar</span>
+    </button>
+    <button matRipple type="button" id="yesButton" tabindex="2"
+            #yesButton (keydown)="handleArrows($event, 'yesButton')"
+            class="mrg15L btn btn-info" (click)="result(true)">
+      <span i18n>Inserir</span>
+    </button>
+  </div>
+</div>

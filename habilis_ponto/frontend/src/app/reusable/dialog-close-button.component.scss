@@ -1,0 +1,42 @@
+@import "../../scss/newcolors";
+
+.dialog-close-btn {
+  border-radius: 50%;
+  box-shadow: none;
+  cursor: pointer;
+  outline: none;
+  border: 0px;
+  display: flex;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(0deg);
+  transition: transform 0.25s ease-in-out, background-color 0.25s ease-in-out;
+}
+
+.dialog-close-btn:hover {
+  background-color: $black-lighten-4;
+}
+
+.dialog-close-white-btn {
+  border-radius: 50%;
+  box-shadow: none;
+  cursor: pointer;
+  outline: none;
+  border: 0px;
+  display: flex;
+  background-color: transparent;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(0deg);
+  transition: transform 0.25s ease-in-out, background-color 0.25s ease-in-out;
+}
+
+.dialog-close-white-btn:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.rotate {
+  transform: rotate(180deg);
+}

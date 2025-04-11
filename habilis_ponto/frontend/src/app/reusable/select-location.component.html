@@ -1,0 +1,17 @@
+<div class="full-width overflow-hidden" (click)="editable ? openSelectionDialog() : null" [class.pointer]="editable">
+  <div class="label-big label-default flex-row flex-center overflow-hidden" [style.font-size.px]="fontSize">
+    <div class="flex-rigid" *ngIf="showIcon">
+      <fa-icon [icon]="['far', 'map-marker-alt']"></fa-icon>
+    </div>
+    <div [class.mrg8L]="showIcon" class="no-break-with-ellipses" *ngIf="formattedLocation">
+      {{formattedLocation}}
+    </div>
+    <div i18n [class.mrg8L]="showIcon" *ngIf="!formattedLocation">
+      Sem local
+    </div>
+    <div class="mrg12L s12 fg-black-lighten-1" matTooltip="Limpar" i18n-matTooltip (click)="clearLocation($event)"
+         *ngIf="editable && formattedLocation">
+      <fa-icon [icon]="['far', 'times']"></fa-icon>
+    </div>
+  </div>
+</div>

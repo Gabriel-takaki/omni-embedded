@@ -1,0 +1,19 @@
+.plus-button {
+  width: 47.5px;
+  height: 47.5px;
+  border-radius: 3px;
+  border: 2px solid #dfdfdf;
+  color: #afafaf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 120%;
+  margin-left: 10px;
+}
+
+.plus-button:hover {
+  background-color: #efefef;
+  border: 2px solid #afafaf;
+  color: #9f9f9f;
+}

@@ -1,0 +1,17 @@
+<div class="flex-center full-width h100">
+  <div class="state-base" [style.font-size.px]="fontSize" [matTooltip]="toolTipText"
+       [class.bg-green-lighten-2]="state === 1" [class.bg-red-lighten-2]="[0, 5].includes(state)"
+       [class.bg-orange-lighten-2]="[7].includes(state)" [class.bg-yellow-lighten-2]="[2].includes(state)"
+       [class.bg-blue-lighten-2]="[3, 4].includes(state)" [class.bg-black-lighten-3]="[6].includes(state)"
+       [class.fg-green]="state === 1" [class.fg-red]="[0, 5].includes(state)"
+       [class.fg-orange]="[7].includes(state)" [class.fg-yellow]="[2].includes(state)"
+       [class.fg-blue]="[3, 4].includes(state)" [class.fg-black]="[6].includes(state)">
+    <fa-icon [icon]="['far', 'play-circle']" *ngIf="[1].includes(state)"></fa-icon>
+    <fa-icon [icon]="['far', 'times-circle']" *ngIf="[0].includes(state)"></fa-icon>
+    <fa-icon [icon]="['far', 'phone']" class="animated" [class.flash]="[4].includes(state)"
+              [class.infinite]="[4].includes(state)" *ngIf="[3, 4].includes(state)"></fa-icon>
+    <fa-icon [icon]="['far', 'lock']" *ngIf="[5].includes(state)"></fa-icon>
+    <fa-icon [icon]="['far', 'exclamation-circle']" *ngIf="[7].includes(state)"></fa-icon>
+    <fa-icon [icon]="['far', 'pause-circle']" *ngIf="[2].includes(state)"></fa-icon>
+  </div>
+</div>

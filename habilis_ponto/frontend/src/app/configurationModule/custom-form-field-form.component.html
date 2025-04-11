@@ -1,0 +1,42 @@
+<div class="dialog-small overflow-hidden" style="max-height: 80vh;">
+  <div class="dialog-content h100 scroll-y scroll1 flex-column">
+    <div class="h5 flex-rigid" i18n>Configurar campo</div>
+    <mat-form-field class="full-width flex-rigid mrg8T">
+      <mat-label i18n>Nome</mat-label>
+      <input placeholder="Nome" i18n-placeholder required #labelInput
+             matInput type="text" [(ngModel)]="field.label" name="labelInput"/>
+    </mat-form-field>
+    <mat-checkbox *ngIf="field.type !== 12" [(ngModel)]="field.required" class="mat-primary" name="required"
+                  style="font-weight: normal;" i18n> Obrigatório
+    </mat-checkbox>
+    <mat-checkbox [(ngModel)]="field.lock" class="mat-primary" name="required"
+                  style="font-weight: normal;" i18n> Impedir edição manual
+    </mat-checkbox>
+    <mat-form-field class="full-width mrg8T" *ngIf="[10,11].includes(field.type)">
+      <mat-label i18n>Opções</mat-label>
+      <mat-chip-grid #chipList aria-label="Opções">
+        <mat-chip-row *ngFor="let tag of field.options"
+                      [removable]="true" (removed)="removeTag(tag, field.options)">
+          {{tag}}&nbsp;&nbsp;
+          <fa-icon class="pointer" [icon]="['fal', 'times']" matChipRemove
+                   matTooltip="Remover tag"
+                   i18n-matTooltip></fa-icon>
+        </mat-chip-row>
+        <input placeholder="Opções" i18n-placeholder
+               [matChipInputFor]="chipList"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="addTag($event, field.options)">
+      </mat-chip-grid>
+    </mat-form-field>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" i18n>
+      Salvar
+    </button>
+  </div>
+</div>

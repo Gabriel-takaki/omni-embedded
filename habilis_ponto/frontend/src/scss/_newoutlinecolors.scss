@@ -1,0 +1,141 @@
+@import "scss/newcolors";
+
+.outline-green, .outline-success {
+  outline-color: $success-base !important;
+}
+
+.outline-pink-lighten-1 {
+  outline-color: $pink-lighten-2 !important;
+}
+
+.outline-pink-lighten-2 {
+  outline-color: $pink-lighten-2 !important;
+}
+
+.outline-purple {
+  outline-color: $purple-base !important;
+}
+
+.outline-purple-lighten-1 {
+  outline-color: $purple-lighten-1 !important;
+}
+
+.outline-purple-lighten-2 {
+  outline-color: $purple-lighten-2 !important;
+}
+
+.outline-green-lighten-1 {
+  outline-color: $green-lighten-1 !important;
+}
+
+.outline-green-lighten-2 {
+  outline-color: $green-lighten-2 !important;
+}
+
+.outline-blue, .outline-info {
+  outline-color: $info-base !important;
+}
+
+.outline-blue-lighten-1 {
+  outline-color: $blue-lighten-1 !important;
+}
+
+.outline-blue-lighten-2 {
+  outline-color: $blue-lighten-2 !important;
+}
+
+.outline-black-lighten-1 {
+  outline-color: $black-lighten-1 !important;
+}
+
+.outline-black-lighten-2 {
+  outline-color: $black-lighten-2 !important;
+}
+
+.outline-black-lighten-3 {
+  outline-color: $black-lighten-3 !important;
+}
+
+.outline-black-lighten-4 {
+  outline-color: $black-lighten-4 !important;
+}
+
+.outline-black-lighten-5 {
+  outline-color: $black-lighten-5 !important;
+}
+
+.outline-white {
+  outline-color: $white-base !important;
+}
+
+.outline-alert, .outline-yellow {
+  outline-color: $alert-base !important;
+}
+
+.outline-yellow-lighten-1 {
+  outline-color: $yellow-lighten-1 !important;
+}
+
+.outline-yellow-lighten-2 {
+  outline-color: $yellow-lighten-2 !important;
+}
+
+.outline-danger, .outline-red {
+  outline-color: $red-base !important;
+}
+
+.outline-red-lighten-1 {
+  outline-color: $red-lighten-1 !important;
+}
+
+.outline-red-lighten-2 {
+  outline-color: $red-lighten-2 !important;
+}
+
+.outline-warning, .outline-orange {
+  outline-color: $warning-base !important;
+}
+
+.outline-orange-lighten-1 {
+  outline-color: $orange-lighten-1 !important;
+}
+
+.outline-orange-lighten-2 {
+  outline-color: $orange-lighten-2 !important;
+}
+
+.outline-wa {
+  outline-color: $wa-color !important;
+}
+
+.outline-fb {
+  outline-color: $fb-color !important;
+}
+
+.outline-ig {
+  outline-color: $ig-color !important;
+}
+
+.outline-tg {
+  outline-color: $tg-color !important;
+}
+
+.outline-sg {
+  outline-color: $tg-color !important;
+}
+
+.outline-ol {
+  outline-color: $ol-color !important;
+}
+
+.outline-ml {
+  outline-color: $ml-color !important;
+}
+
+.outline-custom-color {
+  outline-color: var(--primary-bg-color) !important;
+}
+
+.outline-primary-color {
+  outline-color: var(--primary-color) !important;
+}

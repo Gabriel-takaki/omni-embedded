@@ -1,0 +1,87 @@
+<div class="dialog-large" style="height: 70vh; max-height: 70vh;">
+  <div class="dialog-content flex-column">
+    <div class="s18 font-medium flex-row flex-center">
+      <div i18n class="flex-elastic no-break-with-ellipses overflow-hidden">
+        Formulário de dados
+      </div>
+      <div class="flex-rigid mrg10L">
+        <button class="btn btn-primary" (click)="addField()" matTooltip="Adicionar campo" i18n-matTooltip matRipple>
+          <fa-icon [icon]="['far', 'plus']"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div class="full-width flex-elastic scroll-y scroll1">
+      <div class="full-width flex-column mrg6T" *ngFor="let field of fields; let i = index;">
+        <div class="full-width flex-row">
+          <mat-form-field class="flex-elastic">
+            <mat-label i18n>Nome</mat-label>
+            <input matInput type="text" [(ngModel)]="field.name" placeholder="Nome do campo"
+                   required maxlength="255" i18n-placeholder/>
+          </mat-form-field>
+          <mat-form-field class="flex-elastic mrg6L">
+            <mat-label i18n>Variável</mat-label>
+            <input matInput type="text" [(ngModel)]="field.var" placeholder="Variável onde o dado será salvo na automação"
+                   required maxlength="255" i18n-placeholder/>
+          </mat-form-field>
+          <mat-form-field class="flex-elastic mrg6L">
+            <mat-label i18n>Tipo</mat-label>
+            <mat-select [(value)]="field.type">
+              <mat-option [value]="0" i18n>
+                Texto
+              </mat-option>
+              <mat-option [value]="1" i18n>
+                Número inteiro
+              </mat-option>
+              <mat-option [value]="2" i18n>
+                Número decimal
+              </mat-option>
+              <mat-option [value]="3" i18n>
+                Data
+              </mat-option>
+              <mat-option [value]="4" i18n>
+                Múltipla escolha
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-checkbox class="mrg6L" [(ngModel)]="field.required" class="mat-primary" i18n>
+            Obrigatório
+          </mat-checkbox>
+          <div class="flex-rigid mrg12L">
+            <button class="btn btn-danger" (click)="removeField(field)" matTooltip="Remover campo" i18n-matTooltip
+                    matRipple>
+              <fa-icon [icon]="['far', 'times']"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="full-width mrg4T" *ngIf="field.type === 4">
+          <mat-form-field class="full-width">
+            <mat-label i18n>Opções</mat-label>
+            <mat-chip-grid #chipList aria-label="Opções">
+              <mat-chip-row *ngFor="let tag of field.options"
+                            [removable]="true" (removed)="removeTag(tag, field.options)">
+                {{tag}}&nbsp;&nbsp;
+                <fa-icon class="pointer" [icon]="['fal', 'times']" matChipRemove
+                         matTooltip="Remover tag"
+                         i18n-matTooltip></fa-icon>
+              </mat-chip-row>
+              <input placeholder="Opções" i18n-placeholder
+                     [matChipInputFor]="chipList"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="true"
+                     (matChipInputTokenEnd)="addTag($event, field.options)">
+            </mat-chip-grid>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-buttons">
+    <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+      Cancelar
+    </button>
+    <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+            (click)="save()" i18n>
+      Salvar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+@import "../../scss/newcolors";
+
+.agent-item {
+  background-color: $white-base;
+  border: 1px solid $black-lighten-4;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 8px 16px;
+  align-items: center;
+}
+
+.agent-item:hover {
+  cursor: pointer;
+  background-color: $black-lighten-5;
+}
+
+.selected {
+  border: 2px solid var(--primary-color);
+}

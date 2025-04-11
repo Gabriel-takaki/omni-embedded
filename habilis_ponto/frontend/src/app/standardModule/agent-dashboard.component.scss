@@ -1,0 +1,111 @@
+@import "scss/newcolors";
+@import "scss/newhelpers";
+@import "scss/medias";
+@import "scss/scrolls";
+
+.mobile-bigger {
+  @include phone {
+    font-size: 18px;
+  }
+}
+
+.mobile-bigger-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid $black-lighten-4;
+}
+
+.agent-dashboard-base {
+  display: flex;
+  margin: -15px;
+  width: calc(100% + 30px);
+  height: calc(100% + 30px);
+  overflow: hidden;
+
+  @include phone() {
+    flex-direction: column;
+  }
+
+}
+
+.agent-dashboard-login-area {
+  flex-shrink: 1;
+  flex-grow: 1;
+  padding: 16px;
+  height: 100%;
+
+  @include phone() {
+    flex-shrink: 0;
+    flex-grow: 0;
+    height: auto;
+  }
+}
+
+.monitor-status {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  background-color: $white-base;
+  font-size: 10px;
+  border-radius: 4px;
+  border: 1px solid $black-lighten-3;
+  padding: 4px 8px;
+}
+
+.pause-status {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  background-color: $white-base;
+  font-size: 10px;
+  border-radius: 4px;
+  border: 1px solid $black-lighten-3;
+  padding: 4px 8px;
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.news-panel {
+  @extend .flex-rigid;
+  @extend .h100;
+  @extend .pad16A;
+  @extend .scroll1;
+  @extend .scroll-y;
+  width: 320px;
+  margin-left: 15px;
+  @include phone() {
+    margin-left: 0px;
+    margin-top: 15px;
+    width: 100%;
+    height: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+}
+
+.queue-login-btn {
+  flex-shrink: 0;
+  flex-grow: 0;
+  margin-top: 8px;
+  margin-right: 8px;
+  cursor: pointer;
+  background-color: $white-base;
+  width: 240px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 18px;
+
+  @include phone() {
+    width: 48%;
+    margin-right: 2%;
+  }
+
+}
+
+.queue-login-btn:hover {
+  background-color: $black-lighten-5;
+}

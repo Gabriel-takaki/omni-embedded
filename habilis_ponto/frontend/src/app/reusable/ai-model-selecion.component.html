@@ -1,0 +1,26 @@
+<mat-form-field class="full-width" i18n-matTooltip
+                matTooltip="Modelo de IA que será utilizado. Em ordem crescente de custo.">
+    <mat-label i18n>Modelo de IA</mat-label>
+    <mat-select [(ngModel)]="model" [disabled]="disabled" (ngModelChange)="change()">
+        <mat-optgroup label="Google" i18n-label [disabled]="!status.googleAiStudioKey">
+            <mat-option [value]="0">Gemini Flash 1.5 8B</mat-option>
+            <mat-option [value]="1">Gemini Flash 1.5</mat-option>
+            <mat-option [value]="3">Gemini Pro 1.5</mat-option>
+        </mat-optgroup>
+        <mat-optgroup label="OpenAI" i18n-label [disabled]="!status.openAiKey">
+            <mat-option [value]="2">gpt4o-mini</mat-option>
+            <mat-option [value]="5">o3-mini</mat-option>
+            <mat-option [value]="4">gpt4o</mat-option>
+        </mat-optgroup>
+        <mat-optgroup label="DeepInfra" i18n-label [disabled]="!status.deepInfraKey">
+            <mat-option [value]="6">Llama 3.1</mat-option>
+            <mat-option [value]="7">DeepSeek V3</mat-option>
+            <mat-option [value]="8">DeepSeek R1</mat-option>
+        </mat-optgroup>
+        <mat-optgroup label="Amazon" i18n-label [disabled]="!status.awsBedRockKey">
+            <mat-option [value]="15">Amazon Nova Micro</mat-option>
+            <mat-option [value]="16">Amazon Nova Lite</mat-option>
+            <mat-option [value]="17">Amazon Nova Pro</mat-option>
+        </mat-optgroup>
+    </mat-select>
+</mat-form-field>

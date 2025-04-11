@@ -1,0 +1,517 @@
+<div class="flex-column" style="width: 100%;" id="{{idPrefix}}base-{{m.messageid}}"
+     (mouseover)="showActionsMenu = true;" (mouseleave)="showActionsMenu = false;">
+    <div class="message central-message overflow-hidden"
+         *ngIf="['alert', 'info', 'system-info', 'event', 'ai-summary'].includes(m.direction)"
+         id="{{idPrefix}}{{m.messageid}}" [class.message-info]="m.direction === 'info'"
+         [class.message-event]="m.direction === 'event'"
+         [class.message-ai-summary]="m.direction === 'ai-summary'"
+         [class.message-alert]="m.direction === 'alert'" [class.message-system-info]="m.direction === 'system-info'">
+        <div class="flex-row flex-center">
+            <div class="flex-rigid s24 mrg12R">
+                <fa-icon [class.fg-info]="m.direction === 'info'" [class.fg-warning]="m.direction === 'alert'"
+                         [class.fg-primary]="m.direction === 'system-info'"
+                         [class.fg-blue-darken-1]="m.direction === 'ai-summary'"
+                         [class.fg-black-lighten-2]="m.direction === 'event'"
+                         [icon]="['far', m.direction === 'alert' ? 'exclamation-triangle' : m.direction === 'info' ? 'info' :
+                         m.direction === 'ai-summary' ? 'stars' : 'cog']"></fa-icon>
+            </div>
+            <div [innerHtml]="m.text | messageFormattingPipe:true:'':highlight" class="mrg4L flex-elastic"></div>
+        </div>
+        <div class="message-time-label">
+            {{ m.formattedTime }}
+        </div>
+    </div>
+    <div class="message central-message card-border pad16A" style="width: 560px;" id="{{idPrefix}}{{m.messageid}}"
+         *ngIf="['comments', 'livecomments', 'mentions'].includes(m.direction)">
+        <div class="bg-black-lighten-5 pad12A flex-row pointer flex-center overflow-hidden" matRipple
+             style="border-radius: 8px; max-height: 96px;" [class.pointer]="m.previewdata?.permalink"
+             (click)="openLink(m.previewdata?.permalink)">
+            <div *ngIf="m.previewdata?.media_url || m.previewdata?.thumbnail_url" style="width: 56px; height: 56px;"
+                 class="flex-rigid">
+                <img [src]="m.previewdata?.media_url || m.previewdata?.thumbnail_url"
+                     style="width: 100%; height: 100%; border-radius: 4px;"/>
+            </div>
+            <div class="flex-elastic mrg8L overflow-hidden" style="max-height: 72px;"
+                 [matTooltip]="m.previewdata?.caption">
+                {{ m.previewdata?.caption }}
+            </div>
+        </div>
+        <div class="full-width mrg8T">
+            <div class="font-semi-bold" i18n>
+                Usuário comentou:
+            </div>
+            <div [innerHtml]="m.text | messageFormattingPipe:true:'':highlight"
+                 class="mrg4T full-width font-regular"></div>
+        </div>
+        <div class="full-width mrg16T" *ngIf="m.extradata?.replyText">
+            <div class="font-semi-bold" i18n>
+                Resposta:
+            </div>
+            <div [innerHtml]="m.extradata?.replyText | messageFormattingPipe:true:'':highlight"
+                 class="mrg4T full-width font-regular"></div>
+        </div>
+        <div class="message-time-label flex-row flex-center">
+            <div>
+                {{ m.formattedTime }}
+            </div>
+            <button type="button" class="mrg16L font-medium btn flex-row s10 bg-black-lighten-5"
+                    *ngIf="!supervisorView && !oldMessage && !m.extradata?.replied"
+                    (click)="replyMsg(m.messageid, m.text, false, false, true, m.previewdata?.media_url || m.previewdata?.thumbnail_url)">
+                <div>
+                    <fa-icon [icon]="['fas', 'reply']"></fa-icon>
+                </div>
+                <div class="mrg6L" i18n>
+                    Responder
+                </div>
+            </button>
+            <div class="mrg16L s12 bg-green-lighten-2 flex-row btn" *ngIf="m.extradata?.replied">
+                <div>
+                    <fa-icon [icon]="['fas', 'check']"></fa-icon>
+                </div>
+                <div class="mrg6L" i18n>
+                    Respondido
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="visibility: hidden" [matMenuTriggerFor]="mobileMenu" #hiddenButton></div>
+    <mat-menu #mobileMenu="matMenu" [yPosition]="'above'" [xPosition]="'before'" [hasBackdrop]="false"
+              (clickOutside)="closeMenu()">
+
+        <button class="mat-menu-min-width" title="Copiar" mat-menu-item i18n-title i18n
+                (click)="copyToClipboard(m.text)">
+            Copiar
+        </button>
+        <button class="mat-menu-min-width" title="Encaminhar" mat-menu-item i18n-title i18n
+                (click)="shareMsg()" *ngIf="['in', 'out', 'system-out'].includes(m.direction) && queueType !== 16">
+            Encaminhar
+        </button>
+        <button class="mat-menu-min-width" title="Encaminhar" mat-menu-item i18n-title i18n (click)="editMsg()"
+                *ngIf="showReplyTo && ['out'].includes(m.direction) && !m.deleted && !m.fk_ivr && m.timestamp + (10 * 59) >= now &&
+           !disabledDelete && (m.clientRcvd || m.readed) && !m.fk_file && queueType === 5 && !m.oldText && !oldMessage
+           && status.user.id === m.userId">
+            Editar mensagem
+        </button>
+        <button class="mat-menu-min-width" title="Apagar mensagem" mat-menu-item i18n-title i18n
+                (click)="deleteMsg(m.messageid)"
+                *ngIf="showReplyTo && ['out'].includes(m.direction) && !m.deleted && m.timestamp + 600 >= now &&
+           !disabledDelete && (m.clientRcvd || m.readed)">
+            Apagar
+        </button>
+
+    </mat-menu>
+    <mat-menu #actionsMenu="matMenu" [yPosition]="'above'" [xPosition]="'before'">
+
+        <button class="mat-menu-min-width" mat-menu-item matTooltip="{{action.text}}"
+                *ngFor="let action of msgActions" (click)="executeMessageAction(action)">
+            {{ action.title }}
+        </button>
+
+    </mat-menu>
+    <div class="message-base" [class.justify-content-end]="m.direction === 'out'"
+         *ngIf="!['alert', 'info', 'system-info', 'event', 'comments', 'livecomments', 'mentions', 'ai-summary'].includes(m.direction)"
+         (press)="openMenuMessageArea()">
+        <div class="message animated infinite position-relative" [style.margin-bottom.px]="m.reaction ? 12 : null"
+             [class.message-in]="m.direction === 'in'" (mouseenter)="visibility = 'shown'" #message
+             [class.message-with-media]="m.fk_file || m.file_cdn" [class.ivr-sent]="m.fk_ivr"
+             [class.insult-blocked]="m.failed === 3"
+             id="{{idPrefix}}{{m.messageid}}" [class.message-out]="m.direction === 'out'"
+             [class.message-system-out]="m.direction === 'system-out'" (mouseleave)="visibility = 'hidden'"
+             [class.flash]="blink" [style.align-self]="m.direction === 'in' ? 'flex-start' : 'flex-end'"
+             [class.message-mail]="queueType === 16" [class.message-ad]="m.adTitle"
+             [style.max-width.px]="m.file_mimetype === 'application/pdf' && m.hasThumbnail ? 304 : null">
+            <div class="s20 flex-row flex-elastic flex-center loading-marker"
+                 *ngIf="executingAutomation || m.analyzing"
+                 [class.loading-marker-in]="m.direction === 'in'"
+                 [class.loading-marker-out]="m.direction === 'out'">
+                <div matTooltip="Executando automação" i18n-matTooltip>
+                    <fa-icon [icon]="['fas', 'spinner-third']" [spin]="true"></fa-icon>
+                </div>
+            </div>
+            <div class="from-ivr-icon" *ngIf="m.fk_ivr && !m.fk_assistant"
+                 matTooltip="{{status.allIvrsMap[m.fk_ivr]?.name || status.automationsObj[m.fk_ivr]?.title || texts.sentByIvr}}">
+                <fa-icon [icon]="['fas', 'robot']"></fa-icon>
+            </div>
+            <div class="from-ivr-icon" *ngIf="m.fk_assistant"
+                 matTooltip="{{status.allAssistantsMap[m.fk_assistant]?.name}}">
+                <fa-icon [icon]="['fas', 'stars']"></fa-icon>
+            </div>
+            <div class="insult-blocked-icon" *ngIf="m.failed === 3" i18n-matTooltip
+                 matTooltip="O envio da mensagem foi bloqueado pela política de segurança">
+                <fa-icon [icon]="['fas', 'ban']" i18n-matTooltip
+                         matTooltip="O envio da mensagem foi bloqueado pela política de segurança"></fa-icon>
+            </div>
+            <div class="full-width s10 mrg5B" *ngIf="m.participantName">
+                <span class="font-medium {{colors[m.participant?.slice(-1)]}}"
+                      *ngIf="m.participant">{{ m.participant }} </span>
+                <span class="fg-black-lighten-1"> ~ {{ m.participantName }}</span>:
+            </div>
+            <div class="full-width s12 mrg5B" *ngIf="m.sharedContact">
+                <div class="font-medium" i18n>Contato compartilhado</div>
+                <div class="full-width mrg6T">
+                    <button matRipple class="btn font-light s10 btn-black-lighten-5"
+                            (click)="openContact(m.sharedContact)" i18n>
+                        <fa-icon [icon]="['far', 'address-book']"></fa-icon>&nbsp;&nbsp;Abrir contato
+                    </button>
+                </div>
+            </div>
+            <div [@visibilityChanged]="visibility" *ngIf="showReplyTo && ((['in', 'out'].includes(m.direction) && !m.fk_file) ||
+    (['in', 'out', 'system-out'].includes(m.direction) && (!m.fk_file || m.hasPath || queueType === 13) && !m.deleted)) && (!status.isMobile || status.isEmbedded)"
+                 class="message-actions-menu">
+                <div matRipple class="message-actions-menu-button" matTooltip="Executar ações" i18n-matTooltip
+                     *ngIf="showActions && queueType && !status.limitIvr" [matMenuTriggerFor]="actionsMenu">
+                    <fa-icon [icon]="['fas', 'cogs']"></fa-icon>
+                </div>
+                <div matRipple class="message-actions-menu-button" matTooltip="Detalhes da mensagem" i18n-matTooltip
+                     (click)="showMessageInfo(m)" *ngIf="['out'].includes(m.direction)">
+                    <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+                </div>
+                <div matRipple class="message-actions-menu-button" matTooltip="Abrir atendimento" i18n-matTooltip
+                     *ngIf="m.participant && ['in'].includes(m.direction)" (click)="openNewChat(m)">
+                    <fa-icon [icon]="['fas', 'sparkles']"></fa-icon>
+                </div>
+                <div matRipple class="message-actions-menu-button" matTooltip="Copiar texto" i18n-matTooltip
+                     (click)="copyToClipboard(m.text)"
+                     *ngIf="['in', 'out'].includes(m.direction) && !m.fk_file && queueType !== 16">
+                    <fa-icon [icon]="['fas', 'copy']"></fa-icon>
+                </div>
+                <div matRipple class="message-actions-menu-button" matTooltip="Responder"
+                     i18n-matTooltip="Responder mensagem"
+                     (click)="replyMsg(m.messageid, m.text || m.file_name || (m.hasPath ? 'Arquivo' : ''), m.direction === 'out', m.hasPath)"
+                     *ngIf="showReplyTo && ['in', 'out', 'system-out'].includes(m.direction) && !m.viewOnce && (!m.fk_file || m.hasPath || queueType === 13) &&
+           !m.deleted && (!status.isMobile || status.isEmbedded) && (m.clientRcvd || m.readed)">
+                    <fa-icon [icon]="['fas', 'reply']"></fa-icon>
+                </div>
+                <div matRipple class="message-actions-menu-button" matTooltip="Encaminhar"
+                     i18n-matTooltip="Encaminhar mensagem"
+                     (click)="shareMsg()"
+                     *ngIf="['in', 'out', 'system-out'].includes(m.direction) && (!status.isMobile || status.isEmbedded) && queueType !== 16 && m.failed !== 3">
+                    <fa-icon [icon]="['fas', 'share']"></fa-icon>
+                </div>
+                <div matRipple class="message-actions-menu-button" matTooltip="Editar"
+                     i18n-matTooltip="Editar mensagem"
+                     (click)="editMsg()"
+                     *ngIf="showReplyTo && ['out'].includes(m.direction) && !m.deleted && !m.fk_ivr && m.timestamp + (10 * 59) >= now &&
+           !disabledDelete && (m.clientRcvd || m.readed) && !m.fk_file && queueType === 5 && !m.oldText && !oldMessage
+           && status.user.id === m.userId">
+                    <fa-icon [icon]="['fas', 'edit']"></fa-icon>
+                </div>
+                <div matRipple class="message-actions-menu-button" matTooltip="Apagar"
+                     i18n-matTooltip="Apagar mensagem"
+                     (click)="deleteMsg(m.messageid)"
+                     *ngIf="showReplyTo && ![9,10,17,18,19].includes(queueType) && ['out'].includes(m.direction) && !m.fk_ivr &&
+             !m.deleted && m.timestamp + 24 * 60 * 60 >= now && !disabledDelete && (m.clientRcvd || m.readed) && !oldMessage">
+                    <fa-icon [icon]="['fas', 'times-circle']"></fa-icon>
+                </div>
+            </div>
+            <div [innerHtml]="m.quotedtext | messageFormattingPipe:true:'':highlight"
+                 style="background-color: rgba(0,0,0,0.06); white-space: nowrap; padding: 4px 8px; border-left: 3px solid #03a9f4; max-height: 55px; overflow: hidden; text-overflow: ellipsis; border-radius: 4px;"
+                 *ngIf="m.quotedtext && !messageRef[m.chatId]?.[m.quotedid]?.file_mimetype"
+                 (click)="goToQuoted(m.quotedid, m.chatId)" class="pointer mrg5B">
+            </div>
+            <div class="flex-row flex-center overflow-hidden mrg5B pointer" (click)="openLink(m.adUrl)"
+                 matTooltip="Abrir anúncio" i18n-matTooltip matRipple
+                 *ngIf="m.adTitle && ((!status.hideDeletedMessages && ![2,12].includes(m.queueType)) || !m.deleted) && !m.urlcard"
+                 style="width: 100%; border-radius: 4px; padding: 4px 8px; background: rgba(0,0,0,.04)">
+                <!--      <div style="max-height: 120px; overflow: hidden;" *ngIf="['application/pdf'].includes(m.file_mimetype)">-->
+                <!--        <img style="max-width: 310px;" [src]="baseUrl + '/api/downloadThumbnail?id=' + m.fk_file"/>-->
+                <!--      </div>-->
+                <div style="max-height: 64px; max-width: 64px; height: 64px; width: auto;" *ngIf="m.adThumbUrl"
+                     class="flex-align-center overflow-hidden flex-row flex-rigid">
+                    <img style="height: 100%; width: auto; object-fit: contain; border-radius: 4px;"
+                         [src]="m.adThumbUrl"/>
+                </div>
+
+                <div class="mrg4L overflow-hidden flex-elastic">
+                    <div class="font-semi-bold no-break-with-ellipses s12">
+                        {{ m.adTitle }}
+                    </div>
+                    <div class="font-regular mrg4T no-break-with-ellipses s12">
+                        {{ m.adBody }}
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row flex-center overflow-hidden mrg5B pointer" (click)="openLink(m.adUrl)"
+                 matTooltip="Abrir link" *ngIf="m.urlcard" i18n-matTooltip matRipple
+                 style="width: 100%; border-radius: 4px; padding: 4px 8px; background: rgba(0,0,0,.04)">
+
+                <div style="max-height: 64px; max-width: 64px; height: 64px; width: auto;"
+                     *ngIf="m.locationThumbnail"
+                     class="flex-align-center overflow-hidden flex-row flex-rigid">
+                    <img style="height: 100%; width: auto; object-fit: contain; border-radius: 4px;"
+                         [src]="'data:image/jpeg;base64,' + m.locationThumbnail"/>
+                </div>
+
+                <div class="mrg8L overflow-hidden flex-elastic">
+                    <div class="font-semi-bold no-break-with-ellipses s12">
+                        {{ m.adTitle }}
+                    </div>
+                    <div class="font-regular mrg4T no-break-with-ellipses s12">
+                        {{ m.adBody }}
+                    </div>
+                </div>
+            </div>
+            <div
+                    *ngIf="(m.fk_file || m.file_cdn) && ((!status.hideDeletedMessages && ![2,12].includes(m.queueType)) || !m.deleted)"
+                    style="display: flex; flex-direction: column; align-items: center; overflow: hidden; max-width: 310px; border-radius: 4px;"
+                    [id]="m.messageid" class="mrg5B">
+                <!--      <div style="max-height: 120px; overflow: hidden;" *ngIf="['application/pdf'].includes(m.file_mimetype)">-->
+                <!--        <img style="max-width: 310px;" [src]="baseUrl + '/api/downloadThumbnail?id=' + m.fk_file"/>-->
+                <!--      </div>-->
+                <div style="max-height: 300px; max-width: 310px; display: flex;"
+                     *ngIf="status.imageMimes.includes(m.file_mimetype)"
+                     (click)="openFile(m.fk_file, m.file_auth, m.file_cdn)"
+                     class="pointer flex-align-center overflow-hidden">
+                    <img style="max-width: 100%; max-height: 300px; border-radius: 8px;"
+                         [src]="m.file_cdn ? m.file_cdn : baseUrl + '/' + (m.file_auth ? 'static' : 'api') + '/downloadMedia?id=' + m.fk_file + '&download=true'+ '&auth=' + m.file_auth"/>
+                </div>
+                <div class="overflow-hidden flex-column flex-center"
+                     *ngIf="status.audioMimes.includes(m.file_mimetype?.split(';')[0])">
+                    <div class="full-width">
+                        <app-custom-audio [waveform]="m.file_waveform" [auth]="m.file_auth" [fileId]="m.fk_file"
+                                          [bgColorClass]="['out', 'system-out'].includes(m.direction) ? 'outline-green-lighten-2' : 'outline-black-lighten-5'"
+                                          [src]="m.file_cdn ? m.file_cdn : baseUrl + '/' + (m.file_auth ? 'static' : 'api') + '/downloadMedia?id=' + m.fk_file + '&auth=' + m.file_auth + (status.isIOS ? '&ios=y' : '')"
+                                          [bars]="status.isMobile ? 32 : 48"
+                                          [fallBackWidth]="status.isMobile ? 128 : 192"
+                                          [type]="m.file_mimetype"></app-custom-audio>
+                    </div>
+                    <div *ngIf="m.transcription" class="mrg8T s12 font-light full-width">{{ m.transcription }}</div>
+                </div>
+                <div style="max-height: 300px; overflow: hidden; max-width: 310px;"
+                     *ngIf="status.videoMimes.includes(m.file_mimetype?.split(';')[0])">
+                    <video controls style="max-width: 100%; max-height: 320px; border-radius: 4px;">
+                        <source
+                                [src]="m.file_cdn ? m.file_cdn : baseUrl + '/' + (m.file_auth ? 'static' : 'api') + '/downloadMedia?id=' + m.fk_file + '&auth=' + m.file_auth"
+                                [type]="m.file_mimetype">
+                    </video>
+                </div>
+                <div style="max-height: 160px; overflow: hidden; max-width: 280px; width: 280px;" class="pointer"
+                     *ngIf="m.file_mimetype === 'application/pdf' && m.hasThumbnail"
+                     (click)="openFile(m.fk_file, m.file_auth, m.file_cdn, m.file_mimetype)">
+                    <img style="max-width: 100%; width: 100%; height: auto; max-height: 160px; border-top-left-radius: 8px; border-top-right-radius: 8px; object-fit: cover; object-position: top;"
+                         [src]="baseUrl + '/static/downloadThumbnail?id=' + m.fk_file + '&download=true'+ '&auth=' + m.file_auth"/>
+                </div>
+                <div class="message-file-name-label"
+                     [class.no-rounded-top-corners]="m.file_mimetype === 'application/pdf' && m.hasThumbnail"
+                     [class.mrg0T]="m.file_mimetype === 'application/pdf' && m.hasThumbnail"
+                     *ngIf="!status.videoMimes.includes(m.file_mimetype?.split(';')[0]) &&
+           !status.audioMimes.includes(m.file_mimetype?.split(';')[0]) && m.fk_file">
+                    <div class="s18 flex-rigid"
+                         (click)="m.file_mimetype === 'application/pdf' ? openFile(m.fk_file, m.file_auth, m.file_cdn, m.file_mimetype) : downloadFile(m.fk_file, m.file_auth)">
+                        <fa-duotone-icon
+                                [icon]="['fad', m.file_mimetype === 'application/pdf' ? 'file-pdf' : status.documentsMimes.includes(m.file_mimetype) ? 'file-alt' : status.spreadSheetsMimes.includes(m.file_mimetype) ? 'file-spreadsheet' : status.presentationMimes.includes(m.file_mimetype) ? 'file-powerpoint' : status.compressMimes.includes(m.file_mimetype) ? 'file-archive' : status.imageMimes.includes(m.file_mimetype) ? 'file-image' : 'file']"
+                                [primaryOpacity]="m.file_mimetype === 'application/pdf' ? 0.4 : status.documentsMimes.includes(m.file_mimetype) ? 0.4 : status.spreadSheetsMimes.includes(m.file_mimetype) ? 0.4 : status.presentationMimes.includes(m.file_mimetype) ? 0.4 : status.compressMimes.includes(m.file_mimetype) ? 1 : 1"
+                                [secondaryOpacity]="m.file_mimetype === 'application/pdf' ? 1 : status.documentsMimes.includes(m.file_mimetype) ? 1 : status.spreadSheetsMimes.includes(m.file_mimetype) ? 1 : status.presentationMimes.includes(m.file_mimetype) ? 1 : status.compressMimes.includes(m.file_mimetype) ? 0.18 : 0.18"
+                                [primaryColor]="m.file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(m.file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(m.file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(m.file_mimetype) ? '#e65100' : status.compressMimes.includes(m.file_mimetype) ? '#2e3951' : '#2e3951'"
+                                [secondaryColor]="m.file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(m.file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(m.file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(m.file_mimetype) ? '#e65100' : status.compressMimes.includes(m.file_mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+                    </div>
+                    <div class="no-break-with-ellipses mrg10L flex-elastic"
+                         [innerHTML]="(m.file_name || texts.noName) | messageFormattingPipe:false:'':highlight"
+                         (click)="m.file_mimetype === 'application/pdf' ? openFile(m.fk_file, m.file_auth, m.file_cdn, m.file_mimetype) : downloadFile(m.fk_file, m.file_auth)">
+                    </div>
+                    <div class="mrg10L flex-rigid s18 download-file-button" matTooltip="Fazer download do arquivo"
+                         i18n-matTooltip (click)="downloadFile(m.fk_file, m.file_auth)">
+                        <fa-icon [icon]="['fal', 'arrow-circle-down']"></fa-icon>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="m.locationThumbnail && !m.urlcard"
+                 style="display: flex; flex-direction: column; overflow: hidden; max-width: 310px;"
+                 [id]="m.messageid" class="mrg5B">
+                <div style="max-height: 300px; overflow: hidden; max-width: 310px;">
+                    <a href="https://maps.google.com/maps?q={{m.latitude}}%2C{{m.longitude}}&z=17&hl=pt-BR"
+                       target="_blank">
+                        <img style="max-width: 100%;" [src]="'data:image/jpeg;base64,' + m.locationThumbnail"/>
+                    </a>
+                </div>
+            </div>
+            <div *ngIf="m.longitude && !m.locationThumbnail && !m.urlcard" [id]="m.messageid"
+                 style="display: flex; flex-direction: column; overflow: hidden; max-width: 310px;" class="mrg5B">
+                <div style="max-height: 300px; overflow: hidden; max-width: 310px;">
+                    <div class="font-bold" i18n>Localização compartilhada:</div>
+                    <div class="full-width flex-row flex-center mrg6T mrg6B">
+                        <a class="s36" matTooltip="Clique para abrir o mapa" i18n-matTooltip
+                           href="https://maps.google.com/maps?q={{m.latitude}}%2C{{m.longitude}}&z=17&hl=pt-BR"
+                           target="_blank">
+                            <fa-icon [icon]="['fad', 'map']"></fa-icon>
+                        </a>
+                        <div class="font-light s10 mrg6L" i18n>Clique para abrir o mapa</div>
+                    </div>
+                </div>
+            </div>
+            <div [innerHtml]="messageRef[m.chatId][m.quotedid].text | messageFormattingPipe:true:'':highlight"
+                 style="background-color: rgba(0,0,0,0.06); padding: 4px 8px; border-left: 3px solid #03a9f4; max-height: 55px; overflow: hidden; text-overflow: ellipsis; border-radius: 4px;"
+                 *ngIf="!m.quotedtext && m.quotedid && messageRef[m.chatId] && messageRef[m.chatId][m.quotedid] && messageRef[m.chatId][m.quotedid].text"
+                 (click)="goToQuoted(m.quotedid, m.chatId)" class="pointer mrg5B">
+            </div>
+            <div
+                    style="background-color: rgba(0,0,0,0.06); padding: 4px 8px; border-left: 3px solid #03a9f4; border-radius: 4px;"
+                    *ngIf="m.quotedid && messageRef[m.chatId]?.[m.quotedid]?.file_mimetype"
+                    (click)="goToQuoted(m.quotedid, m.chatId)"
+                    class="pointer flex-row flex-align-center mrg5B">
+                <div style="max-height: 45px; overflow: hidden; font-size: 1.6rem;" class="no-break-with-ellipses"
+                     *ngIf="messageRef[m.chatId] && messageRef[m.chatId][m.quotedid] && (['application/pdf'].includes(messageRef[m.chatId][m.quotedid].file_mimetype) ||
+           status.documentsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ||
+           status.presentationMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ||
+           status.compressMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ||
+           status.spreadSheetsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype))">
+                    <fa-duotone-icon
+                            [icon]="['fad', messageRef[m.chatId][m.quotedid].file_mimetype === 'application/pdf' ? 'file-pdf' :
+          status.documentsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 'file-alt' :
+          status.spreadSheetsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 'file-spreadsheet' :
+          status.presentationMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 'file-powerpoint' : status.compressMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 'file-archive' : 'file']"
+                            [primaryOpacity]="messageRef[m.chatId][m.quotedid].file_mimetype === 'application/pdf' ? 0.4 :
+          status.documentsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 0.4 : status.spreadSheetsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 0.4 :
+          status.presentationMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 0.4 : status.compressMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 1 : 1"
+                            [secondaryOpacity]="messageRef[m.chatId][m.quotedid].file_mimetype === 'application/pdf' ? 1 :
+          status.documentsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 1 : status.spreadSheetsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 1 :
+          status.presentationMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 1 : status.compressMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? 0.18 : 0.18"
+                            [primaryColor]="messageRef[m.chatId][m.quotedid].file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#e65100' : status.compressMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#2e3951' : '#2e3951'"
+                            [secondaryColor]="messageRef[m.chatId][m.quotedid].file_mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#2e7d32' : status.presentationMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#e65100' : status.compressMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+                </div>
+                <div style="max-height: 45px; overflow: hidden; max-width: 55px;" class="no-break-with-ellipses"
+                     *ngIf="messageRef[m.chatId] && messageRef[m.chatId][m.quotedid] && status.imageMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype)">
+                    <img style="max-width: 55px; border-radius: 4px; max-height: 45px;"
+                         [src]="baseUrl + '/' + (messageRef[m.chatId][m.quotedid].file_auth ? 'static' : 'api') + '/downloadMedia?id=' + messageRef[m.chatId][m.quotedid].fk_file + '&download=true&auth=' + messageRef[m.chatId][m.quotedid].file_auth"/>
+                </div>
+                <div style="max-height: 45px; overflow: hidden; font-size: 1.6rem;" class="no-break-with-ellipses"
+                     *ngIf="messageRef[m.chatId] && messageRef[m.chatId][m.quotedid] && status.audioMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype?.split(';')[0])">
+                    <fa-icon [icon]="['far', 'file-music']"></fa-icon>
+                </div>
+                <div style="max-height: 45px; overflow: hidden; font-size: 1.6rem;" class="no-break-with-ellipses"
+                     *ngIf="messageRef[m.chatId] && messageRef[m.chatId][m.quotedid] && status.videoMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype?.split(';')[0])">
+                    <fa-icon [icon]="['far', 'file-video']"></fa-icon>
+                </div>
+                <div style="max-height: 45px; overflow: hidden; font-size: 1.6rem;" class="no-break-with-ellipses"
+                     *ngIf="messageRef[m.chatId] && messageRef[m.chatId][m.quotedid] &&
+           !status.videoMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype?.split(';')[0]) &&
+           !status.audioMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype?.split(';')[0]) &&
+           !status.imageMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) &&
+           !status.spreadSheetsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) &&
+           !status.documentsMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) &&
+           !status.presentationMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) &&
+           !status.compressMimes.includes(messageRef[m.chatId][m.quotedid].file_mimetype) &&
+           !['application/pdf'].includes(messageRef[m.chatId][m.quotedid].file_mimetype)">
+                    <fa-duotone-icon [icon]="['fad', 'file']" [primaryOpacity]="1"
+                                     [secondaryOpacity]="0.18" [primaryColor]="'#2e3951'"
+                                     [secondaryColor]="'#222'"></fa-duotone-icon>
+                </div>
+                <div
+                        class="mrg5L no-break-with-ellipses">{{ messageRef[m.chatId] && messageRef[m.chatId][m.quotedid] ? messageRef[m.chatId][m.quotedid].file_name || texts.file : texts.file }}
+                </div>
+            </div>
+            <div class="full-width flex-row mrg5B" *ngIf="m.deleted === 1 || m.oldText || m.viewOnce">
+                <div class="label-big label-danger" *ngIf="m.deleted === 1" i18n>Excluída</div>
+                <div class="label-big label-info" *ngIf="m.viewOnce" matTooltip="Visualização única."
+                     i18n-matTooltip>
+                    <fa-icon [icon]="['far', 'eye']"></fa-icon>
+                </div>
+                <div class="label-big label-warning pointer" *ngIf="m.oldText && !m.rewritedbyai"
+                     [class.mrg8L]="m.deleted === 1" i18n
+                     [matTooltip]="m.oldText">Editada
+                </div>
+            </div>
+            <div [innerHtml]="m.text | messageFormattingPipe:(queueType !== 16):m.subject:highlight"
+                 *ngIf="queueType !== 16 && !['info', 'alert', 'system-info'].includes(m.direction) && ((!status.hideDeletedMessages && ![2,12].includes(m.queueType)) || !m.deleted)"></div>
+            <div class="mrg4T full-width mrg4B" *ngIf="m.featuresextracted?.length">
+                <div *ngFor="let f of m.featuresextracted"
+                     class="feature-copy font-regular flex-row align-items-center mrg4T"
+                     matRipple
+                     matTooltip="Clique para copiar" i18n-matRipple (click)="utils.copyToClipboard(f)">
+                    <div>
+                        <fa-icon [icon]="['fal', 'copy']"></fa-icon>
+                    </div>
+                    <div class="mrg6L">
+                        {{ f }}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="queueType === 16 && !['info', 'alert', 'system-info'].includes(m.direction)"
+                 class="overflow-hidden">
+                <iframe class="iframe-style scroll1" [class.has-attachment]="m.attachments?.length"
+                        (load)="injectMessage($event, m)">
+                </iframe>
+            </div>
+            <div *ngIf="queueType === 16 && m.attachments?.length"
+                 class="full-width flex-row mrg6T overflow-hidden flex-wrap">
+                <div *ngFor="let a of m.attachments" class="mail-attachment mrg4R align-items-center pointer mrg4T"
+                     (click)="downloadFile(a.id, a.hash)">
+                    <div class="s18 flex-rigid">
+                        <fa-duotone-icon
+                                [icon]="['fad', a.mimetype === 'application/pdf' ? 'file-pdf' : status.documentsMimes.includes(a.mimetype) ? 'file-alt' : status.spreadSheetsMimes.includes(a.mimetype) ? 'file-spreadsheet' : status.presentationMimes.includes(a.mimetype) ? 'file-powerpoint' : status.compressMimes.includes(a.mimetype) ? 'file-archive' : status.imageMimes.includes(a.mimetype) ? 'file-image' : 'file']"
+                                [primaryOpacity]="a.mimetype === 'application/pdf' ? 0.4 : status.documentsMimes.includes(a.mimetype) ? 0.4 : status.spreadSheetsMimes.includes(a.mimetype) ? 0.4 : status.presentationMimes.includes(a.mimetype) ? 0.4 : status.compressMimes.includes(a.mimetype) ? 1 : 1"
+                                [secondaryOpacity]="a.mimetype === 'application/pdf' ? 1 : status.documentsMimes.includes(a.mimetype) ? 1 : status.spreadSheetsMimes.includes(a.mimetype) ? 1 : status.presentationMimes.includes(a.mimetype) ? 1 : status.compressMimes.includes(a.mimetype) ? 0.18 : 0.18"
+                                [primaryColor]="a.mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(a.mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(a.mimetype) ? '#2e7d32' : status.presentationMimes.includes(a.mimetype) ? '#e65100' : status.compressMimes.includes(a.mimetype) ? '#2e3951' : '#2e3951'"
+                                [secondaryColor]="a.mimetype === 'application/pdf' ? '#c62828' : status.documentsMimes.includes(a.mimetype) ? '#0d47a1' : status.spreadSheetsMimes.includes(a.mimetype) ? '#2e7d32' : status.presentationMimes.includes(a.mimetype) ? '#e65100' : status.compressMimes.includes(a.mimetype) ? '#222' : '#222'"></fa-duotone-icon>
+                    </div>
+                    <div class="no-break-with-ellipses mrg10L flex-elastic">
+                        {{ a.filename || texts.noName }}
+                    </div>
+                    <div class="mrg10L flex-rigid s18 download-file-button" matTooltip="Fazer download do arquivo"
+                         i18n-matTooltip>
+                        <fa-icon [icon]="['fal', 'arrow-circle-down']"></fa-icon>
+                    </div>
+                </div>
+            </div>
+            <div class="full-width flex-row mrg4T">
+                <div class="label-info pointer flex-row flex-rigid s10 flex-center pad4A" *ngIf="m.oldText && m.rewritedbyai"
+                     [class.mrg8L]="m.deleted === 1" [matTooltip]="m.oldText">
+                    <fa-icon [icon]="['fas', 'stars']"></fa-icon>
+                </div>
+                <div class="message-time-label flex-elastic flex-row mrg6L align-items-center justify-content-end">
+                    {{ m.file_readableSize ? m.file_readableSize + '  -  ' : '' }}{{ m.formattedTime }}
+                    <fa-icon *ngIf="['out', 'out-ex', 'system-out'].includes(m.direction) && chatType !== 2"
+                             [class.fg-info]="m.readed"
+                             [icon]="['far', !m.serverRcvd && !m.clientRcvd && !m.readed ? 'clock' : m.serverRcvd && !m.clientRcvd && !m.readed ? 'check' : 'check-double']"></fa-icon>
+                </div>
+            </div>
+            <div *ngIf="m.reaction" class="reaction-label">{{ m.reaction }}</div>
+        </div>
+        <div class="full-width mrg8B flex-column" *ngIf="m.hsm?.length">
+            <ng-container *ngFor="let b of m.hsm">
+                <div class="message-button" [matRippleDisabled]="m.direction !== 'in'"
+                     (click)="sendButtonResponse(b)"
+                     [class.message-button-disabled]="m.direction !== 'in'"
+                     [style.align-self]="m.direction === 'in' ? 'flex-start' : 'flex-end'"
+                     matRipple [style.max-width.px]="message.clientWidth" *ngIf="b.type === 1">
+                    {{ b.text }}
+                </div>
+                <div class="message-button no-break-with-ellipses"
+                     (click)="b.url?.includes('copy:') ? copyToClipboard(b.url.split('copy:')[1]) : openLink(b.url)"
+                     [style.align-self]="m.direction === 'in' ? 'flex-start' : 'flex-end'"
+                     matRipple [style.max-width.px]="message.clientWidth" *ngIf="b.type === 2">
+                    <fa-icon
+                            [icon]="['far', b.url?.includes('copy:') ? 'copy' : 'external-link']"></fa-icon>&nbsp;&nbsp;{{ b.text }}
+                </div>
+                <div class="message-button no-break-with-ellipses"
+                     [class.message-button-disabled]="m.direction !== 'in'"
+                     (click)="openSelectionList(b)" [matRippleDisabled]="m.direction !== 'in'"
+                     [style.align-self]="m.direction === 'in' ? 'flex-start' : 'flex-end'"
+                     matRipple [style.max-width.px]="message.clientWidth" *ngIf="b.type === 3">
+                    {{ b.buttonText }}
+                </div>
+            </ng-container>
+        </div>
+        <div class="full-width card pad0A overflow-hidden" [@cardShown]="showCard ? 'shown' : 'hidden'"
+             [style.width.px]="status.isMobile ? 330 : 440" [style.min-width.px]="status.isMobile ? 330 : 440"
+             [style.max-width.px]="status.isMobile ? 330 : 440" style="border: 1px solid #e9e9e9;"
+             *ngIf="m.cardstructure?.structure?.length" [class.align-self-end]="m.direction === 'out'">
+            <div class="full-width flex-rigid pad12L pad12R pad4T pad4B flex-row overflow-hidden pointer" matRipple
+                 style="height: 24px;" (click)="showCard = !showCard">
+                <div class="flex-elastic no-break-with-ellipses">
+                    {{ m.cardstructure?.name }}
+                </div>
+                <div class="flex-rigid mrg8L">
+                    <fa-icon [icon]="['far', 'chevron-down']" [rotate]="showCard ? 180 : null"></fa-icon>
+                </div>
+            </div>
+            <div class="full-width flex-elastic" *ngIf="showCard">
+                <app-information-card-viewer [card]="m.cardstructure" [big]="true" [chat]="chat"
+                                             [varsChangeCounter]="chat?.varsChangeCounter" [viewOnly]="false"
+                                             [@visibilityChanged]="showCard ? 'shown' : 'hidden'"
+                                             [showHeader]="false"></app-information-card-viewer>
+            </div>
+
+        </div>
+    </div>
+</div>

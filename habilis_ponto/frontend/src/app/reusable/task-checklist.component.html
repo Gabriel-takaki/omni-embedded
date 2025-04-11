@@ -1,0 +1,34 @@
+<div class="flex-row font-semi-bold s14 flex-center">
+  <div class="flex-elastic" i18n>
+    Checklist
+  </div>
+  <div class="pointer fg-info flex-rigid mrg4L s12" i18n (click)="clearList()" *ngIf="editable">
+    Limpar lista
+  </div>
+  <div class="mrg12L flex-rigid">
+    <app-dialog-close-button (click)="addChecklistItem()" [white]="false" [size]="status.isMobile ? 32 : 26"
+                             [rotateOnMouseOver]="false" *ngIf="editable"
+                             [icon]="'plus'" toolTip="Adicionar item" i18n-toolTip></app-dialog-close-button>
+  </div>
+</div>
+<div class="checklist-base scroll1">
+  <div class="mrg8T" *ngIf="!list?.length" i18n style="align-self: center; justify-self: center">
+    Nenhum item para exibir
+  </div>
+  <div class="checklist-item" [class.mrg4T]="i > 0"
+       [class.checked]="item.checked" *ngFor="let item of list; let i = index;">
+    <div class="flex-rigid pointer item-checkbox" [class.fg-info]="item.checked" (click)="toogleChecklistItem(item)">
+      <fa-icon [icon]="[item.checked ? 'fas' : 'fal', item.checked ? 'check-square' : 'square']"></fa-icon>
+    </div>
+    <div class="flex-elastic mrg8L mrg8R editable-div pad4A" contentEditable="{{editable ? 'true' : 'false'}}"
+         id="checklist-item-{{item.id}}"
+         data-text="Novo item sem título" i18n-data-text (keydown.enter)="removeFocus($event, item, item.isNew)"
+         (keydown.tab)="addChecklistItem()" (focusout)="updateTitle($event, item)"
+         (blur)="removeIsNew(item)" (keydown.escape)="removeFocus($event, item)" [innerText]="item.title">
+    </div>
+    <div class="item-btn" matTooltip="Remover" i18n-matTooltip [class.disabled]="!editable"
+         (click)="removeChecklistItem(item)" matRipple [matRippleDisabled]="!editable">
+      <fa-icon [icon]="['fal', 'times']"></fa-icon>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+@import "../../scss/newcolors";
+
+.header, .days {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+}
+
+.days-container {
+  height: 3rem;
+  position: relative;
+  transition: transform 0.3s linear;
+}
+
+.days, .days-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  justify-content: space-around;
+}
+
+.days {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.chevron-icon {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: $blue-darken-1;
+  cursor: pointer;
+
+  &:hover {
+    color: $info-base;
+  }
+
+}
+
+.day-selection {
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 0.35rem;
+  font-size: 0.9rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  justify-self: center;
+  margin: auto;
+
+  &:hover:not(.day-disabled) {
+    background-color: $blue-lighten-2;
+    color: $white-base;
+  }
+
+}
+
+.day-marker {
+  font-size: 0.4rem;
+  color: $purple-base;
+  margin: auto;
+}
+
+.day-disabled {
+  color: $black-lighten-4;
+}
+
+.day-selection.selected {
+  background-color: $blue-base;
+  color: $white-base;
+}

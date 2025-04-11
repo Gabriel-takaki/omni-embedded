@@ -1,0 +1,52 @@
+@import "newcolors";
+
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: $black-lighten-1;
+}
+
+.mat-menu-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+.mat-menu-panel::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+.mat-menu-panel::-webkit-scrollbar-thumb {
+  background: $black-lighten-1;
+}
+
+.scroll1 {
+  scrollbar-width: thin;
+}
+
+.scroll1::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.scroll2::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scroll1-small::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scroll1::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+.scroll1::-webkit-scrollbar-thumb {
+  background: $black-lighten-1;
+  border-radius: 40px;
+}

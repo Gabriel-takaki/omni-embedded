@@ -1,0 +1,86 @@
+<div class="full-width h100 overflow-hidden flex-column">
+  <div class="default-buttons-area">
+    <div class="h5 mrg-right-auto" i18n>
+      Motivos de pausa
+    </div>
+    <button class="mrg-left-auto btn btn-primary" matRipple (click)="addReason()">
+      <fa-icon [icon]="['far', 'plus']"></fa-icon>&nbsp;&nbsp;<span i18n="Criar um novo item">Adicionar</span>
+    </button>
+  </div>
+  <div class="flex-elastic card mrg15T full-width">
+    <div class="full-width h100" #gridContainer>
+      <dx-data-grid [columns]="columns" [masterDetail]="{enabled: true, template: 'reasonDetailTemplate'}"
+                    [dataSource]="reasons" [height]="gridContainer.clientHeight - 100" (onRowExpanded)="copyData($event)"
+                    [hoverStateEnabled]="true">
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-paging [enabled]="true"></dxo-paging>
+        <div *dxTemplate="let id of 'functionsTemplate'">
+          <div class="grid-function-btn-area">
+            <button class="grid-function-btn" (click)="removeItem(id.data)" matTooltip="Excluir motivo"
+                    i18n-matTooltip>
+              <fa-icon [icon]="['far', 'times']"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div *dxTemplate="let t of 'maxTimeTemplate'">
+          {{t.value}} min.
+        </div>
+        <div *dxTemplate="let t of 'actionTemplate'">
+          <span class="grid-status-base" [class.grid-status-red-lighten-1]="t.value === 0"
+                [class.grid-status-yellow-lighten-1]="t.value === 1">
+            {{t.value === 0 ? texts.bloquear : texts.alertar}}
+          </span>
+        </div>
+        <div *dxTemplate="let item of 'reasonDetailTemplate'">
+          <div class="full-width pad10A">
+            <div class="flex-row">
+              <mat-form-field>
+                <mat-label i18n>Ação</mat-label>
+                <mat-select [(value)]="item.data.copy.action" class="full-width">
+                  <mat-option [value]="0" i18n>
+                    Bloquear
+                  </mat-option>
+                  <mat-option [value]="1" i18n>
+                    Alertar
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="mrg10L">
+                <mat-label i18n>Vezes por dia</mat-label>
+                <input matInput type="number" [(ngModel)]="item.data.copy.timesperday" name="timesperday"
+                       max="999" min="0"
+                       placeholder="Vezes por dia" required #timesperdayInput="ngModel" class="full-width"
+                       i18n-placeholder/>
+              </mat-form-field>
+              <mat-form-field class="mrg10L">
+                <mat-label i18n>Tempo máximo</mat-label>
+                <input matInput type="text" [(ngModel)]="item.data.copy.maxtime" name="maxtime" max="9999"
+                       min="0"
+                       placeholder="Tempo máximo" required #maxtimeInput="ngModel" class="full-width"
+                       i18n-placeholder/>
+                <span class="mrg10R" matSuffix i18n="Abreviação de minutos"> min.</span>
+              </mat-form-field>
+            </div>
+            <div class="flex-column">
+              <div class="full-width font-bold" i18n>
+                Filas
+              </div>
+              <div class="full-width mrg5T">
+                <app-tag-box label="Filas" i18n-label [items]="service.allQueues"
+                             [allowReordering]="false" [(value)]="item.data.copy.queues"
+                             [placeholder]="'Selecionar filas ...'"></app-tag-box>
+              </div>
+            </div>
+
+            <div class="full-width flex-center mrg15T">
+              <button class="btn btn-success" (click)="saveConfig(item.data)" matTooltip="Salvar configurações" i18n
+                      i18n-matTooltip>
+                <fa-icon [icon]="['far', 'save']"></fa-icon>&nbsp;&nbsp;Salvar
+              </button>
+            </div>
+          </div>
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>

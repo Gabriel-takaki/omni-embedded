@@ -1,0 +1,50 @@
+<div [matMenuTriggerFor]="editable ? alertsMenu : null" [class.pointer]="editable">
+    <div class="label-big label-default" *ngIf="action === 1" [style.font-size.px]="fontSize">
+        <fa-icon [icon]="['fal', 'phone']"></fa-icon>
+        <span i18n>Ligar</span> {{ actionData ? texts.para : '' }} {{ actionData }}
+    </div>
+    <div class="label-big label-default" *ngIf="action === 2" [style.font-size.px]="fontSize">
+        <fa-icon [icon]="['fal', 'comment']"></fa-icon>
+        <span i18n>Chat</span> {{ actionData ? texts.com : '' }} {{ actionData }}
+    </div>
+    <div class="label-big label-default" *ngIf="action === 3" [style.font-size.px]="fontSize">
+        <fa-icon [icon]="['fal', 'users']"></fa-icon>
+        <span i18n>Reunião</span>
+    </div>
+    <ng-container *ngFor="let act of status.allActions">
+        <div *ngIf="action === act.id" class="label-big label-default" [style.font-size.px]="fontSize">
+            {{ act.icon }} {{ act.name }}
+        </div>
+    </ng-container>
+    <div class="label-big label-default" *ngIf="!action" [style.font-size.px]="fontSize" i18n>
+        Nenhuma ação
+    </div>
+</div>
+<mat-menu #alertsMenu="matMenu" xPosition="before">
+    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" (click)="select(0, {})">
+        Sem ação
+    </button>
+    <ng-container *ngFor="let c of (contacts | idstoobjects:contactsMap)">
+        <button mat-menu-item class="mat-menu-min-width" (click)="select(1, c)">
+            <span i18n>Ligar para</span> {{ c.number }} [{{ c.name }}]
+        </button>
+        <button mat-menu-item class="mat-menu-min-width" (click)="select(2, c)">
+            <span i18n>Chat com</span> {{ c.number }} [{{ c.name }}]
+        </button>
+    </ng-container>
+    <ng-container *ngIf="!contacts?.length">
+        <button mat-menu-item i18n class="mat-menu-min-width" (click)="select(1, {})">
+            Ligar
+        </button>
+        <button mat-menu-item i18n class="mat-menu-min-width" (click)="select(2, {})">
+            Chat
+        </button>
+    </ng-container>
+    <button mat-menu-item i18n-title i18n class="mat-menu-min-width" (click)="select(3, {})">
+        Reunião
+    </button>
+    <button *ngFor="let action of status.allActions" [matTooltip]="action.description"
+            mat-menu-item i18n-title class="mat-menu-min-width" (click)="select(action.id, {}, action.name)">
+        {{ action.icon }} {{ action.name }}
+    </button>
+</mat-menu>

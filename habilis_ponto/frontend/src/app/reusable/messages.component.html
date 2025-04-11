@@ -1,0 +1,170 @@
+<div class="overflow-hidden full-size position-relative">
+    <div class="flex-row flex-center exec-automation-div overflow-hidden" *ngIf="executingAutomation"
+         [@uploadVisibility]="'visible'">
+        <div style="width: 32px; height: 32px;" class="flex-rigid s20 flex-row flex-center">
+            <fa-icon [icon]="['far', 'spinner-third']" [spin]="true"></fa-icon>
+        </div>
+        <div class="flex-column flex-elastic overflow-hidden mrg8L">
+            <div class="font-medium s10 full-width">
+                Executando automação...
+            </div>
+            <div class="mrg4T font-light s12 no-break-with-ellipses full-width">
+                {{ chat?.executingAutomationName }}
+            </div>
+        </div>
+    </div>
+    <div class="flex-row flex-center exec-automation-div overflow-hidden" [@uploadVisibility]="'visible'"
+         *ngIf="status.selectedChat?.messagesLoading">
+        <div style="width: 32px; height: 32px;" class="flex-rigid s20 flex-row flex-center">
+            <fa-icon [icon]="['far', 'spinner-third']" [spin]="true"></fa-icon>
+        </div>
+        <div class="flex-column flex-elastic overflow-hidden mrg8L">
+            <div class="font-medium s10 full-width">
+                Carregando mensagens...
+            </div>
+        </div>
+    </div>
+    <div class="scroll1 full-size scroll-y" #messageBox (scroll)="getMoreMsgs($event)">
+        <div [style.opacity]="(messageBox.scrollHeight - messageBox.scrollTop - messageBox.offsetHeight) > 200 ? 1 : 0"
+             class="to-bottom-button" matRipple (click)="scrollToZero()">
+            <fa-icon [icon]="['far','chevron-down']"></fa-icon>
+        </div>
+        <div class="to-bottom-button-counter"
+             *ngIf="(messageBox.scrollHeight - messageBox.scrollTop - messageBox.offsetHeight) > 200 && scrollNewMsgs > 0 ? 1 : 0">
+            {{ scrollNewMsgs }}
+        </div>
+        <div class="messages" [class.pad24R]="!status.isMobile"
+             [class.pad24L]="!status.isMobile" [class.pad16T]="!status.isMobile" [class.pad16B]="!status.isMobile"
+             [class.pad6R]="status.isMobile" [class.pad6L]="status.isMobile" [class.pad12T]="status.isMobile"
+             [class.pad12B]="status.isMobile">
+            <ng-container *ngFor="let upload of uploads; let i = index;">
+                <div class="upload-card" [@uploadVisibility]="'visible'">
+                    <div class="flex-row flex-center s24" style="width: 48px; height: 48px;">
+                        <fa-icon [icon]="['fad', 'file-upload']"></fa-icon>
+                    </div>
+                    <div class="flex-elastic flex-column overflow-hidden mrg8L s12 mrg12R">
+                        <div class="font-medium full-width flex-row" style="justify-content: space-between;">
+                            <div>
+                                Enviando
+                            </div>
+                            <div>
+                                {{ upload.progress }}%
+                            </div>
+                        </div>
+                        <div class="full-width font-regular s10 mrg4T flex-row overflow-hidden">
+                            <div class="flex-elastic no-break-with-ellipses">
+                                {{ upload.name }}
+                            </div>
+                            <div class="flex-rigid mrg4L">
+                                {{ upload.size }}
+                            </div>
+                        </div>
+                        <div class="full-width progress-bar-base mrg4T">
+                            <div class="progress-bar-fill" [style.width.%]="upload.progress">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container
+                    *ngFor="let m of (messages | filterSystemMessages:status.showSystemInfo:counter)?.slice().reverse(); let i = index; trackBy: status.trackById"
+                    #allMessages>
+                <ng-container *ngIf="i < scrollMax">
+                    <div class="full-width pad8A flex-row flex-center"
+                         *ngIf="chat?.lastSeenMessageId === m.messageid && showLastSeenBanner">
+                        <div class="system-info-label" id="lastSeenMessageBanner">
+                            <fa-icon [icon]="['fas', 'arrow-alt-down']"></fa-icon>
+                            <span class="mrg12L mrg12R" i18n>Mensagens não lidas</span>
+                            <fa-icon [icon]="['fas', 'arrow-alt-down']"></fa-icon>
+                        </div>
+                    </div>
+                    <div class="full-width" [style.position]="status.isMobile ? 'relative' : null"
+                         id="{{i < scrollMax - 1 ? 'last-message' : 'regular-' + m.messageid}}"
+                         *ngIf="m.direction !== 'system-info' || status.showSystemInfo"
+                         (panstart)="panStart($event, m)" (panmove)="panMove($event, m)" (panend)="panEnd($event, m)">
+                        <div class="h100 full-width flex-row flex-center mobile-reply-icon"
+                             *ngIf="['in', 'out', 'system-out'].includes(m.direction) && status.isMobile"
+                             [ngStyle]="{'opacity': math.min(1, m.transform / 40)}">
+                            <fa-icon [icon]="['fas', 'reply']"></fa-icon>
+                        </div>
+                        <div [class.no-transition]="m.noTransition" style="z-index: 5;"
+                             [style.position]="status.isMobile ? 'relative': null"
+                             [ngStyle]="{'transform': 'translateX(' + m.transform + 'px)'}">
+
+                            <ca-message [m]="m" (toQuoted)="goToQuoted($event)" (replyTo)="replyTo.emit($event)"
+                                        [chat]="chat"
+                                        [blink]="m.blink" [queueId]="queueId" [disabledDelete]="internal"
+                                        [deleted]="m.deleted"
+                                        (buttonClicked)="buttonClicked.emit($event)" [queueType]="queueType"
+                                        [internal]="internal" [messageChangeCounter]="m.messageCounter"
+                                        (delete)="delete.emit($event)" (edit)="edit.emit($event)" [chatType]="chatType"
+                                        [showReplyTo]="showReplyTo" [readed]="m.readed" [clientRcvd]="m.clientRcvd"
+                                        [serverRcvd]="m.serverRcvd" [now]="now"
+                                        [supervisorView]="supervisorView"></ca-message>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <div class="full-width pad8A" *ngIf="chat?.extraData?.isComment">
+                <div class="full-width flex-row flex-center label label-info pad6A">
+                    <div class="s20 fg-blue-darken-1">
+                        <fa-icon [icon]="['far', 'info-circle']"></fa-icon>
+                    </div>
+                    <div class="mrg8L flex-elastic s10 font-light fg-black-lighten-1" i18n>
+                        Esse atendimento foi aberto a partir de um comentário. Só é permitido enviar uma única mensagem
+                        direta para o usuário. Novas mensagens só poderão ser enviadas, caso o cliente responda à
+                        mensagem inicial.
+                        Se desejar enviar uma resposta pública ao comentário publicado, pressione no botão "Responder"
+                        do comentário.
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="scrollMax >= (messages | filterSystemMessages:status.showSystemInfo:counter)?.length">
+                <div class="full-width pad8A flex-row flex-center" *ngIf="oldMessages?.length">
+                    <div class="system-info-label" *ngIf="chatType !== 2 && !internal">
+                        <fa-icon [icon]="['fas', 'arrow-alt-up']"></fa-icon>
+                        <span class="mrg12L mrg12R" i18n>Mensagens de atendimentos anteriores</span>
+                        <fa-icon [icon]="['fas', 'arrow-alt-up']"></fa-icon>
+                    </div>
+                    <div class="system-info-label" *ngIf="chatType === 2 && !internal">
+                        <fa-icon [icon]="['fas', 'arrow-alt-down']"></fa-icon>
+                        <span i18n>Mensagens não lidas</span>
+                        <fa-icon [icon]="['fas', 'arrow-alt-down']"></fa-icon>
+                    </div>
+                </div>
+                <ng-container
+                        *ngFor="let m of (oldMessages | filterSystemMessages:status.showSystemInfo:counter)?.slice().reverse(); let i = index; trackBy: status.trackById">
+                    <ng-container
+                            *ngIf="i < scrollMax - (messages | filterSystemMessages:status.showSystemInfo:counter).length">
+                        <div class="full-width" [style.position]="status.isMobile ? 'relative' : null"
+                             id="{{i < scrollMax - (messages | filterSystemMessages:status.showSystemInfo:counter).length - 1 ? 'last-message' : 'regular-' + m.messageid}}"
+                             *ngIf="m.direction !== 'system-info' || status.showSystemInfo"
+                             (panstart)="panStart($event, m)" (panmove)="panMove($event, m)"
+                             (panend)="panEnd($event, m)">
+                            <div class="h100 full-width" *ngIf="['in', 'out'].includes(m.direction) && status.isMobile"
+                                 style="display: flex; align-items: center; position: absolute; z-index: 0; top: 0px; left: 0px;
+       padding-left: 20px; padding-right: 20px; font-size: 1.3rem; opacity: 0;"
+                                 [ngStyle]="{'opacity': math.min(1, m.transform / 40)}">
+                                <fa-icon [icon]="['fas', 'reply']"></fa-icon>
+                            </div>
+                            <div [class.no-transition]="m.noTransition" style="z-index: 5;"
+                                 [ngStyle]="{'transform': 'translateX(' + m.transform + 'px)'}">
+                                <ca-message [m]="m" (toQuoted)="goToQuoted($event)" (replyTo)="replyTo.emit($event)"
+                                            [chatType]="chatType" [chat]="chat" [deleted]="m.deleted"
+                                            [oldMessage]="true" [messageChangeCounter]="m.messageCounter"
+                                            [blink]="m.blink" [queueId]="queueId"
+                                            (buttonClicked)="buttonClicked.emit($event)"
+                                            [queueType]="queueType" [internal]="internal"
+                                            [supervisorView]="supervisorView"
+                                            [readed]="m.readed" [clientRcvd]="m.clientRcvd" [serverRcvd]="m.serverRcvd"
+                                            [now]="now" [showReplyTo]="showReplyTo && queueType !== 13"
+                                            [disabledDelete]="true"></ca-message>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</div>

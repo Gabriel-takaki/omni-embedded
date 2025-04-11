@@ -1,0 +1,50 @@
+<div class="dialog-small" style="height: 70vh;">
+    <div class="dialog-content" style="overflow-y: auto;">
+        <div class="full-size">
+            <div class="h5" i18n>Texto pré-definido</div>
+            <form #thisForm="ngForm" (ngSubmit)="save()" class="mrg15T">
+                <mat-form-field class="full-width">
+                    <mat-label i18n>Título</mat-label>
+                    <input matInput type="text" [(ngModel)]="title" name="titleInput" placeholder="Título"
+                           i18n-placeholder
+                           required maxlength="128" #titleInput/>
+                </mat-form-field>
+                <div class="s12 font-light" i18n>
+                    Você pode utilizar as seguintes máscaras: <br/>
+                    <b>!Saudacao!</b> - Bom dia / Boa tarde / Boa noite<br/>
+                    <b>!saudacao!</b> - bom dia / boa tarde / boa noite<br/>
+                    <b>!nome!</b> - Nome do agente
+                </div>
+                <mat-form-field class="full-width">
+                    <mat-label i18n>Texto</mat-label>
+                    <textarea matInput type="text" [(ngModel)]="text" name="text" required
+                              style="height: 120px;" placeholder="Texto" i18n-placeholder></textarea>
+                </mat-form-field>
+                <div class="flex-column mrg10T">
+                    <div class="full-width font-bold mrg5T" i18n>
+                        Grupos de acesso
+                    </div>
+                    <div class="full-width mrg5T small white-space-initial" i18n>
+                        Nesse campo você especifica quais grupos de acesso poderão utilizar essa mensagem.
+                        Somente usuários desse grupo de acesso visualizarão essa mensagem em sua lista de opções.
+                    </div>
+                    <div class="full-width mrg10T">
+                        <app-tag-box label="Grupos de acesso" i18n-label [items]="contactsgroups"
+                                     [allowReordering]="false" [(value)]="accessgroups"
+                                     [placeholder]="'Selecione os grupos'"></app-tag-box>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="dialog-buttons">
+        <button class="btn btn-transparent" matRipple type="button" (click)="close()" i18n>
+            Cancelar
+        </button>
+        <button matRipple type="button" id="sendButton" class="mrg15L btn btn-success"
+                (click)="save()" [disabled]="!thisForm.valid">
+            <span *ngIf="id" i18n>Atualizar</span>
+            <span *ngIf="!id" i18n>Adicionar</span>
+        </button>
+    </div>
+</div>

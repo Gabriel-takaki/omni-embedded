@@ -1,0 +1,234 @@
+@import "scss/newcolors";
+
+.remove-button {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, background-color 0.2s ease-in-out;
+  cursor: pointer;
+  font-size: 110%;
+  border-radius: 4px;
+  color: $red-darken-1;
+  top: 49px;
+  right: 50px;
+  position: absolute;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-button:hover {
+  background-color: rgba(255, 80, 30, 0.2);
+}
+
+.edit-button {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+  font-size: 8px;
+  top: -20px;
+  color: $black-lighten-2;
+  position: absolute;
+  right: 0;
+  min-width: 18px;
+  width: 18px;
+  min-height: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clone-button {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+  font-size: 8px;
+  top: -20px;
+  color: $black-lighten-2;
+  position: absolute;
+  right: 20px;
+  min-width: 18px;
+  width: 18px;
+  min-height: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-button {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+  font-size: 8px;
+  top: -20px;
+  color: $black-lighten-2;
+  position: absolute;
+  right: 40px;
+  min-width: 18px;
+  width: 18px;
+  min-height: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $red-darken-1;
+  margin-left: 6px;
+  font-size: 16px;
+}
+
+.transfer-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $info-base;
+  margin-left: 6px;
+  font-size: 16px;
+}
+
+.edit-button:hover, .clone-button:hover, .info-button:hover {
+  background-color: $black-lighten-3;
+}
+
+.connector-base {
+  width: 1px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.connector {
+  right: -18px;
+  top: 11px;
+  color: darken($ivr-editor-color, 10%);
+  position: absolute;
+  z-index: 156;
+}
+
+.red-connector {
+  color: $red-darken-1;
+}
+
+.blue-connector {
+  color: $blue-darken-1;
+}
+
+.grip {
+  width: 24px;
+  min-width: 24px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $black-lighten-2;
+  cursor: move;
+  font-size: 16px;
+}
+
+.remove-connector {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 155;
+  color: $white-base;
+  background-color: $danger-base;
+  font-size: 8px;
+  border-radius: 50%;
+  width: 15px;
+  min-width: 15px;
+  height: 15px;
+  min-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-connector:hover {
+  background-color: $red-darken-1;
+}
+
+.issue-signal {
+  color: $warning-base;
+  font-size: 70%;
+  top: 0px;
+  right: 0px;
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.danger-signal {
+  color: $danger-base;
+  font-size: 100%;
+  top: 0px;
+  right: 0px;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reason-text {
+  margin-top: 3px;
+  padding: 1px;
+  font-size: 65%;
+  border-radius: 2px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.message-widget-base {
+  width: 128px;
+  height: 48px;
+  min-height: 48px;
+  border-radius: 4px;
+  border: 1px solid $ivr-editor-color;
+  background-color: white;
+  display: flex;
+  padding: 4px 10px;
+  position: absolute;
+  z-index: 15;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  color: #555;
+  margin-left: 6px;
+  line-height: 1;
+  font-size: 10px;
+  font-weight: 500;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+}
+
+.add-button {
+  right: -16px;
+  top: 12px;
+  color: darken($elegant-color, 7%);
+  position: absolute;
+  z-index: 156;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  color: darken($elegant-color, 15%);
+}
